@@ -63,6 +63,7 @@ call plug#begin('~/.vim/plugged')
   " * Inside file.
   " * Across files.
   Plug 'kevinhwang91/rnvimr'
+  Plug 'preservim/nerdtree'
 
 
   " * Telescope deps.
@@ -213,10 +214,21 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " * Rel.vim
 " - "go link".
 nmap <leader>gl <Plug>(Rel)
+" # Across files.
 " * Rnvimr.
 " - Make Ranger replace netrw and be the file explorer
 let g:rnvimr_ex_enable = 1
-nmap <c-w>\ :RnvimrToggle<cr>
+nmap <c-r><c-\> :RnvimrToggle<cr>
+" * NERDTree.
+" TODO: Move to window mode.
+"nnoremap <c-w><c-\> :NERDTreeToggle<cr> <bar> =
+"nnoremap <c-w>\ :NERDTreeFocus<cr> <bar> <c-w>=
+" - Start NERDTree automatically. If a file is specified, move the cursor to
+"     its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+" - Place on the right.
+let g:NERDTreeWinPos = "right"
 
 " * Telescope.
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
@@ -266,20 +278,29 @@ nnoremap <c-e> 3<c-e>
 " * Windows.
 set splitright
 let g:tinykeymap#mapleader=','
-call tinykeymap#Load('windows')
-call tinykeymap#EnterMap('windows', '<C-w>', {'name': 'Windows mode'})
-" - Resize.
-call tinykeymap#Map('windows', '>', 'wincmd >')
-call tinykeymap#Map('windows', '<', 'wincmd <')
-call tinykeymap#Map('windows', '+', 'wincmd +')
-call tinykeymap#Map('windows', '-', 'wincmd -')
+"call tinykeymap#EnterMap('windowsMode', '<C-w>', {'name': 'Windows mode'})
+let g:tinykeymap#map#windows#map='<c-w>'
 
-" - Move.
-call tinykeymap#Map('windows', 'l', 'wincmd l')
-call tinykeymap#Map('windows', 'h', 'wincmd h')
-call tinykeymap#Map('windows', 'j', 'wincmd j')
-call tinykeymap#Map('windows', 'k', 'wincmd k')
-call tinykeymap#Map('windows', 'q', 'wincmd q')
+call tinykeymap#Load('windows')
+
+"augroup Tinykeymap
+  "autocmd!
+  "call tinykeymap#Load('windows')
+  """ - Resize.
+  "call tinykeymap#Map('windows', '>', '5wincmd >')
+  "call tinykeymap#Map('windows', '<', '5wincmd <')
+  "call tinykeymap#Map('windows', '+', '5wincmd +')
+  "call tinykeymap#Map('windows', '-', '5wincmd -')
+
+  """ - Move.
+  """call tinykeymap#Map('windows', 'l', 'wincmd l')
+  """call tinykeymap#Map('windows', 'h', 'wincmd h')
+  """call tinykeymap#Map('windows', 'j', 'wincmd j')
+  """call tinykeymap#Map('windows', 'k', 'wincmd k')
+  """call tinykeymap#Map('windows', 'q', 'wincmd q')
+  "call tinykeymap#Map('windows', '\', 'NERDTreeToggle')
+  "call tinykeymap#Map('windows', '<c-\>', 'NERDTreeFocus')
+"augroup END
 
 "if has('autocmd')
 	"" change colorscheme depending on current buffer
@@ -339,8 +360,6 @@ augroup Markdown
   autocmd!
   " - Sets.
   autocmd FileType markdown highlight Normal ctermbg=21
-  " - Run.
-  autocmd FileType markdown nnoremap <buffer> <localleader><cr> :!python %<cr>
 augroup END
 
 " * Formatting.
@@ -436,3 +455,7 @@ EOF
 let g:rnvimr_border_attr = {'fg': 14, 'bg': -1}
 " - Add a shadow window, value is equal to 100 will disable shadow
 let g:rnvimr_shadow_winblend = 60
+
+" Color columns indicating width.
+"   1 + 2 splits (should be textwidth), 2 splits, 2 + 1 splits, full width - right sidebar, full width.
+set colorcolumn=80,115,151,203,235
