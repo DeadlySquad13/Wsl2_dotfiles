@@ -1,6 +1,0 @@
-inc 20211027T130000Z - 20211027T130016Z # "Test task"
-inc 20211027T130016Z - 20211027T130255Z # "Make bookmarks browser agnostic (stored on PC?)." fs.bookmarks soft
-inc 20211028T180240Z - 20211028T213028Z # OGP "OGP-54 Thumbnail scrolling." work
-inc 20211029T120923Z - 20211029T134641Z # OGP "OGP-54 Thumbnail scrolling." work
-inc 20211029T173018Z - 20211029T221737Z # OGP "OGP-57 NotebookSize." work # "https://thmoon.atlassian.net/browse/OGP-57"
-inc 20211031T105046Z - 20211031T105050Z # OGP "OGP-57 NotebookSize." work
