@@ -51,6 +51,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'preservim/nerdcommenter'
   Plug 'tpope/vim-surround'
   Plug 'gennaro-tedesco/nvim-peekup'
+  Plug 'terryma/vim-expand-region'
 
   " - Targets.
   Plug 'wellle/targets.vim'
@@ -130,6 +131,7 @@ let maplocalleader='\'
 " Doesn't work...
 "inoremap <expr> <c-j> pumvisible() ? "\<c-n>" : "\<c-j>"
 "inoremap <expr> <c-k> pumvisible() ? "\<c-p>" : "\<c-k>"
+
 " # Treesitter.
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
@@ -160,8 +162,21 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 " Coding
+" * Copy all file into system register (*).
+nnoremap y% gg"*yG
+
 " * Matching braces.
 packadd! matchit
+
+" * Expand region.
+call tinykeymap#EnterMap('ExpandRegion', '<a-v>',
+      \ { 'name': 'expand region mode' })
+call tinykeymap#Map('ExpandRegion', 'v',
+      \ 'execute "normal \<Plug>(expand_region_expand)"',
+      \ { 'desc': 'Expand selection' })
+call tinykeymap#Map('ExpandRegion', 'V',
+      \ 'execute "normal \<Plug>(expand_region_shrink)"',
+      \ { 'desc': 'Shrink selection' })
 
 " * Surround.
 " - visually select what you want to wrap and then press S- to tigger
@@ -193,7 +208,7 @@ nnoremap Y y$
 nnoremap <c-w>v :vnew<cr>
 
 " * Remaping line concatenation for use of j with modifier in non-vim apps.
-nnoremap <a-j> J
+noremap <a-j> J
 
 " * Search and replace:
 " - Current word under cursor.
@@ -218,7 +233,7 @@ nmap <leader>gl <Plug>(Rel)
 " * Rnvimr.
 " - Make Ranger replace netrw and be the file explorer
 let g:rnvimr_ex_enable = 1
-nmap <c-r><c-\> :RnvimrToggle<cr>
+nmap <leader><c-\> :RnvimrToggle<cr>
 " * NERDTree.
 " TODO: Move to window mode.
 "nnoremap <c-w><c-\> :NERDTreeToggle<cr> <bar> =
