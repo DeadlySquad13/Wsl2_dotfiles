@@ -30,14 +30,72 @@ include /usr/share/taskwarrior/solarized-dark-256.theme
 #include /usr/share/taskwarrior/no-color.theme
 
 # Color overrides for solarized-dark-256.
-color.alternate=on gray22
 # foregroundColor on backgroundColor
+# Reference: https://taskwarrior.org/docs/clog/color.html
+color.alternate=on gray22
 color.active=rgb555 on rgb134
+color.blocked=gray14 on black
+color.blocking=rgb553 on yellow
 
+# Due.
+color.due=black on color9
+color.due.today=black on rgb300
+color.overdue=on color5
+
+# Tag.
+color.tag.none=gray11
+color.tag.next=inverse
+color.tag.LATEST=inverse
+
+color.project.Lessons=
+
+# Priority.
+#color.uda.priority.H=bold color11
+#color.uda.priority.M=bold color11
+#color.uda.priority.L=rgb300
+
+#color.tag.none=inverse
+
+# Contexts.
 context.personal=project:PrX
 context.soft=+soft
 context.work=project:OGP or +work
 context.fs=project:fs
 context.KB=project:personal.KB
 context.lessons=+lessons
+
+# Aliases.
+alias.modify=mod
+alias.project=pro
+alias.depends=dep
+alias.priority=pri
+alias.annotate=ann
+
+# Urgency.
+urgency.user.tag.next.coefficient=15.0
+
+# * Priority.
+urgency.uda.priority.H.coefficient=6.0
+urgency.uda.priority.M.coefficient=3.9
+urgency.uda.priority.L.coefficient=-1.8
+
+# * Time.
+# overdue or near due date.
+urgency.due.coefficient=12.0
+urgency.scheduled.coefficient=5.0
+urgency.active.coefficient=4.0
+urgency.age.coefficient=2.0
+urgency.waiting.coefficient=-3.0
+
+# - Dependency.
+urgency.blocked.coefficient=-5.0
+urgency.blocking.coefficient=8.0
+
+# * Specificity.
+urgency.annotations.coefficient=1.0
+# - Tags.
+urgency.tags.coefficient=1.0
+# - Projects.
+urgency.project.coefficient=1.0
+urgency.user.project.My .coefficient=5.0
 context=work

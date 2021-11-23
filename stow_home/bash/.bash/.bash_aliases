@@ -1,6 +1,9 @@
 # Bash.
 alias b="bash"
 
+# Open in wsl.
+alias open="cmd.exe /C start"
+
 # Taskwarrior.
 alias t="task"
 
@@ -13,6 +16,7 @@ alias gp="g -p"
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias dirs='dirs -v'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert

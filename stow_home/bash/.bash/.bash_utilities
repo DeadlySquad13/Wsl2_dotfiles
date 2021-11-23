@@ -33,6 +33,14 @@ bash() {
   fi
 }
 
+task() {
+  local parameters="$@";
+  config ~/.taskrc $parameters;
+  if [ $? -eq 1 ]; then
+    command task $parameters;
+  fi
+}
+
 tmux() {
   local parameters="$@";
   config ~/.tmux.conf $parameters;
@@ -56,4 +64,8 @@ printColors() {
       echo;
     fi;
   done
+}
+
+dotPng() {
+  dot -Tpng $1.dot > $1.png && open $1.png
 }
