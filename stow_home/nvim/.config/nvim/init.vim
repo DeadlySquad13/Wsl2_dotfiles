@@ -1,12 +1,24 @@
 set nocompatible
 " General.
+" Bash doesn’t load your .bashrc unless it’s interactive.
+set shellcmdflag=-ic
+
 " - Enable settings for specific filetypes.
 filetype plugin on
 set encoding=utf-8
 
+" - Delay before showing message in ms (which-key).
+set timeoutlen=500
+
 " Don't parse long lines for syntax highlight.
 set synmaxcol=256
 syntax sync minlines=256
+
+" Support for embedded scripts (for example, lua in init.vim)
+" - Syntax highlighting.
+let g:vimsyn_embed='l'
+" - Folding. a: augroups, f - functions.
+"let g:vimsyn_folding='af'
 
 " Behave like smartcase when adding word to dictionary.
 if has('syntax')
@@ -36,11 +48,20 @@ set sidescrolloff=3
 "   commands.
 set nowrap
 
-set tabstop=2
+" - Minimal configuration:
+"set autoindent
+"set smartindent   " Do smart autoindenting when starting a new line
+set shiftwidth=2  " Set number of spaces per auto indentation
+set expandtab     " When using <Tab>, put spaces instead of a <tab> character
+
+" - Good to have for consistency.
+set tabstop=2   " Number of spaces that a <Tab> in the file counts for
 set softtabstop=2
-set shiftwidth=2
-set expandtab
-set autoindent
+set smarttab    " At <Tab> at beginning line inserts spaces set in shiftwidth
+
+"syntax on
+"filetype plugin indent on
+
 set fileformat=unix
 
 " - Persistant undo.
@@ -65,6 +86,12 @@ endif
 " Plugins.
 call plug#begin('~/.vim/plugged')
   " General.
+  Plug 'folke/which-key.nvim'
+  " * Integration.
+  " - With system.
+  Plug 'majkinetor/vim-omnipresence'
+  " - With browser.
+  Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
   " * Open and write files with sudo.
   Plug 'lambdalisue/suda.vim'
 
@@ -84,13 +111,14 @@ call plug#begin('~/.vim/plugged')
   " * Russian layout.
   Plug 'powerman/vim-plugin-ruscmd'
 
-  " LSP
+  " LSP.
   Plug 'neovim/nvim-lspconfig'
 
   " * Snippets.
   Plug 'SirVer/ultisnips'
   " - Collections of snippets.
   Plug 'honza/vim-snippets'
+  Plug 'mattn/emmet-vim'
 
   " * Autocomplete
   Plug 'hrsh7th/cmp-nvim-lsp'
@@ -100,6 +128,9 @@ call plug#begin('~/.vim/plugged')
   Plug 'hrsh7th/nvim-cmp'
   " for ultisnips users.
   Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+
+  " - Python formatter.
+  Plug 'tell-k/vim-autopep8'
 
   "" For vsnip users.
   "Plug 'hrsh7th/cmp-vsnip'
@@ -169,7 +200,10 @@ call plug#begin('~/.vim/plugged')
   Plug 'aklt/rel.vim'
 
   " Markdown.
-  Plug 'plasticboy/vim-markdown'
+  " Plug 'plasticboy/vim-markdown'
+  Plug 'SidOfc/mkdx'
+  " * Preview.
+  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install'  }
   " Visuals.
   " * Highlight range of an exmode command.
   Plug 'winston0410/cmd-parser.nvim'
@@ -200,15 +234,19 @@ call plug#begin('~/.vim/plugged')
   Plug 'ryanoasis/vim-devicons' 
 call plug#end()
 
-" Autocompletion.
-
 " General keybindings.
 let mapleader=' '
 let maplocalleader='\'
 
+" Integration with system.
+let g:omnipresence_hotkey = 'f11'
+
 " Search for item under cursor in vim docs (:help).
-" 'investigate help'
+" - 'investigate help'
 noremap <leader>gih K
+
+" - Search for tags.
+nnoremap <leader>st :%s;<\w*>\(<\\\w*>\)\?;;g<left><left>
 
 "source 'plug-config.vim'
 " Starting screen.
@@ -252,7 +290,7 @@ let s:dashboard_shortcut_icon={
   \'book_marks': ' '
 \}
 
-lua <<EOF
+lua << EOF
 -- Don't understand how to get it from vim.
 local leader = 'Space'
 local localleader = '\\'
@@ -420,36 +458,83 @@ let g:dashboard_custom_footer=[
 " LSP
 " * Autocomplete.
 set completeopt=menu,menuone,noselect
+let g:autopep8_disable_show_diff=1
 
 " Use omni completion provided by lsp.
 autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
+" Ultisnips.
+"let g:UltiSnipsExpandTrigger = '<c-g>'
+let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'             
+let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jump_forward)'  
+let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jump_backward)'
+let g:UltiSnipsListSnippets = '<c-x><c-s>'                            
+let g:UltiSnipsRemoveSelectModeMappings = 0 
+" - Optimizing `provider#python3#Call()` by hardcoding python path (which
+"   python).
+let g:loaded_python_provider = 1
+let g:python_host_skip_check = 1
+let g:python_host_prog = '/usr/bin/python'
+let g:python3_host_skip_check = 1
+let g:python3_host_prog = '/usr/bin/python'
+
 lua <<EOF
   -- Setup nvim-cmp.
--- Not quite understand what to do with it.
--- within packer init {{{
--- use {'SirVer/ultisnips',
---     requires = {{'honza/vim-snippets', rtp = '.'}},
---     config = function()      
---       vim.g.UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'      
---       vim.g.UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jump_forward)'
---       vim.g.UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jump_backward)'
---       vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
---       vim.g.UltiSnipsRemoveSelectModeMappings = 0
---     end
--- }
--- }}}
-  local cmp = require('cmp')
+  -- config = function()      
+  --     vim.g.UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'      
+  --     vim.g.UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jump_forward)'
+  --     vim.g.UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jump_backward)'
+  --     vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
+  --     vim.g.UltiSnipsRemoveSelectModeMappings = 0
+  -- end
+
+  -- config()
 
   local t = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
   end
 
+  local ultisnips_engine = {
+    can_jump = function()
+      return vim.fn["UltiSnips#CanJumpForwards"]() == 1
+    end,
+
+    jump = function()
+      return vim.api.nvim_feedkeys(
+        t("<Plug>(ultisnips_jump_forward)"), 'm', true
+      )
+    end,
+
+    can_jump_backwards = function()
+      return vim.fn["UltiSnips#CanJumpBackwards"]() == 1
+    end,
+
+    jump_backward = function()
+      return vim.api.nvim_feedkeys(
+        t("<Plug>(ultisnips_jump_backward)"), 'm', true
+      )
+    end,
+
+    can_expand = function()
+      return vim.fn["UltiSnips#CanExpandSnippet"]() == 1
+    end,
+
+    expand = function()
+      -- Maybe replace with #Anon?
+      return vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>"))
+    end,
+  }
+
+  local snippets_engine = ultisnips_engine;
+
   local cmp = require('cmp')
 
   cmp.setup {
     snippet = {
-      expand = function(args) vim.fn["UltiSnips#Anon"](args.body) end
+      expand = function()
+        vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>"))
+      end,
+
     },
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
@@ -462,7 +547,7 @@ lua <<EOF
       ["<Tab>"] = cmp.mapping({
           c = function(fallback)
             if cmp.visible() then
-                -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+              -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
               -- `select = true` enables immediate autocomplete without selection
               --   <c-space><tab> gives the first result.
               cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
@@ -473,12 +558,19 @@ lua <<EOF
 
           i = function(fallback)
             if cmp.visible() then
-                cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-            elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-                vim.api.nvim_feedkeys(t("<Plug>(ultisnips_jump_forward)"), 'm', true)
-            else
-              fallback()
+              -- If you haven't started browsing snippets yet, choose next (first).
+              if not cmp.get_active_entry() then
+                return cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+              end
+              if snippets_engine.can_expand() then
+                return snippets_engine.expand()
+              end
+
+
+              return cmp.complete()
             end
+
+            return fallback()
           end,
 
           s = function(fallback)
@@ -490,31 +582,29 @@ lua <<EOF
           end
       }),
 
-      ["<S-Tab>"] = cmp.mapping({
-        c = function()
-          if cmp.visible() then
-              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+      -- Just defining function doesn't work.
+      ['<c-j>'] = cmp.mapping(
+        function(fallback)
+          if snippets_engine.can_jump() then
+            return snippets_engine.jump()
           end
+          
+          return fallback()
         end,
+        {'i', 'c', 's'}
+      ),
 
-        i = function(fallback)
-          if cmp.visible() then
-              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
-          elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-              return vim.api.nvim_feedkeys( t("<Plug>(ultisnips_jump_backward)"), 'm', true)
-          else
-              fallback()
+      -- Just defining function doesn't work.
+      ['<c-k>'] = cmp.mapping(
+        function(fallback)
+          if snippets_engine.can_jump_backwards() then
+            return snippets_engine.jump_backward()
           end
+          
+          return fallback()
         end,
-
-        s = function(fallback)
-          if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-              return vim.api.nvim_feedkeys( t("<Plug>(ultisnips_jump_backward)"), 'm', true)
-          else
-              fallback()
-          end
-        end
-      }),
+        {'i', 'c', 's'}
+      ),
 
       ['<Down>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }), {'i'}),
       ['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), {'i'}),
@@ -536,6 +626,7 @@ lua <<EOF
           end
         end
       }),
+
       ['<C-p>'] = cmp.mapping({
         c = function()
           if cmp.visible() then
@@ -562,18 +653,6 @@ lua <<EOF
         i = cmp.mapping.close(),
         c = cmp.mapping.close()
       }),
-
-      -- ['<CR>'] = cmp.mapping({
-      --   i = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
-      --
-      --   c = function(fallback)
-      --     if cmp.visible() then
-      --       cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-      --     else
-      --       fallback()
-      --     end
-      --   end
-      -- }),
     },
   }
 
@@ -597,12 +676,34 @@ lua <<EOF
   })
 
   -- Setup lspconfig.
+  local lspconfig = require('lspconfig')
+  local configs = require('lspconfig.configs')
+
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- * Python
-  require('lspconfig').pylsp.setup{
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+  -- * Python.
+  lspconfig.pylsp.setup{
     capabilities = capabilities
   }
+  -- * Emmet.
+  --if not configs.ls_emmet then
+  --  configs.ls_emmet = {
+  --    default_config = {
+  --      cmd = { 'ls_emmet', '--stdio' };
+  --      filetypes = { 'html', 'css', 'scss', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'haml',
+  --        'xml', 'xsl', 'pug', 'slim', 'sass', 'stylus', 'less', 'sss'};
+  --      root_dir = function(fname)
+  --        return vim.loop.cwd()
+  --      end;
+  --      settings = {};
+  --    };
+  --  }
+  --end
+
+  --lspconfig.ls_emmet.setup{ capabilities = capabilities }
 EOF
+
 
 " * General.
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
@@ -631,10 +732,41 @@ nnoremap <silent> <leader>gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 " # Treesitter.
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { 'python' },
+  ensure_installed = {
+    -- General.
+    'regex',
+    'python',
+    'lua',
+
+    -- System programming.
+    'bash',
+
+    -- Web development.
+    'typescript',
+    'javascript',
+    'css',
+    'scss',
+    -- - React.
+    -- 'jsx',
+    'tsx',
+
+    -- C family.
+    'cmake',
+    'c',
+    'cpp',
+  },
   ignore_install = { }, -- List of parsers to ignore installing
   indent = {
     enable = true
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn",
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
   },
   highlight = {
     enable = true, -- false will disable the whole extension
@@ -694,10 +826,10 @@ call tinykeymap#Map('ExpandRegion', 'V',
 let g:surround_{char2nr('-')} = "\1start: \1\r\2end: \2"
 
 " * Create a new line above the current one without exiting normal mode.
-map <Leader>O O<Esc>j
+map <Leader>O mtO<Esc>`t
 
 " * Create a new line below the current one without exiting normal mode.
-map <Leader>o o<Esc>k
+map <Leader>o mto<Esc>`t
 
 " * Keep visual mode after indent.
 vnoremap > >gv
@@ -735,68 +867,21 @@ nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 " - Source vimrc.
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
-" Navigation.
-" # Between files.
-" * Rel.vim
-" - "go link".
-nmap <leader>gl <Plug>(Rel)
-" # Across files.
-" * Rnvimr.
-" - Make Ranger replace netrw and be the file explorer
-let g:rnvimr_ex_enable = 1
-nmap <leader><c-\> :RnvimrToggle<cr>
-" * NERDTree.
-" - Start NERDTree automatically. If a file is specified, move the cursor to
-"     its window.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
-" - Place on the right.
-let g:NERDTreeWinPos = "right"
+"function! HorizontalScrollMode( call_char )
+    "if &wrap
+        "return
+    "endif
 
-" * Telescope.
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fs <cmd>lua require('session-lens').search_session()<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
-nnoremap <leader>fp <cmd>lua require('telescope.builtin').treesitter()<cr>
-
-" Find files relative to root directory (don't understand how lua functions
-"   work).
-"lua <<EOF
-"my_fd = function(opts)
-  "opts = opts or {}
-  "opts.cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
-  "require'telescope.builtin'.find_files(opts)
-"end
-"EOF
-
-" # Inside file.
-" * Matching targets
-"  (jumping nicely, but only inside []).
-nnoremap ]b :call searchpair('\[','','\]')<cr>
-nnoremap [b :call searchpair('\[','','\]','b')<cr>
-" * Horizontal (special horizontal mode: press z to turn on/off).
-nnoremap <silent> zh :call HorizontalScrollMode('h')<CR>
-nnoremap <silent> zl :call HorizontalScrollMode('l')<CR>
-nnoremap <silent> zH :call HorizontalScrollMode('H')<CR>
-nnoremap <silent> zL :call HorizontalScrollMode('L')<CR>
-
-function! HorizontalScrollMode( call_char )
-    if &wrap
-        return
-    endif
-
-    echohl Title
-    let typed_char = a:call_char
-    while index( [ 'h', 'l', 'H', 'L' ], typed_char ) != -1
-        execute 'normal! z'.typed_char
-        redraws
-        echon '-- Horizontal scrolling mode (h/l/H/L)'
-        let typed_char = nr2char(getchar())
-    endwhile
-    echohl None | echo '' | redraws
-endfunction
+    "echohl Title
+    "let typed_char = a:call_char
+    "while index( [ 'h', 'l', 'H', 'L' ], typed_char ) != -1
+        "execute 'normal! z'.typed_char
+        "redraws
+        "echon '-- Horizontal scrolling mode (h/l/H/L)'
+        "let typed_char = nr2char(getchar())
+    "endwhile
+    "echohl None | echo '' | redraws
+"endfunction
 
 " * Vertical.
 nnoremap <c-y> 3<c-y>
@@ -804,11 +889,6 @@ nnoremap <c-e> 3<c-e>
 
 " * Windows.
 set splitright
-let g:tinykeymap#mapleader=','
-let g:tinykeymap#map#windows#map='<c-w>'
-
-" /home/dubuntus/.vim/plugged/tinykeymap_vim/autoload/tinykeymap/map/windows.vim
-call tinykeymap#Load('windows')
 
 "if has('autocmd')
 	"" change colorscheme depending on current buffer
@@ -850,8 +930,6 @@ call tinykeymap#Load('windows')
 " Middle dot 0119·
 set fillchars+=fold:\ 
 set foldtext=CustomFoldText()
-
-setlocal foldmethod=expr
 
 setlocal foldexpr=GetPotionFold(v:lnum)
 function! GetPotionFold(lnum)
@@ -906,11 +984,19 @@ function! CustomFoldText()
 
   return line . expansionString . foldSizeFormatted . foldLevelFormatted
 endfunction
+
+" - Fold settings.
 set foldcolumn=3
+
+set foldlevelstart=2
+set foldnestmax=3
+
 augroup Folding
   autocmd!
-  autocmd BufReadPre * setlocal foldmethod=indent
-  autocmd BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+  autocmd BufReadPre * setlocal foldmethod=expr
+  "autocmd BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+  " Open all folds under cursor.
+  " autocmd BufWinEnter * silent normal! zO
 augroup END
 
 augroup Markdown
@@ -962,6 +1048,15 @@ augroup Python
   autocmd FileType python nnoremap <buffer> <localleader><cr> :!python %<cr>
 augroup END
 
+augroup Graphviz
+  " Clear all autocommands that were set before that.
+  autocmd!
+  " - Swap relationships.
+  autocmd FileType dot nnoremap <buffer> <localleader>sr ^"yct-<esc>2W"yP"yD^X"yPa<space><esc>
+  " - Run: create png from name of the current file and open it.
+  autocmd FileType dot nnoremap <buffer> <localleader><cr> :! dotPng %:r<cr>
+augroup END
+
 augroup Vim
   " Clear all autocommands that were set before that.
   autocmd!
@@ -989,8 +1084,21 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-"  My abbreviations.
+" Abbreviations.
+" # **P**ersons abbreviations (nicknames, names).
 iabbrev @@ sasha.pakalo@gmail.com
+" * Personal (**me**).
+" - 13 for nickname.
+iabbrev pme13 DeadlySquad13
+" - Re for real.
+iabbrev pmeRe Pakalo Alexander
+
+" # Ex-mode.
+" Edit file in current directory.
+cabbr %% <c-r>=expand('%:p:h')<cr>
+
+" - exec normal.
+cabbr exn exec "normal"<left>
 
 " Visuals.
 "Use 24-bit (true-color) mode in Vim/Neovim.
@@ -1140,6 +1248,371 @@ lua << EOF
   }
 EOF
 
+" Navigation.
+" # Across files.
+" * Rnvimr.
+" - Make Ranger replace netrw and be the file explorer.
+let g:rnvimr_ex_enable = 1
+" * Rel.
+" - Jump to link (have to define here too because which_key doesn't handle
+"   conflicts occured by <unique> mapping of a Rel.vim).
+nnoremap <leader>gl <Plug>(Rel)
+
+" # Inside file.
+" * Matching targets
+"  (jumping nicely, but only inside []).
+nnoremap ]b :call searchpair('\[','','\]')<cr>
+nnoremap [b :call searchpair('\[','','\]','b')<cr>
+
+
+" Mappings.
+" # Tinykeymap transitive mappings.
+let g:tinykeymap#mapleader = ','
+let g:tinykeymap#map#transitive_catalizator = '.'
+
+" * Windows.
+" Path: /home/dubuntus/.vim/plugged/tinykeymap_vim/autoload/tinykeymap/map/windows.vim
+let g:tinykeymap#map#windows#map = '<c-w>' . g:tinykeymap#map#transitive_catalizator
+call tinykeymap#Load('windows')
+
+" * ExpandRegion (without catalizator yet, should be enhanced with treesitter).
+call tinykeymap#EnterMap('ExpandRegion', '<a-v>', {
+      \ 'name': 'expand region mode'
+      \ })
+" - Mappings.
+call tinykeymap#Map('ExpandRegion', 'v',
+      \ 'execute "normal \<Plug>(expand_region_expand)"',
+      \ { 'desc': 'Expand selection' })
+call tinykeymap#Map('ExpandRegion', 'V',
+      \ 'execute "normal \<Plug>(expand_region_shrink)"',
+      \ { 'desc': 'Shrink selection' })
+
+" * HorizontalScroll.
+let g:tinykeymap#map#horizontal_scroll#map =
+      \ '<leader>zh' . g:tinykeymap#map#transitive_catalizator
+
+call tinykeymap#EnterMap('HorizontalScroll', g:tinykeymap#map#horizontal_scroll#map, {
+      \ 'name': 'horizontal scroll mode'
+      \ })
+
+" - Mappings.
+call tinykeymap#Map(
+      \ 'HorizontalScroll', 'h',
+      \ 'execute  "normal! zh"',
+      \ { 'desc': 'Left' })
+call tinykeymap#Map(
+      \ 'HorizontalScroll', 'l',
+      \ 'execute  "normal zl"',
+      \ { 'desc': 'Right' })
+call tinykeymap#Map(
+      \ 'HorizontalScroll', 'H',
+      \ 'execute  "normal zH"',
+      \ { 'desc': 'Left half screen width' })
+call tinykeymap#Map(
+      \ 'HorizontalScroll', 'L',
+      \ 'execute  "normal zL"',
+      \ { 'desc': 'Right half screen width' })
+
+
+" # Which-key.
+lua << EOF
+  local which_key = require("which-key")
+
+  local builtin = require('telescope.builtin')
+
+  -- Utilities. {{{
+  -- How to specify it programmatically (start and end of the range)?
+  local special_symbols = {
+    -- Mathematical Alphanumeric Symbols (Range: 1D400—1D7FF).
+    A = '𝐀',
+    B = '𝐁',
+    C = '𝐂',
+    D = '𝐃',
+    E = '𝐄',
+    F = '𝐅',
+    G = '𝐆',
+    H = '𝐇',
+    I = '𝐈',
+    J = '𝐉',
+    K = '𝐊',
+    L = '𝐋',
+    M = '𝐌',
+    N = '𝐍',
+    O = '𝐎',
+    P = '𝐏',
+    Q = '𝐐',
+    R = '𝐑',
+    S = '𝐒',
+    T = '𝐓',
+    U = '𝐔',
+    V = '𝐕',
+    W = '𝐖',
+    X = '𝐗',
+    Y = '𝐘',
+    Z = '𝐙'
+  }
+
+  -- pos - index of a char to replace,
+  -- str - string we want to modify,
+  -- r - replacement char (char to replace).
+  local function replace_char(pos, str, r)
+    -- Checking for nil pos (kind of ternary operator). 
+    return not pos and str or str:sub(1, pos-1) .. r .. str:sub(pos+1)
+  end
+
+  -- Formats first found character according to dictionary of a special symbols.
+  -- str - string to format,
+  -- char - character to find.
+  local function format(str, char) 
+    -- - Checking for nil str.
+    if not str then
+      return str
+    end
+
+    -- - Case insensitive search because we have only capitals in dictionary.
+    return replace_char(str:upper():find(char), str, special_symbols[char])
+  end
+
+  local function format_mappings_names(mappings, group_mapping_key)
+    local formatted_mappings = {} 
+
+    for key, mapping in pairs(mappings) do
+      if (key == 'name') then
+        -- Now have only capitals in dictionary so uppercasing.
+        formatted_mappings[key] = format(mapping, group_mapping_key:upper())
+      else
+        -- Mapping group.
+        if (mapping.name) then
+          formatted_mappings[key] = format_mappings_names(mapping, key:upper())
+        else
+          local mapping_name = mapping[2]
+
+          -- Now have only capitals in dictionary so uppercasing.
+          mapping[2] = format(mapping_name, key:upper())
+          formatted_mappings[key] = mapping
+        end
+      end
+    end
+
+    return formatted_mappings
+  end
+
+  -- Mappings.
+  -- # Buffer.
+  local buffer_mappings = {
+    name = 'Buffer'
+  }
+
+  -- # File.
+  local file_mappings = {
+    name = 'File'
+  }
+
+  -- # Go. Movement across files.
+  local go_mappings = {
+    name = 'Go',
+    -- * Rel.vim /home/dubuntus/.vim/plugged/rel.vim/plugin/rel.vim
+    l = { "<Plug>(Rel)", "Link" }
+  }
+
+  -- # Help. Show help pages, documentation. Can lead out of the application,
+  -- for example, in browser.
+  local help_mappings = {
+    name = 'Help',
+  }
+
+  -- # Jump. Movement inside file.
+  local jump_mappings = {
+    name = 'Jump',
+  }
+
+  -- # Toggle. Mappings that toggle features.
+  local toggle_mappings = {
+    name = 'Toggle',
+  }
+
+  -- # Navigation. Helps find things, used as lookup table (navigation panel).
+  local navigation_mappings = {
+    name = 'Navigation',
+    -- * Telescope.
+    f = { function() builtin.find_files() end, 'Find in current directory' },
+    s = { function() require('session-lens').search_session() end, 'Session Search' },
+    g = { function() builtin.live_grep() end, 'Live grep' },
+    b = { function() builtin.buffers() end, 'Buffers' },
+    h = { function() builtin.help_tags() end, 'Help tags' },
+    t = { function() builtin.treesitter() end, 'Treesitter' },
+  }
+
+  -- # Major. Like major mode in spacemacs: filetype mappings.
+  local major_mappings = {
+    name = 'Major',
+  }
+
+  -- * Rnvimr.
+  -- nmap <leader><c-\> :RnvimrToggle<cr>
+
+--  " Find files relative to root directory (don't understand how lua functions
+--  "   work).
+--  "lua <<EOF
+--  "my_fd = function(opts)
+--    "opts = opts or {}
+--    "opts.cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+--    "require'telescope.builtin'.find_files(opts)
+--  "end
+--  "EOF
+--
+  
+  local z_mappings = {
+    h = {
+      [vim.g['tinykeymap#map#transitive_catalizator']] = { 'Horizontal Scroll Mode' }
+    }
+  }
+
+  local mappings = {
+    name = 'Main',
+
+    ["<leader>"] = {
+      name = 'Leader',
+      -- a = a_mappings,
+      b = buffer_mappings,
+      -- c = comment_mappings, -- Not sure, maybe leave <leader><c-/>.
+      -- d = d_mappings,
+      -- e = e_mappings,
+      f = file_mappings,
+      g = go_mappings,
+      h = help_mappings,
+      -- i = i_mappings,
+      j = jump_mappings,
+      -- k = k_mappings,
+      -- l = l_mappings,
+      m = major_mappings,
+      n = navigation_mappings,
+      -- o = o_mappings,
+      -- p = p_mappings,
+      -- q = q_mappings,
+      -- r = r_mappings,
+      -- s = s_mappings,
+      t = toggle_mappings,
+      -- u = u_mappings,
+      -- v = v_mappings,
+      -- w = w_mappings,
+      -- x = x_mappings,
+      -- y = y_mappings,
+      z = z_mappings,
+    },
+
+    -- a = a_mappings,
+    -- b = b_mappings,
+    -- c = c_mappings,
+    -- d = d_mappings,
+    -- e = e_mappings,
+    -- f = f_mappings,
+    -- g = g_mappings,
+    -- h = h_mappings,
+    -- i = i_mappings,
+    -- j = j_mappings,
+    -- k = k_mappings,
+    -- l = l_mappings,
+    -- m = m_mappings,
+    -- n = n_mappings,
+    -- o = o_mappings,
+    -- p = p_mappings,
+    -- q = q_mappings,
+    -- r = r_mappings,
+    -- s = s_mappings,
+    -- t = t_mappings,
+    -- u = u_mappings,
+    -- v = v_mappings,
+    -- w = w_mappings,
+    -- x = x_mappings,
+    -- y = y_mappings,
+    -- z = z_mappings,
+
+    ['<c-w>'] = {
+      [vim.g['tinykeymap#map#transitive_catalizator']] = { 'Window Mode' }     
+    }
+  }
+
+  local options = {
+    mode = "n", -- NORMAL mode
+    -- prefix: use "<leader>f" for example for mapping everything related to finding files
+    -- the prefix is prepended to every mapping part of `mappings`
+    prefix = "", 
+    buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+    silent = true, -- use `silent` when creating keymaps
+    noremap = true, -- use `noremap` when creating keymaps
+    nowait = false, -- use `nowait` when creating keymaps
+  }
+
+  which_key.register(format_mappings_names(mappings, 'M'), options)
+
+  which_key.setup {
+    plugins = {
+      marks = true, -- shows a list of your marks on ' and `.
+      registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode.
+      spelling = {
+      enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions.
+      suggestions = 20, -- how many suggestions should be shown in the list?.
+    },
+    -- the presets plugin, adds help for a bunch of default keybindings in Neovim.
+    -- No actual key bindings are created.
+    presets = {
+      operators = true, -- adds help for operators like d, y, ... and registers them for motion / text object completion.
+      motions = true, -- adds help for motions.
+      text_objects = true, -- help for text objects triggered after entering an operator.
+      windows = false, -- default bindings on <c-w> (shown via tinykeymap transitive)..
+      nav = true, -- misc bindings to work with windows.
+      z = true, -- bindings for folds, spelling and others prefixed with z.
+      g = true, -- bindings for prefixed with g.
+      },
+    },
+    -- Add operators that will trigger motion and text object completion
+    -- to enable all native operators, set the preset / operators plugin above.
+    operators = { gc = "Comments" },
+    key_labels = {
+      -- override the label used to display some keys. It doesn't effect WK in any other way..
+      -- For example:.
+      -- ["<space>"] = "SPC",.
+      -- ["<cr>"] = "RET",.
+      -- ["<tab>"] = "TAB",.
+    },
+    icons = {
+      breadcrumb = "~>", -- symbol used in the command line area that shows your active key combo.
+      separator = "", -- symbol used between a key and it's label.
+      group = "", -- symbol prepended to a group.
+    },
+    popup_mappings = {
+      scroll_down = '<c-d>', -- binding to scroll down inside the popup.
+      scroll_up = '<c-u>', -- binding to scroll up inside the popup.
+    },
+    window = {
+      border = "shadow", -- [ none, single, double, shadow ].
+      position = "bottom", -- [ bottom, top ].
+      margin = { 10, 60, 52, 60 }, -- extra window margin [ top, right, bottom, left ].
+      padding = { 1, 1, 1, 1 }, -- extra window padding [ top, right, bottom, left ].
+      winblend = 10 -- pseudo transparency.
+    },
+    layout = {
+      height = { min = 4, max = 25 }, -- min and max height of the columns.
+      width = { min = 20, max = 50 }, -- min and max width of the columns.
+      spacing = 3, -- spacing between columns.
+      align = "center", -- align columns left, center or right.
+    },
+    ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label.
+    hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ "}, -- hide mapping boilerplate.
+    show_help = true, -- show help message on the command line when the popup is visible.
+    triggers = "auto", -- automatically setup triggers.
+  -- triggers = {"<leader>"} -- or specify a list manually.
+    triggers_blacklist = {
+      -- list of mode / prefixes that should never be hooked by WhichKey.
+      -- this is mostly relevant for key maps that start with a native binding.
+      -- most people should not need to change this.
+      i = { "j", "k" },
+      v = { "j", "k" },
+    },
+  }
+EOF
+
 " # Theme.
 " * Settings.
 syntax enable
@@ -1168,14 +1641,88 @@ highlight Whitespace guifg=#cccccc
 lua << EOF
   local Color, colors, Group, groups, styles = require('colorbuddy').setup()
 
-  -- Use Color.new(<name>, <#rrggbb>) to create new colors
-  -- They can be accessed through colors.<name>
-  Color.new('background',  '#282c34')
-  Color.new('red',         '#cc6666')
-  Color.new('green',       '#99cc99')
-  Color.new('yellow',      '#f0c674')
+  -- Colors.
+  local color_palette = {
+    red = {
+      crimson = '#9d0006',
+      engine = '#cc241d',
+      venetian = '#fb4934',
+    },
 
-  Group.new('FoldColumn', colors.yellow, colors.yellow)
+    mustard = {
+      bronze = '#79740e',
+      citron = '#98971a',
+      acid = '#b8bb26',
+    },
+
+    yellow = {
+      philippine_gold = '#b57614',
+      goldenrod = '#d79921',
+      saffron = '#fabd2f',
+    },
+
+    blue = {
+      sapphire = '#076678',
+      jelly_bean = '#458588',
+      morning = '#83a598',
+    },
+
+    purple = {
+      twilight_lavender = '#8f3f71',
+      turkish_rose = '#b16286',
+      puce = '#d3869b',
+    },
+
+    aquamarine = {
+      amazon = '#427b58',
+      russian = '#689d6a',
+      pistachio = '#8ec07c',
+    },
+
+    orange = {
+      rust = '#af3a03',
+      metallic = '#d65d0e',
+      pumpkin = '#fe8019',
+    },
+
+    white = {
+      white0 = '#f9f5d7',
+      white1 = '#fbf1c7',
+      white2 = '#f2e5bc',
+      tan = '#e0d0a8',
+    },
+
+    gray = {
+      gray0 = '#ebdbb2',
+      gray1 = '#d5c4a1',
+      gray2 = '#bdae93',
+      gray3 = '#a89984',
+      gray4 = '#928374',
+    },
+
+    black = {
+      black0 = '#7c6f64',
+      black1 = '#665c54',
+      black2 = '#504945',
+      black3 = '#3c3836',
+      black5 = '#32302f',
+      black6 = '#282828',
+      black7 = '#1d2021',
+    },
+  }
+
+  -- Semantic colors.
+  local semantic_palette = {
+    informational1 = color_palette.gray.gray1,
+    inconspicious0 = color_palette.white.white1
+  }
+
+  -- Scope colors.
+  Color.new('fold_foreground', semantic_palette.informational1)
+  Color.new('fold_background', semantic_palette.inconspicious0)
+
+  -- Scope groups.
+  Group.new('FoldColumn', colors.fold_foreground, colors.fold_background)
 -- hi FoldColumn guibg=test guifg=Black
 
   -- Define highlights in terms of `colors` and `groups`
@@ -1271,11 +1818,20 @@ require("indent_blankline").setup {
 }
 EOF
 
-" # Rnvimr.
-" Change the border's color
+" * Rnvimr.
+" - Change the border's color
 let g:rnvimr_border_attr = {'fg': 14, 'bg': -1}
 " - Add a shadow window, value is equal to 100 will disable shadow
 let g:rnvimr_shadow_winblend = 60
+
+" * NERDTree.
+" - Start NERDTree automatically. If a file is specified, move the cursor to
+" its window.
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+" - Place on the right.
+let g:NERDTreeWinPos = "right"
+
 
 " Color columns indicating width.
 "   1 + 2 splits (should be textwidth), 2 splits, 2 + 1 splits, full width - right sidebar, full width.

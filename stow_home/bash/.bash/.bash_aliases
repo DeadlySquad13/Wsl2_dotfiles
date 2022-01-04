@@ -12,6 +12,14 @@ alias g="goto"
 # automatically pushes directory to stack.
 alias gp="g -p"
 
+# Ranger.
+alias r=". ranger"
+# - **D**etached.
+alias rd="ranger"
+
+# Python.
+alias py="python"
+
 # Directory aliases.
 alias ll='ls -alF'
 alias la='ls -A'

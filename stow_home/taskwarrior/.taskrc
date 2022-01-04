@@ -99,3 +99,4 @@ urgency.tags.coefficient=1.0
 urgency.project.coefficient=1.0
 urgency.user.project.My .coefficient=5.0
 context=work
+context.side=+side

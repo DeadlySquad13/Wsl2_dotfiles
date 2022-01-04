@@ -36,13 +36,17 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 # Startup.
+# Check if:
+#   1. tmux exists on the system,
+#   2. we're in an interactive shell,
+#   3. tmux doesn't try to run within itself.
 if command -v tmux &> /dev/null \
   && [ -n "$PS1" ] \
   && [[ ! "$TERM" =~ screen ]] \
   && [[ ! "$TERM" =~ tmux ]] \
   && [ -z "$TMUX" ];
 then
-  exec tmux
+  tmux attach -t main || tmux new -s main
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
