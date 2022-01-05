@@ -146,7 +146,7 @@ call plug#begin('~/.vim/plugged')
 
   " Coding.
   " * Brackets.
-  Plug 'jiangmiao/auto-pairs'
+  Plug 'windwp/nvim-autopairs'
 
   " * Comments.
   Plug 'preservim/nerdcommenter'
@@ -521,18 +521,23 @@ lua <<EOF
 
     expand = function()
       -- Maybe replace with #Anon?
+      print('expand!')
       return vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>"))
+      -- return vim.fn.feedkeys(t("<C-R>=UltiSnips#Anon()<CR>"))
     end,
   }
 
   local snippets_engine = ultisnips_engine;
 
   local cmp = require('cmp')
+  -- Optional.
+  -- local cmp_nvim_ultisnips = require('cmp_nvim_ultisnips').setup {}
+  local cmp_ultisnips_mappings = require('cmp_nvim_ultisnips.mappings')
 
   cmp.setup {
     snippet = {
-      expand = function()
-        vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>"))
+      expand = function(args)
+        vim.fn["UltiSnips#Anon"](args.body)
       end,
 
     },
@@ -559,15 +564,15 @@ lua <<EOF
           i = function(fallback)
             if cmp.visible() then
               -- If you haven't started browsing snippets yet, choose next (first).
-              if not cmp.get_active_entry() then
-                return cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-              end
+              -- if not cmp.get_active_entry() then
+              --   return cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+              -- end
               if snippets_engine.can_expand() then
                 return snippets_engine.expand()
               end
 
 
-              return cmp.complete()
+              return cmp.confirm({ select = true })
             end
 
             return fallback()
@@ -656,6 +661,17 @@ lua <<EOF
     },
   }
 
+  -- * Enabling support for autopairs.
+  -- * If you want insert `(` after select function or method item
+  local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+  cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
+
+
+  -- ? Is it used only for lisp?.
+  -- * Add a lisp filetype (wrap my-function), FYI: Hardcoded = { "clojure",
+  --"clojurescript", "fennel", "janet" }
+  cmp_autopairs.lisp[#cmp_autopairs.lisp+1] = "racket"
+
   -- Use buffer source for `/`.
   cmp.setup.cmdline('/', {
     completion = { autocomplete = false },
@@ -679,13 +695,71 @@ lua <<EOF
   local lspconfig = require('lspconfig')
   local configs = require('lspconfig.configs')
 
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
   capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+  local npm_global_modules_path = vim.fn.getenv 'HOME' .. '/.npm-global/lib/node_modules'
+
+  -- local servers = { 'pylsp', 'tsserver', 'vimls' }
+
+  -- for _, lsp in ipairs(servers) do
+  --   lspconfig[lsp].setup {
+  --     on_attach = on_attach,
+  --     capabilities = capabilities,
+  --   }
+  -- end
+
   -- * Python.
-  lspconfig.pylsp.setup{
-    capabilities = capabilities
+  -- lspconfig.pylsp.setup {
+  --   capabilities = capabilities
+  -- }
+
+  -- * Typescript.
+  -- lspconfig.tsserver.setup {
+    -- Default values.
+    -- cmd = { "typescript-language-server", "--stdio" },
+    -- filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+    -- init_options = {
+    --   hostInfo = "neovim"
+    -- },
+      -- root_dir = root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+
+    -- capabilities = capabilities,
+  -- }
+
+  -- * Vim.
+  lspconfig.vimls.setup {
+    cmd = { npm_global_modules_path .. '/vim-language-server/bin/index.js', '--stdio' },
+
+    capabilities = capabilities,
+
+    filetypes = { "vim" },
+    init_options = {
+      diagnostic = {
+        enable = true
+      },
+      -- If you want to speed up index, change gap to smaller and count to
+      -- greater, this will cause high CPU usage for some time.
+      indexes = {
+        -- Count of files index at the same time.
+        count = 3,
+        -- Index time gap between next file.
+        gap = 100,
+        projectRootPatterns = { "runtime", "nvim", ".git", "autoload", "plugin" },
+        -- Index vim's runtimepath files.
+        runtimepath = true
+      },
+      iskeyword = "@,48-57,_,192-255,-#",
+      runtimepath = "",
+      suggest = {
+        fromRuntimepath = true,
+        fromVimruntime = true
+      },
+      vimruntime = ""
+    },
   }
+
   -- * Emmet.
   --if not configs.ls_emmet then
   --  configs.ls_emmet = {
@@ -703,7 +777,6 @@ lua <<EOF
 
   --lspconfig.ls_emmet.setup{ capabilities = capabilities }
 EOF
-
 
 " * General.
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
@@ -821,9 +894,12 @@ call tinykeymap#Map('ExpandRegion', 'V',
       \ { 'desc': 'Shrink selection' })
 
 " * Surround.
+"  HELP: *surround-customizing*, *curly-braces-names*
 " - visually select what you want to wrap and then press S- to tigger
 "   the - surrounding. It will then prompt you for a 'start' and 'ending' text.
 let g:surround_{char2nr('-')} = "\1start: \1\r\2end: \2"
+" - **L**ua anonymous function.
+let g:surround_{char2nr('la')} = "function() \r end"
 
 " * Create a new line above the current one without exiting normal mode.
 map <Leader>O mtO<Esc>`t
@@ -886,6 +962,31 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " * Vertical.
 nnoremap <c-y> 3<c-y>
 nnoremap <c-e> 3<c-e>
+
+" Brackets autopairs.
+lua << EOF
+  local nvim_autopairs = require('nvim-autopairs')
+  nvim_autopairs.setup {
+    disable_filetype = { "TelescopePrompt" },
+      -- disable when recording or executing a macro
+    disable_in_macro = false,
+     -- disable when insert after visual block mode
+    disable_in_visualblock = false,
+    ignored_next_char = string.gsub([[ [%w%%%'%[%"%.] ]],"%s+", ""),
+    enable_moveright = true,
+      -- add bracket pairs after quote
+    enable_afterquote = true,
+      --- check bracket in same line
+    enable_check_bracket_line = true,
+    check_ts = false,
+      -- map the <BS> key
+    map_bs = true,
+      -- Map the <C-h> key to delete a pair
+    map_c_h = true,
+     -- map <c-w> to delete a pair if possible
+    map_c_w = false,
+  }
+EOF
 
 " * Windows.
 set splitright
@@ -1314,6 +1415,14 @@ call tinykeymap#Map(
       \ { 'desc': 'Right half screen width' })
 
 
+" * Show group highlights of the item under the cursor.
+function! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
 " # Which-key.
 lua << EOF
   local which_key = require("which-key")
@@ -1364,8 +1473,8 @@ lua << EOF
   -- str - string to format,
   -- char - character to find.
   local function format(str, char) 
-    -- - Checking for nil str.
-    if not str then
+    -- - Checking for nil str and characters that will be interpreted wrong (as regex?).
+    if (not str or char == '.') then
       return str
     end
 
@@ -1468,6 +1577,15 @@ lua << EOF
     }
   }
 
+  -- Historically ',' for me is a keybind for settings.
+  local settings_mappings = {
+    name = 'Settings',
+    v = { 'Open Vim config' },
+    -- Colors.
+    c = { '<cmd>highlight<cr>', 'Show highlight groups colors' },
+    ['*'] = { function() vim.fn['SynStack']() end, 'Show highlight groups under the cursor' }
+  }
+
   local mappings = {
     name = 'Main',
 
@@ -1499,6 +1617,8 @@ lua << EOF
       -- x = x_mappings,
       -- y = y_mappings,
       z = z_mappings,
+
+      [','] = settings_mappings,
     },
 
     -- a = a_mappings,
@@ -1617,10 +1737,6 @@ EOF
 " * Settings.
 syntax enable
 set background=light
-" * Keybinds
-" - Lookup table of set colors.
-nnoremap <leader>,t :so $VIMRUNTIME/syntax/hitest.vim<cr>
-nnoremap <leader>,c :hi<cr>
 
 colorscheme gruvbox-material
 highlight Pmenu ctermbg=240 gui=bold
@@ -1901,3 +2017,26 @@ endfunction
 au InsertLeave *.md call MarkdownBlocks()
 au BufEnter *.md call MarkdownBlocks()
 au BufWritePost *.md call MarkdownBlocks()
+
+" # Better comments.
+" - Danger.
+syn match CommentDanger #"!!.*# | hi specialComment guifg=red
+" Examples for settings this for special filetypes
+" (or better place the command above into ~/.vim/after/syntax/c.vim)
+"au! BufEnter *.c syn match specialComment #//!!.*#  " C files (*.c)
+"hi specialComment ctermfg=red guifg=red
+
+" * Semantic Indents (descending order).
+syn match CommentSemanticIndent1 #" * .*#| hi CommentSemanticIndent1 guifg=green
+syn match CommentSemanticIndent2 #" - .*#| hi CommentSemanticIndent2 guifg=green
+
+" * Reminders.
+" - Fix.
+syn match CommentFix #" \<[Ff]ix:\?\>.*#| hi CommentFix guifg=blue gui=underline
+" - Todo.
+syn match CommentTodo #" \<[Tt]odo:\?\>.*#| hi CommentTodo guifg=orange
+
+" - Question.
+syn match CommentQuestion #" ? .*#| hi CommentQuestion guifg=blue
+
+
