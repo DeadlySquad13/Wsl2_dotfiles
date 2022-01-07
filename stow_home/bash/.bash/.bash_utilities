@@ -1,0 +1,71 @@
+#!/bin/bash
+
+config() {
+  local configPath="$1";
+  local command="$2";
+
+  case $command in
+    "-e" | "--edit")
+      $EDITOR $configPath;
+      ;;
+
+    "-s" | "--source")
+      source $configPath;
+      echo "$configPath was sourced!"
+      ;;
+
+    "-d" | "--d")
+      local configDirectoryPath="$(dirname ${configPath})"
+      cd "$configDirectoryPath"
+      ;;
+
+    *)
+      return 1;
+      ;;
+  esac
+}
+
+bash() {
+  local parameters="$@";
+  config ~/.bashrc $parameters;
+  if [ $? -eq 1 ]; then
+    command bash $parameters;
+  fi
+}
+
+task() {
+  local parameters="$@";
+  config ~/.taskrc $parameters;
+  if [ $? -eq 1 ]; then
+    command task $parameters;
+  fi
+}
+
+tmux() {
+  local parameters="$@";
+  config ~/.tmux.conf $parameters;
+  if [ $? -eq 1 ]; then
+    command tmux $parameters;
+  fi
+}
+
+wsltty() {
+  local parameters="$@";
+  config $WinLocalAppData/wsltty/home/$WinUser/.minttyrc $parameters;
+  if [ $? -eq 1 ]; then
+    command wsltty $parameters;
+  fi
+}
+
+printColors() {
+  for i in {0..255}; do
+    printf "\x1b[38;5;${i}mcolor%-5i\x1b[0m" $i;
+    if ! (( ($i + 1 ) % 8 )); then
+      echo;
+    fi;
+  done
+}
+
+dotPng() {
+  dot -Tpng $1.dot > $1.png && open $1.png
+}

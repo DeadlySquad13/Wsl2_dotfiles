@@ -1,0 +1,92 @@
+[
+  {
+    "name": "GoodFirstIssue",
+    "color": "7057ff",
+    "description": "Good for newcomers"
+  },
+  {
+    "name": "!",
+    "color": "008672",
+    "description": "Extra attention is needed"
+  },
+  {
+    "name": "Priority__Critical",
+    "color": "b60205",
+    "description": ""
+  },
+  {
+    "name": "Priority__High",
+    "color": "d93f0b",
+    "description": ""
+  },
+  {
+    "name": "Priority__Low",
+    "color": "0e8a16",
+    "description": ""
+  },
+  {
+    "name": "Priority__Medium",
+    "color": "fbca04",
+    "description": ""
+  },
+  {
+    "name": "Status__NotReproducible",
+    "color": "fec1c1",
+    "description": ""
+  },
+  {
+    "name": "Status__Confirmed",
+    "color": "215cea",
+    "description": ""
+  },
+  {
+    "name": "Status__Duplicate",
+    "color": "cfd3d7",
+    "description": "This issue or pull request already exists"
+  },
+  {
+    "name": "Status__NeedsInformation",
+    "color": "fef2c0",
+    "description": ""
+  },
+  {
+    "name": "Status__WontDo/Fix",
+    "color": "eeeeee",
+    "description": "This will not be worked on"
+  },
+  {
+    "name": "Type__Bug",
+    "color": "d73a4a",
+    "description": "Something isn't working"
+  },
+  {
+    "name": "Type__Discussion",
+    "color": "d4c5f9",
+    "description": ""
+  },
+  {
+    "name": "Type__Documentation",
+    "color": "006b75",
+    "description": ""
+  },
+  {
+    "name": "Type__Enhancement",
+    "color": "84b6eb",
+    "description": ""
+  },
+  {
+    "name": "Type__Epic",
+    "color": "3E4B9E",
+    "description": "A theme of work that contain sub-tasks"
+  },
+  {
+    "name": "Type__FeatureRequest",
+    "color": "fbca04",
+    "description": "New feature or request"
+  },
+  {
+    "name": "Type__Question",
+    "color": "d876e3",
+    "description": "Further information is requested"
+  }
+]
