@@ -291,86 +291,7 @@ let s:dashboard_shortcut_icon={
 \}
 
 lua << EOF
--- Don't understand how to get it from vim.
-local leader = 'Space'
-local localleader = '\\'
-
-local dashboard_items = {
-  edit_config = {
-    description = {
-      icon = '',
-      action = 'Edit vim config                     ',
-      shortcut = leader..' e v'
-    },
-    command = 'edit $MYVIMRC'
-  },
-  find_history = {
-    description = {
-      icon = '',
-      action = 'Recently opened files               ',
-      shortcut = leader..' o r'
-    },
-    command = ''
-  },
-  find_file = {
-    description = {
-      icon = '',
-      action = 'Find file                           ',
-      shortcut = leader..' o f'
-    },
-    command = ''
-  },
-  new_file = {
-    description = {
-      icon = '',
-      action = 'New file                            ',
-      shortcut = leader..' o n'
-    },
-    command = ''
-  },
-  change_colorscheme = {
-    description = {
-      icon = '',
-      action = 'Change colorscheme                  ',
-      shortcut = leader..' s t'
-    },
-    command = ''
-  },
-  find_word = {
-    description = {
-      icon = '',
-      action = 'Find word                           ',
-      shortcut = leader..' f w'
-    },
-    command = ''
-  },
-  bookmarks = {
-    description = {
-      icon = '',
-      action = 'Jump to bookmarks                   ',
-      shortcut = leader..' g b'
-    },
-    command = ''
-  }
-}
-
-local dashboard_custom_section = {}
-
-for key, item in pairs(dashboard_items) do
-  local description = item.description
-  local icon = description.icon
-  local action = description.action
-  local shortcut = description.shortcut
-
-  local command = item.command
-
-  dashboard_custom_section[key] = {
-    description = { icon..' '..action..shortcut },
-    command = command
-  }
-end
-
-vim.g.dashboard_custom_section = dashboard_custom_section
+  require('config.dashboard')
 EOF
 
 augroup Dashboard
@@ -699,8 +620,23 @@ lua <<EOF
   capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
   capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-  local npm_global_modules_path = vim.fn.getenv 'HOME' .. '/.npm-global/lib/node_modules'
+  -- Environment variables.
+  local ENV = (function ()
+    local env = {
+      HOME = vim.fn.getenv 'HOME',
+    }
 
+    -- PATH environment variable defined specifically for vim.
+    function env.PATH(self)
+      return {
+        npm_global_modules = self.HOME .. '/.npm-global/lib/node_modules',
+        npm_global_bin = self.HOME .. '/.npm-global/bin',
+      }
+    end
+
+    return env;
+  end)()
+  
   -- local servers = { 'pylsp', 'tsserver', 'vimls' }
 
   -- for _, lsp in ipairs(servers) do
@@ -711,26 +647,26 @@ lua <<EOF
   -- end
 
   -- * Python.
-  -- lspconfig.pylsp.setup {
-  --   capabilities = capabilities
-  -- }
+  lspconfig.pylsp.setup {
+    capabilities = capabilities
+  }
 
   -- * Typescript.
-  -- lspconfig.tsserver.setup {
+  lspconfig.tsserver.setup {
     -- Default values.
-    -- cmd = { "typescript-language-server", "--stdio" },
-    -- filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-    -- init_options = {
-    --   hostInfo = "neovim"
-    -- },
-      -- root_dir = root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+    cmd = { ENV:PATH().npm_global_bin .. '/typescript-language-server', "--stdio" },
+    filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+    init_options = {
+      hostInfo = "neovim"
+    },
+    -- root_dir = root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
 
-    -- capabilities = capabilities,
-  -- }
+    capabilities = capabilities,
+  }
 
   -- * Vim.
   lspconfig.vimls.setup {
-    cmd = { npm_global_modules_path .. '/vim-language-server/bin/index.js', '--stdio' },
+    cmd = { ENV:PATH().npm_global_modules .. '/vim-language-server/bin/index.js', '--stdio' },
 
     capabilities = capabilities,
 
@@ -967,6 +903,17 @@ nnoremap <c-e> 3<c-e>
 lua << EOF
   local nvim_autopairs = require('nvim-autopairs')
   nvim_autopairs.setup {
+    fast_wrap = {
+      map = '<M-e>',
+      chars = { '{', '[', '(', '"', "'" },
+      pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], '%s+', ''),
+      offset = 0, -- Offset from pattern match
+      end_key = '$',
+      keys = 'qwertyuiopzxcvbnmasdfghjkl',
+      check_comma = true,
+      highlight = 'Search',
+      highlight_grey='Comment'
+    },
     disable_filetype = { "TelescopePrompt" },
       -- disable when recording or executing a macro
     disable_in_macro = false,
@@ -1365,56 +1312,6 @@ nnoremap <leader>gl <Plug>(Rel)
 nnoremap ]b :call searchpair('\[','','\]')<cr>
 nnoremap [b :call searchpair('\[','','\]','b')<cr>
 
-
-" Mappings.
-" # Tinykeymap transitive mappings.
-let g:tinykeymap#mapleader = ','
-let g:tinykeymap#map#transitive_catalizator = '.'
-
-" * Windows.
-" Path: /home/dubuntus/.vim/plugged/tinykeymap_vim/autoload/tinykeymap/map/windows.vim
-let g:tinykeymap#map#windows#map = '<c-w>' . g:tinykeymap#map#transitive_catalizator
-call tinykeymap#Load('windows')
-
-" * ExpandRegion (without catalizator yet, should be enhanced with treesitter).
-call tinykeymap#EnterMap('ExpandRegion', '<a-v>', {
-      \ 'name': 'expand region mode'
-      \ })
-" - Mappings.
-call tinykeymap#Map('ExpandRegion', 'v',
-      \ 'execute "normal \<Plug>(expand_region_expand)"',
-      \ { 'desc': 'Expand selection' })
-call tinykeymap#Map('ExpandRegion', 'V',
-      \ 'execute "normal \<Plug>(expand_region_shrink)"',
-      \ { 'desc': 'Shrink selection' })
-
-" * HorizontalScroll.
-let g:tinykeymap#map#horizontal_scroll#map =
-      \ '<leader>zh' . g:tinykeymap#map#transitive_catalizator
-
-call tinykeymap#EnterMap('HorizontalScroll', g:tinykeymap#map#horizontal_scroll#map, {
-      \ 'name': 'horizontal scroll mode'
-      \ })
-
-" - Mappings.
-call tinykeymap#Map(
-      \ 'HorizontalScroll', 'h',
-      \ 'execute  "normal! zh"',
-      \ { 'desc': 'Left' })
-call tinykeymap#Map(
-      \ 'HorizontalScroll', 'l',
-      \ 'execute  "normal zl"',
-      \ { 'desc': 'Right' })
-call tinykeymap#Map(
-      \ 'HorizontalScroll', 'H',
-      \ 'execute  "normal zH"',
-      \ { 'desc': 'Left half screen width' })
-call tinykeymap#Map(
-      \ 'HorizontalScroll', 'L',
-      \ 'execute  "normal zL"',
-      \ { 'desc': 'Right half screen width' })
-
-
 " * Show group highlights of the item under the cursor.
 function! SynStack()
   if !exists("*synstack")
@@ -1423,314 +1320,12 @@ function! SynStack()
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 
-" # Which-key.
+" Mappings.
 lua << EOF
-  local which_key = require("which-key")
-
-  local builtin = require('telescope.builtin')
-
-  -- Utilities. {{{
-  -- How to specify it programmatically (start and end of the range)?
-  local special_symbols = {
-    -- Mathematical Alphanumeric Symbols (Range: 1D400—1D7FF).
-    A = '𝐀',
-    B = '𝐁',
-    C = '𝐂',
-    D = '𝐃',
-    E = '𝐄',
-    F = '𝐅',
-    G = '𝐆',
-    H = '𝐇',
-    I = '𝐈',
-    J = '𝐉',
-    K = '𝐊',
-    L = '𝐋',
-    M = '𝐌',
-    N = '𝐍',
-    O = '𝐎',
-    P = '𝐏',
-    Q = '𝐐',
-    R = '𝐑',
-    S = '𝐒',
-    T = '𝐓',
-    U = '𝐔',
-    V = '𝐕',
-    W = '𝐖',
-    X = '𝐗',
-    Y = '𝐘',
-    Z = '𝐙'
-  }
-
-  -- pos - index of a char to replace,
-  -- str - string we want to modify,
-  -- r - replacement char (char to replace).
-  local function replace_char(pos, str, r)
-    -- Checking for nil pos (kind of ternary operator). 
-    return not pos and str or str:sub(1, pos-1) .. r .. str:sub(pos+1)
-  end
-
-  -- Formats first found character according to dictionary of a special symbols.
-  -- str - string to format,
-  -- char - character to find.
-  local function format(str, char) 
-    -- - Checking for nil str and characters that will be interpreted wrong (as regex?).
-    if (not str or char == '.') then
-      return str
-    end
-
-    -- - Case insensitive search because we have only capitals in dictionary.
-    return replace_char(str:upper():find(char), str, special_symbols[char])
-  end
-
-  local function format_mappings_names(mappings, group_mapping_key)
-    local formatted_mappings = {} 
-
-    for key, mapping in pairs(mappings) do
-      if (key == 'name') then
-        -- Now have only capitals in dictionary so uppercasing.
-        formatted_mappings[key] = format(mapping, group_mapping_key:upper())
-      else
-        -- Mapping group.
-        if (mapping.name) then
-          formatted_mappings[key] = format_mappings_names(mapping, key:upper())
-        else
-          local mapping_name = mapping[2]
-
-          -- Now have only capitals in dictionary so uppercasing.
-          mapping[2] = format(mapping_name, key:upper())
-          formatted_mappings[key] = mapping
-        end
-      end
-    end
-
-    return formatted_mappings
-  end
-
-  -- Mappings.
-  -- # Buffer.
-  local buffer_mappings = {
-    name = 'Buffer'
-  }
-
-  -- # File.
-  local file_mappings = {
-    name = 'File'
-  }
-
-  -- # Go. Movement across files.
-  local go_mappings = {
-    name = 'Go',
-    -- * Rel.vim /home/dubuntus/.vim/plugged/rel.vim/plugin/rel.vim
-    l = { "<Plug>(Rel)", "Link" }
-  }
-
-  -- # Help. Show help pages, documentation. Can lead out of the application,
-  -- for example, in browser.
-  local help_mappings = {
-    name = 'Help',
-  }
-
-  -- # Jump. Movement inside file.
-  local jump_mappings = {
-    name = 'Jump',
-  }
-
-  -- # Toggle. Mappings that toggle features.
-  local toggle_mappings = {
-    name = 'Toggle',
-  }
-
-  -- # Navigation. Helps find things, used as lookup table (navigation panel).
-  local navigation_mappings = {
-    name = 'Navigation',
-    -- * Telescope.
-    f = { function() builtin.find_files() end, 'Find in current directory' },
-    s = { function() require('session-lens').search_session() end, 'Session Search' },
-    g = { function() builtin.live_grep() end, 'Live grep' },
-    b = { function() builtin.buffers() end, 'Buffers' },
-    h = { function() builtin.help_tags() end, 'Help tags' },
-    t = { function() builtin.treesitter() end, 'Treesitter' },
-  }
-
-  -- # Major. Like major mode in spacemacs: filetype mappings.
-  local major_mappings = {
-    name = 'Major',
-  }
-
-  -- * Rnvimr.
-  -- nmap <leader><c-\> :RnvimrToggle<cr>
-
---  " Find files relative to root directory (don't understand how lua functions
---  "   work).
---  "lua <<EOF
---  "my_fd = function(opts)
---    "opts = opts or {}
---    "opts.cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
---    "require'telescope.builtin'.find_files(opts)
---  "end
---  "EOF
---
-  
-  local z_mappings = {
-    h = {
-      [vim.g['tinykeymap#map#transitive_catalizator']] = { 'Horizontal Scroll Mode' }
-    }
-  }
-
-  -- Historically ',' for me is a keybind for settings.
-  local settings_mappings = {
-    name = 'Settings',
-    v = { 'Open Vim config' },
-    -- Colors.
-    c = { '<cmd>highlight<cr>', 'Show highlight groups colors' },
-    ['*'] = { function() vim.fn['SynStack']() end, 'Show highlight groups under the cursor' }
-  }
-
-  local mappings = {
-    name = 'Main',
-
-    ["<leader>"] = {
-      name = 'Leader',
-      -- a = a_mappings,
-      b = buffer_mappings,
-      -- c = comment_mappings, -- Not sure, maybe leave <leader><c-/>.
-      -- d = d_mappings,
-      -- e = e_mappings,
-      f = file_mappings,
-      g = go_mappings,
-      h = help_mappings,
-      -- i = i_mappings,
-      j = jump_mappings,
-      -- k = k_mappings,
-      -- l = l_mappings,
-      m = major_mappings,
-      n = navigation_mappings,
-      -- o = o_mappings,
-      -- p = p_mappings,
-      -- q = q_mappings,
-      -- r = r_mappings,
-      -- s = s_mappings,
-      t = toggle_mappings,
-      -- u = u_mappings,
-      -- v = v_mappings,
-      -- w = w_mappings,
-      -- x = x_mappings,
-      -- y = y_mappings,
-      z = z_mappings,
-
-      [','] = settings_mappings,
-    },
-
-    -- a = a_mappings,
-    -- b = b_mappings,
-    -- c = c_mappings,
-    -- d = d_mappings,
-    -- e = e_mappings,
-    -- f = f_mappings,
-    -- g = g_mappings,
-    -- h = h_mappings,
-    -- i = i_mappings,
-    -- j = j_mappings,
-    -- k = k_mappings,
-    -- l = l_mappings,
-    -- m = m_mappings,
-    -- n = n_mappings,
-    -- o = o_mappings,
-    -- p = p_mappings,
-    -- q = q_mappings,
-    -- r = r_mappings,
-    -- s = s_mappings,
-    -- t = t_mappings,
-    -- u = u_mappings,
-    -- v = v_mappings,
-    -- w = w_mappings,
-    -- x = x_mappings,
-    -- y = y_mappings,
-    -- z = z_mappings,
-
-    ['<c-w>'] = {
-      [vim.g['tinykeymap#map#transitive_catalizator']] = { 'Window Mode' }     
-    }
-  }
-
-  local options = {
-    mode = "n", -- NORMAL mode
-    -- prefix: use "<leader>f" for example for mapping everything related to finding files
-    -- the prefix is prepended to every mapping part of `mappings`
-    prefix = "", 
-    buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-    silent = true, -- use `silent` when creating keymaps
-    noremap = true, -- use `noremap` when creating keymaps
-    nowait = false, -- use `nowait` when creating keymaps
-  }
-
-  which_key.register(format_mappings_names(mappings, 'M'), options)
-
-  which_key.setup {
-    plugins = {
-      marks = true, -- shows a list of your marks on ' and `.
-      registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode.
-      spelling = {
-      enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions.
-      suggestions = 20, -- how many suggestions should be shown in the list?.
-    },
-    -- the presets plugin, adds help for a bunch of default keybindings in Neovim.
-    -- No actual key bindings are created.
-    presets = {
-      operators = true, -- adds help for operators like d, y, ... and registers them for motion / text object completion.
-      motions = true, -- adds help for motions.
-      text_objects = true, -- help for text objects triggered after entering an operator.
-      windows = false, -- default bindings on <c-w> (shown via tinykeymap transitive)..
-      nav = true, -- misc bindings to work with windows.
-      z = true, -- bindings for folds, spelling and others prefixed with z.
-      g = true, -- bindings for prefixed with g.
-      },
-    },
-    -- Add operators that will trigger motion and text object completion
-    -- to enable all native operators, set the preset / operators plugin above.
-    operators = { gc = "Comments" },
-    key_labels = {
-      -- override the label used to display some keys. It doesn't effect WK in any other way..
-      -- For example:.
-      -- ["<space>"] = "SPC",.
-      -- ["<cr>"] = "RET",.
-      -- ["<tab>"] = "TAB",.
-    },
-    icons = {
-      breadcrumb = "~>", -- symbol used in the command line area that shows your active key combo.
-      separator = "", -- symbol used between a key and it's label.
-      group = "", -- symbol prepended to a group.
-    },
-    popup_mappings = {
-      scroll_down = '<c-d>', -- binding to scroll down inside the popup.
-      scroll_up = '<c-u>', -- binding to scroll up inside the popup.
-    },
-    window = {
-      border = "shadow", -- [ none, single, double, shadow ].
-      position = "bottom", -- [ bottom, top ].
-      margin = { 10, 60, 52, 60 }, -- extra window margin [ top, right, bottom, left ].
-      padding = { 1, 1, 1, 1 }, -- extra window padding [ top, right, bottom, left ].
-      winblend = 10 -- pseudo transparency.
-    },
-    layout = {
-      height = { min = 4, max = 25 }, -- min and max height of the columns.
-      width = { min = 20, max = 50 }, -- min and max width of the columns.
-      spacing = 3, -- spacing between columns.
-      align = "center", -- align columns left, center or right.
-    },
-    ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label.
-    hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ "}, -- hide mapping boilerplate.
-    show_help = true, -- show help message on the command line when the popup is visible.
-    triggers = "auto", -- automatically setup triggers.
-  -- triggers = {"<leader>"} -- or specify a list manually.
-    triggers_blacklist = {
-      -- list of mode / prefixes that should never be hooked by WhichKey.
-      -- this is mostly relevant for key maps that start with a native binding.
-      -- most people should not need to change this.
-      i = { "j", "k" },
-      v = { "j", "k" },
-    },
-  }
+  -- # Tinykeymap transitive mappings.
+  require('config.tinykeymap')
+  -- # Which-key.
+  require('config.mappings')
 EOF
 
 " # Theme.
@@ -1753,185 +1348,13 @@ highlight Comment gui=italicbold guifg=#5555aa
 highlight Whitespace guifg=#cccccc
 "highlight SpecialKey guifg=#555555
 
-" - Helpers for creating a theme.
 lua << EOF
-  local Color, colors, Group, groups, styles = require('colorbuddy').setup()
-
-  -- Colors.
-  local color_palette = {
-    red = {
-      crimson = '#9d0006',
-      engine = '#cc241d',
-      venetian = '#fb4934',
-    },
-
-    mustard = {
-      bronze = '#79740e',
-      citron = '#98971a',
-      acid = '#b8bb26',
-    },
-
-    yellow = {
-      philippine_gold = '#b57614',
-      goldenrod = '#d79921',
-      saffron = '#fabd2f',
-    },
-
-    blue = {
-      sapphire = '#076678',
-      jelly_bean = '#458588',
-      morning = '#83a598',
-    },
-
-    purple = {
-      twilight_lavender = '#8f3f71',
-      turkish_rose = '#b16286',
-      puce = '#d3869b',
-    },
-
-    aquamarine = {
-      amazon = '#427b58',
-      russian = '#689d6a',
-      pistachio = '#8ec07c',
-    },
-
-    orange = {
-      rust = '#af3a03',
-      metallic = '#d65d0e',
-      pumpkin = '#fe8019',
-    },
-
-    white = {
-      white0 = '#f9f5d7',
-      white1 = '#fbf1c7',
-      white2 = '#f2e5bc',
-      tan = '#e0d0a8',
-    },
-
-    gray = {
-      gray0 = '#ebdbb2',
-      gray1 = '#d5c4a1',
-      gray2 = '#bdae93',
-      gray3 = '#a89984',
-      gray4 = '#928374',
-    },
-
-    black = {
-      black0 = '#7c6f64',
-      black1 = '#665c54',
-      black2 = '#504945',
-      black3 = '#3c3836',
-      black5 = '#32302f',
-      black6 = '#282828',
-      black7 = '#1d2021',
-    },
-  }
-
-  -- Semantic colors.
-  local semantic_palette = {
-    informational1 = color_palette.gray.gray1,
-    inconspicious0 = color_palette.white.white1
-  }
-
-  -- Scope colors.
-  Color.new('fold_foreground', semantic_palette.informational1)
-  Color.new('fold_background', semantic_palette.inconspicious0)
-
-  -- Scope groups.
-  Group.new('FoldColumn', colors.fold_foreground, colors.fold_background)
--- hi FoldColumn guibg=test guifg=Black
-
-  -- Define highlights in terms of `colors` and `groups`
-  -- Group.new('Function'        , colors.yellow      , colors.background , styles.bold)
-  --  Group.new('luaFunctionCall' , groups.Function    , groups.Function   , groups.Function)
-
-  -- Define highlights in relative terms of other colors
-  --  Group.new('Error'           , colors.red:light() , nil               , styles.bold)
-EOF
-
-" Highlight colors.
-lua <<EOF
-  -- Attaches to every FileType mode
-  require 'colorizer'.setup()
-
-  -- Attach to certain Filetypes, add special configuration for `html`
-  -- Use `background` for everything else.
-  -- require 'colorizer'.setup {
-  --   'css';
-  --   'javascript';
-  --   html = {
-  --     mode = 'foreground';
-  --   }
-  -- }
-
-  -- Use the `default_options` as the second parameter, which uses
-  -- `foreground` for every mode. This is the inverse of the previous
-  -- setup configuration.
-  -- require 'colorizer'.setup({
-  --   'css';
-  --   'javascript';
-  --   html = { mode = 'background' };
-  -- }, { mode = 'foreground' })
-
-  -- Use the `default_options` as the second parameter, which uses
-  -- `foreground` for every mode. This is the inverse of the previous
-  -- setup configuration.
-  -- require 'colorizer'.setup {
-  --   '*'; -- Highlight all files, but customize some others.
-  --   css = { rgb_fn = true; }; -- Enable parsing rgb(...) functions in css.
-  --   html = { names = false; } -- Disable parsing "names" like Blue or Gray
-  -- }
-
-  -- Exclude some filetypes from highlighting by using `!`
-  -- require 'colorizer'.setup {
-  --   '*'; -- Highlight all files, but customize some others.
-  --   '!vim'; -- Exclude vim from highlighting.
-  --   -- Exclusion Only makes sense if '*' is specified!
-  -- }
-EOF
-
-" # Indents.
-lua <<EOF
-vim.opt.termguicolors = true
--- Enabling special characters.
-vim.opt.list = true
-vim.opt.listchars:append("space:⋅")
-vim.opt.listchars:append("eol:↴")
--- Declaring colors.
-vim.cmd [[highlight IndentBlanklineIndent1 guifg=#E06C75 gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineIndent2 guifg=#E5C07B gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineIndent3 guifg=#98C379 gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineIndent4 guifg=#56B6C2 gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineIndent5 guifg=#61AFEF gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineIndent6 guifg=#C678DD gui=nocombine]]
-
--- Use treesitter to calculate indentation when possible.
-
-require("indent_blankline").setup {
-  -- Char to be used to display an indent.
-  char = "|",
-  -- Exclude certain buffer types.
-  buftype_exclude = { 'terminal' },
-  filetype_exclude = { 'dashboard' },
-
-  show_end_of_line = true,
-  space_char_blankline = " ",
-  -- Use Treesitter to calculate indentation when possible.
-  indent_blankline_use_treesitter = true,
-  -- Enable context highlight by Treesitter.
-  show_current_context = true,
-  show_current_context_start = true,
-
-  -- Assigning colors.
-  char_highlight_list = {
-    'IndentBlanklineIndent1',
-    'IndentBlanklineIndent2',
-    'IndentBlanklineIndent3',
-    'IndentBlanklineIndent4',
-    'IndentBlanklineIndent5',
-    'IndentBlanklineIndent6',
-  },
-}
+  -- - Helpers for creating a theme.
+  require('config.theme')
+  -- # Highlight colors.
+  require('config.colorizer')
+  -- # Indents.
+  require('config.indent_blankline')
 EOF
 
 " * Rnvimr.
@@ -1955,88 +1378,68 @@ set colorcolumn=80,115,151,203,235
 
 " # Markdown.
 " Use signs to highlight code blocks.
-function! ColorCodeBlocks() abort " {{{1
-  setlocal signcolumn=no
+"function! ColorCodeBlocks() abort " {{{1
+  "setlocal signcolumn=no
 
-  sign define codeblock linehl=codeBlockBackground
+  "sign define codeblock linehl=codeBlockBackground
 
-  augroup code_block_background
-    autocmd! * <buffer>
-    autocmd InsertLeave  <buffer> call s:place_signs()
-    autocmd BufEnter     <buffer> call s:place_signs()
-    autocmd BufWritePost <buffer> call s:place_signs()
-  augroup END
-endfunction
+  "augroup code_block_background
+    "autocmd! * <buffer>
+    "autocmd InsertLeave  <buffer> call s:place_signs()
+    "autocmd BufEnter     <buffer> call s:place_signs()
+    "autocmd BufWritePost <buffer> call s:place_signs()
+  "augroup END
+"endfunction
 
-function! s:place_signs()
-  let l:continue = 0
-  let l:file = expand('%')
+"function! s:place_signs()
+  "let l:continue = 0
+  "let l:file = expand('%')
 
-  execute 'sign unplace * file=' . l:file
+  "execute 'sign unplace * file=' . l:file
 
-  for l:lnum in range(1, line('$'))
-    let l:line = getline(l:lnum)
-    if l:continue || l:line =~# '^\s*```'
-      execute printf('sign place %d line=%d name=codeblock file=%s',
-            \ l:lnum, l:lnum, l:file)
-    endif
+  "for l:lnum in range(1, line('$'))
+    "let l:line = getline(l:lnum)
+    "if l:continue || l:line =~# '^\s*```'
+      "execute printf('sign place %d line=%d name=codeblock file=%s',
+            "\ l:lnum, l:lnum, l:file)
+    "endif
 
-    let l:continue = l:continue
-          \ ? l:line !~# '^\s*```$'
-          \ : l:line =~# '^\s*```'
-  endfor
-endfunction
+    "let l:continue = l:continue
+          "\ ? l:line !~# '^\s*```$'
+          "\ : l:line =~# '^\s*```'
+  "endfor
+"endfunction
 
-setl signcolumn=no
+"setl signcolumn=no
 
-hi markdownCodeBlockBG ctermbg=137
-sign define codeblock linehl=markdownCodeBlockBG
+"hi markdownCodeBlockBG ctermbg=137
+"sign define codeblock linehl=markdownCodeBlockBG
 
-function! MarkdownBlocks()
-  let l:continue = 0
-  execute "sign unplace * file=".expand("%")
+"function! MarkdownBlocks()
+  "let l:continue = 0
+  "execute "sign unplace * file=".expand("%")
 
-  " iterate through each line in the buffer
-  for l:lnum in range(1, len(getline(1, "$")))
-    " detect the start fo a code block
-    if getline(l:lnum) =~ "^```.*$" || l:continue
-      " continue placing signs, until the block stops
-      let l:continue = 1
-      " place sign
-      execute "sign place ".l:lnum." line=".l:lnum." name=codeblock file=".expand("%")
-      " stop placing signs
-      if getline(l:lnum) =~ "^```$"
-        let l:continue = 0
-      endif
-    endif
-  endfor
-endfunction
+  "" iterate through each line in the buffer
+  "for l:lnum in range(1, len(getline(1, "$")))
+    "" detect the start fo a code block
+    "if getline(l:lnum) =~ "^```.*$" || l:continue
+      "" continue placing signs, until the block stops
+      "let l:continue = 1
+      "" place sign
+      "execute "sign place ".l:lnum." line=".l:lnum." name=codeblock file=".expand("%")
+      "" stop placing signs
+      "if getline(l:lnum) =~ "^```$"
+        "let l:continue = 0
+      "endif
+    "endif
+  "endfor
+"endfunction
 
-" Use signs to highlight code blocks
-" Set signs on loading the file, leaving insert mode, and after writing it
-au InsertLeave *.md call MarkdownBlocks()
-au BufEnter *.md call MarkdownBlocks()
-au BufWritePost *.md call MarkdownBlocks()
+"" Use signs to highlight code blocks
+"" Set signs on loading the file, leaving insert mode, and after writing it
+"au InsertLeave *.md call MarkdownBlocks()
+"au BufEnter *.md call MarkdownBlocks()
+"au BufWritePost *.md call MarkdownBlocks()
 
-" # Better comments.
-" - Danger.
-syn match CommentDanger #"!!.*# | hi specialComment guifg=red
-" Examples for settings this for special filetypes
-" (or better place the command above into ~/.vim/after/syntax/c.vim)
-"au! BufEnter *.c syn match specialComment #//!!.*#  " C files (*.c)
-"hi specialComment ctermfg=red guifg=red
-
-" * Semantic Indents (descending order).
-syn match CommentSemanticIndent1 #" * .*#| hi CommentSemanticIndent1 guifg=green
-syn match CommentSemanticIndent2 #" - .*#| hi CommentSemanticIndent2 guifg=green
-
-" * Reminders.
-" - Fix.
-syn match CommentFix #" \<[Ff]ix:\?\>.*#| hi CommentFix guifg=blue gui=underline
-" - Todo.
-syn match CommentTodo #" \<[Tt]odo:\?\>.*#| hi CommentTodo guifg=orange
-
-" - Question.
-syn match CommentQuestion #" ? .*#| hi CommentQuestion guifg=blue
-
+runtime syntax/general/comments.vim
 
