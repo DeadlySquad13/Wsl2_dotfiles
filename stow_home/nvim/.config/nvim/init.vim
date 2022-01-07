@@ -740,63 +740,7 @@ nnoremap <silent> <leader>gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
 " # Treesitter.
 lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = {
-    -- General.
-    'regex',
-    'python',
-    'lua',
-
-    -- System programming.
-    'bash',
-
-    -- Web development.
-    'typescript',
-    'javascript',
-    'css',
-    'scss',
-    -- - React.
-    -- 'jsx',
-    'tsx',
-
-    -- C family.
-    'cmake',
-    'c',
-    'cpp',
-  },
-  ignore_install = { }, -- List of parsers to ignore installing
-  indent = {
-    enable = true
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
-    },
-  },
-  highlight = {
-    enable = true, -- false will disable the whole extension
-    disable = {  }, -- list of language that will be disabled
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-
-  -- Brackets.
-  rainbow = {
-    enable = true,
-    extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-    max_file_lines = nil, -- Do not enable for files with more than n lines, int
-    -- colors = {}, -- table of hex strings
-    -- termcolors = {} -- table of colour name strings
-  }
-}
+  require('config.treesitter')
 EOF
 " Coding
 " * Wordmotion.
@@ -817,17 +761,6 @@ nnoremap y% gg"*yG
 
 " * Matching braces.
 packadd! matchit
-
-"unmap +
-" * Expand region.
-call tinykeymap#EnterMap('ExpandRegion', '<a-v>',
-      \ { 'name': 'expand region mode' })
-call tinykeymap#Map('ExpandRegion', 'v',
-      \ 'execute "normal \<Plug>(expand_region_expand)"',
-      \ { 'desc': 'Expand selection' })
-call tinykeymap#Map('ExpandRegion', 'V',
-      \ 'execute "normal \<Plug>(expand_region_shrink)"',
-      \ { 'desc': 'Shrink selection' })
 
 " * Surround.
 "  HELP: *surround-customizing*, *curly-braces-names*
@@ -901,38 +834,7 @@ nnoremap <c-e> 3<c-e>
 
 " Brackets autopairs.
 lua << EOF
-  local nvim_autopairs = require('nvim-autopairs')
-  nvim_autopairs.setup {
-    fast_wrap = {
-      map = '<M-e>',
-      chars = { '{', '[', '(', '"', "'" },
-      pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], '%s+', ''),
-      offset = 0, -- Offset from pattern match
-      end_key = '$',
-      keys = 'qwertyuiopzxcvbnmasdfghjkl',
-      check_comma = true,
-      highlight = 'Search',
-      highlight_grey='Comment'
-    },
-    disable_filetype = { "TelescopePrompt" },
-      -- disable when recording or executing a macro
-    disable_in_macro = false,
-     -- disable when insert after visual block mode
-    disable_in_visualblock = false,
-    ignored_next_char = string.gsub([[ [%w%%%'%[%"%.] ]],"%s+", ""),
-    enable_moveright = true,
-      -- add bracket pairs after quote
-    enable_afterquote = true,
-      --- check bracket in same line
-    enable_check_bracket_line = true,
-    check_ts = false,
-      -- map the <BS> key
-    map_bs = true,
-      -- Map the <C-h> key to delete a pair
-    map_c_h = true,
-     -- map <c-w> to delete a pair if possible
-    map_c_w = false,
-  }
+  require('config.nvim_autopairs')
 EOF
 
 " * Windows.
@@ -1156,144 +1058,13 @@ endif
 
 " * Highlight range of an exmode command.
 lua << EOF
-local range_highlight = require("range-highlight")
-  range_highlight.setup {
-    highlight = "Visual",
-    highlight_with_out_range = {
-      d = true,
-      delete = true,
-      m = true,
-      move = true,
-      y = true,
-      yank = true,
-      c = true,
-      change = true,
-      j = true,
-      join = true,
-      ["<"] = true,
-      [">"] = true,
-      s = true,
-      subsititue = true,
-      sno = true,
-      snomagic = true,
-      sm = true,
-      smagic = true,
-      ret = true,
-      retab = true,
-      t = true,
-      co = true,
-      copy = true,
-      ce = true,
-      center = true,
-      ri = true,
-      right = true,
-      le = true,
-      left = true,
-      sor = true,
-      sort = true
-	}
-}
+  require('config.range_highlight')
 EOF
+
 " * Workspace.
 lua << EOF
-  local true_zen = require("true-zen")
-
-  true_zen.setup {
-    ui = {
-      bottom = {
-        laststatus = 0,
-        ruler = false,
-        showmode = false,
-        showcmd = false,
-        cmdheight = 1,
-      },
-
-      top = {
-        showtabline = 0,
-      },
-
-      left = {
-        number = false,
-        relativenumber = false,
-        signcolumn = "no",
-      },
-    },
-
-    modes = {
-      ataraxis = {
-        left_padding = 32,
-        right_padding = 32,
-        top_padding = 1,
-        bottom_padding = 1,
-        ideal_writing_area_width = {0},
-        auto_padding = true,
-        keep_default_fold_fillchars = true,
-        custom_bg = {"none", ""},
-        bg_configuration = true,
-        quit = "untoggle",
-        ignore_floating_windows = true,
-
-        affected_higroups = {
-          NonText = true,
-          FoldColumn = true,
-          ColorColumn = true,
-          VertSplit = true,
-          StatusLine = true,
-          StatusLineNC = true,
-          SignColumn = true,
-        },
-      },
-
-      focus = {
-        margin_of_error = 5,
-        focus_method = "experimental"
-      },
-    },
-
-    integrations = {
-      vim_gitgutter = false,
-      galaxyline = false,
-      tmux = false,
-      gitsigns = false,
-      nvim_bufferline = false,
-      twilight = true,
-      vim_airline = false,
-      vim_powerline = false,
-      vim_signify = false,
-      express_line = false,
-      lualine = false,
-      lightline = false,
-      feline = false
-    },
-
-    misc = {
-      on_off_commands = false,
-      ui_elements_commands = false,
-      cursor_by_mode = false,
-    }
-  }
-EOF
-
-lua << EOF
-  require("twilight").setup {
-    dimming = {
-      alpha = 0.25, -- amount of dimming
-      -- we try to get the foreground from the highlight groups or fallback color
-      color = { "Normal", "#ffffff" },
-      inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
-    },
-    context = 10, -- amount of lines we will try to show around the current line
-    treesitter = true, -- use treesitter when available for the filetype
-    -- treesitter is used to automatically expand the visible text,
-    -- but you can further control the types of nodes that should always be fully expanded
-    expand = { -- for treesitter, we we always try to expand to the top-most ancestor with these types
-      "function",
-      "method",
-      "table",
-      "if_statement",
-    },
-    exclude = {}, -- exclude these filetypes
-  }
+  require('config.true_zen')
+  require('config.twilight')
 EOF
 
 " Navigation.
