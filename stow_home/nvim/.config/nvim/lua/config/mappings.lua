@@ -144,6 +144,7 @@ local major_mappings = {
 --  "end
 --  "EOF
 --
+local yank_mappings = { '<Plug>YADefault', 'Native Yank' }
 
 local z_mappings = {
   h = {
@@ -163,7 +164,7 @@ local settings_mappings = {
 local mappings = {
   name = 'Main',
 
-  ["<leader>"] = {
+  ['<leader>'] = {
     name = 'Leader',
     -- a = a_mappings,
     b = buffer_mappings,
@@ -189,7 +190,7 @@ local mappings = {
     -- v = v_mappings,
     -- w = w_mappings,
     -- x = x_mappings,
-    -- y = y_mappings,
+    y = yank_mappings,
     z = z_mappings,
 
     [','] = settings_mappings,
@@ -227,39 +228,115 @@ local mappings = {
   }
 }
 
+local x_mappings = {
+  name = 'Main',
+
+  ['<leader>'] = {
+    name = 'Leader',
+    -- a = a_mappings,
+    -- b = buffer_mappings,
+    -- c = comment_mappings, -- Not sure, maybe leave <leader><c-/>.
+    -- d = d_mappings,
+    -- e = e_mappings,
+    -- f = file_mappings,
+    -- g = go_mappings,
+    -- h = help_mappings,
+    -- i = i_mappings,
+    -- j = jump_mappings,
+    -- k = k_mappings,
+    -- l = l_mappings,
+    -- m = major_mappings,
+    -- n = navigation_mappings,
+    -- o = o_mappings,
+    -- p = p_mappings,
+    -- q = q_mappings,
+    -- r = r_mappings,
+    -- s = s_mappings,
+    -- t = toggle_mappings,
+    -- u = u_mappings,
+    -- v = v_mappings,
+    -- w = w_mappings,
+    -- x = x_mappings,
+    y = yank_mappings,
+    -- z = z_mappings,
+
+    -- [','] = settings_mappings,
+  },
+
+  -- a = a_mappings,
+  -- b = b_mappings,
+  -- c = c_mappings,
+  -- d = d_mappings,
+  -- e = e_mappings,
+  -- f = f_mappings,
+  -- g = g_mappings,
+  -- h = h_mappings,
+  -- i = i_mappings,
+  -- j = j_mappings,
+  -- k = k_mappings,
+  -- l = l_mappings,
+  -- m = m_mappings,
+  -- n = n_mappings,
+  -- o = o_mappings,
+  -- p = p_mappings,
+  -- q = q_mappings,
+  -- r = r_mappings,
+  -- s = s_mappings,
+  -- t = t_mappings,
+  -- u = u_mappings,
+  -- v = v_mappings,
+  -- w = w_mappings,
+  -- x = x_mappings,
+  -- y = y_mappings,
+  -- z = z_mappings,
+
+  -- ['<c-w>'] = {
+    -- [tinykeymap_transitive_catalizator] = { 'Window Mode' }     
+  -- }
+}
+
 local options = {
-  mode = "n", -- NORMAL mode
   -- prefix: use "<leader>f" for example for mapping everything related to finding files
-  -- the prefix is prepended to every mapping part of `mappings`
-  prefix = "", 
-  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true, -- use `silent` when creating keymaps
-  noremap = true, -- use `noremap` when creating keymaps
+  -- the prefix is prepended to every mapping part of `mappings`.
+  prefix = '', 
+  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings.
+  silent = true, -- use `silent` when creating keymaps.
+  -- use `noremap` when creating keymaps (when command starts with <Plug>,
+  -- noremap = false is set automatically).
+  noremap = true,
   nowait = false, -- use `nowait` when creating keymaps
 }
 
-which_key.register(format_mappings_names(mappings, 'M'), options)
+-- Options for n mode mappings.
+local n_options = { mode = 'n', unpack(options) }
+which_key.register(format_mappings_names(mappings, 'M'), n_options);
 
+-- Options for x mode mappings.
+local x_options = { mode = 'x', unpack(options) }
+which_key.register(format_mappings_names(x_mappings, 'M'), x_options);
+
+-- Setup.
 which_key.setup {
   plugins = {
     marks = true, -- shows a list of your marks on ' and `.
     registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode.
     spelling = {
-    enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions.
-    suggestions = 20, -- how many suggestions should be shown in the list?.
-  },
-  -- the presets plugin, adds help for a bunch of default keybindings in Neovim.
-  -- No actual key bindings are created.
-  presets = {
-    operators = true, -- adds help for operators like d, y, ... and registers them for motion / text object completion.
-    motions = true, -- adds help for motions.
-    text_objects = true, -- help for text objects triggered after entering an operator.
-    windows = false, -- default bindings on <c-w> (shown via tinykeymap transitive)..
-    nav = true, -- misc bindings to work with windows.
-    z = true, -- bindings for folds, spelling and others prefixed with z.
-    g = true, -- bindings for prefixed with g.
+      enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions.
+      suggestions = 20, -- how many suggestions should be shown in the list?.
+    },
+    -- the presets plugin, adds help for a bunch of default keybindings in Neovim.
+    -- No actual key bindings are created.
+    presets = {
+      operators = true, -- adds help for operators like d, y, ... and registers them for motion / text object completion.
+      motions = true, -- adds help for motions.
+      text_objects = true, -- help for text objects triggered after entering an operator.
+      windows = false, -- default bindings on <c-w> (shown via tinykeymap transitive)..
+      nav = true, -- misc bindings to work with windows.
+      z = true, -- bindings for folds, spelling and others prefixed with z.
+      g = true, -- bindings for prefixed with g.
     },
   },
+
   -- Add operators that will trigger motion and text object completion
   -- to enable all native operators, set the preset / operators plugin above.
   operators = { gc = "Comments" },

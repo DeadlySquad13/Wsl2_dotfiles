@@ -3,6 +3,12 @@ set nocompatible
 " Bash doesn’t load your .bashrc unless it’s interactive.
 set shellcmdflag=-ic
 
+" * Search.
+" - Making search case insensitive. Add \c to the command to make it sensitive.
+set ignorecase
+" - If a pattern contains an uppercase letter, it is case sensitive,
+"   otherwise, it's not. Should be set with ignorecase.
+set smartcase
 " - Enable settings for specific filetypes.
 filetype plugin on
 set encoding=utf-8
@@ -87,6 +93,8 @@ endif
 call plug#begin('~/.vim/plugged')
   " General.
   Plug 'folke/which-key.nvim'
+  " - Yank without moving cursor.
+  Plug 'svban/YankAssassin.vim'
   " * Integration.
   " - With system.
   Plug 'majkinetor/vim-omnipresence'
@@ -393,13 +401,15 @@ let g:UltiSnipsListSnippets = '<c-x><c-s>'
 let g:UltiSnipsRemoveSelectModeMappings = 0 
 " - Optimizing `provider#python3#Call()` by hardcoding python path (which
 "   python).
-let g:loaded_python_provider = 1
-let g:python_host_skip_check = 1
-let g:python_host_prog = '/usr/bin/python'
-let g:python3_host_skip_check = 1
-let g:python3_host_prog = '/usr/bin/python'
+lua << EOF
+  vim.g.loaded_python_provider = 1
+  vim.g.python_host_skip_check = 1
+  vim.g.python_host_prog = '/usr/bin/python'
+  vim.g.python3_host_skip_check = 1
+  vim.g.python3_host_prog = '/usr/bin/python'
+EOF
 
-lua <<EOF
+lua << EOF
   require('config.lsp')
 EOF
 
@@ -474,9 +484,6 @@ vnoremap < <gv
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " * Yanking.
-" - Keep cursor at the same place after yanking.
-vmap y ygv<esc>
-
 " - Make Y behave similar to D in normal mode.
 nnoremap Y y$
 
