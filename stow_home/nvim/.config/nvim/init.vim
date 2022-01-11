@@ -90,6 +90,11 @@ if has('virtualedit')
 endif
 
 " Plugins.
+lua << EOF
+  -- require('plugins');
+EOF
+
+" Plugins.
 call plug#begin('~/.vim/plugged')
   " General.
   Plug 'folke/which-key.nvim'
@@ -222,6 +227,11 @@ call plug#begin('~/.vim/plugged')
   Plug 'folke/twilight.nvim'
   " * Status line.
   Plug 'vim-airline/vim-airline'
+
+  " Coding.
+  " Should be loaded after all plugins that use trigger key ('tab').
+  Plug 'abecodes/tabout.nvim'
+
   " * Theme.
   Plug 'morhetz/gruvbox'
   Plug 'sainnhe/gruvbox-material'
@@ -484,6 +494,7 @@ vnoremap < <gv
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " * Yanking.
+
 " - Make Y behave similar to D in normal mode.
 nnoremap Y y$
 
@@ -793,6 +804,11 @@ lua << EOF
   require('config.tinykeymap')
   -- # Which-key.
   require('config.mappings')
+EOF
+
+" Should be after mappings to overwrite the trigger key ('tab').
+lua << EOF
+  require('config.tabout')
 EOF
 
 " # Theme.

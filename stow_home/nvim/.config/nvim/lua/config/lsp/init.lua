@@ -56,11 +56,10 @@ cmp.setup {
               return snippets_engine.expand()
             end
 
-
             return cmp.confirm({ select = true })
+          else
+            fallback()
           end
-
-          return fallback()
         end,
 
         s = function(fallback)
