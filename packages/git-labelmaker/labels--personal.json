@@ -93,5 +93,10 @@
     "name": "Type__Question",
     "color": "d876e3",
     "description": "Further information is requested"
+  },
+  {
+    "name": "Type__Newcomer",
+    "color": "58a6ff",
+    "description": "New program"
   }
 ]
