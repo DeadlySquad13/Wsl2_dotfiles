@@ -1,0 +1,12 @@
+session: test
+
+windows:
+  - name: testliq
+    layout: main-vertical
+    commands:
+      - task
+    panes:
+      - commands:
+        - git status
+      - commands:
+        - pydoro
