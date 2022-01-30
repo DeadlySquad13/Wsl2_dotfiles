@@ -1,6 +1,9 @@
 # Bash.
 alias b="bash"
 
+# NeoVim.
+alias vi='nvim'
+
 # Open in wsl.
 alias open="cmd.exe /C start"
 

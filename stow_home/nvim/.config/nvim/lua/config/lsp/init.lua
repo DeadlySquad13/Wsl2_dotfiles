@@ -1,3 +1,4 @@
+local ENV = require('global');
 -- Setup nvim-cmp.
 -- config = function()      
 --     vim.g.UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'      
@@ -183,23 +184,6 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
--- Environment variables.
-local ENV = (function ()
-  local env = {
-    HOME = vim.fn.getenv 'HOME',
-  }
-
-  -- PATH environment variable defined specifically for vim.
-  function env.PATH(self)
-    return {
-      npm_global_modules = self.HOME .. '/.npm-global/lib/node_modules',
-      npm_global_bin = self.HOME .. '/.npm-global/bin',
-    }
-  end
-
-  return env;
-end)()
-
 -- local servers = { 'pylsp', 'tsserver', 'vimls' }
 
 -- for _, lsp in ipairs(servers) do
@@ -218,7 +202,9 @@ lspconfig.pylsp.setup {
 lspconfig.tsserver.setup {
   -- Default values.
   cmd = { ENV:PATH().npm_global_bin .. '/typescript-language-server', "--stdio" },
-  filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+  filetypes = {
+    "javascript", "javascriptreact", "typescript", "typescriptreact" 
+  },
   init_options = {
     hostInfo = "neovim"
   },
@@ -257,6 +243,106 @@ lspconfig.vimls.setup {
     },
     vimruntime = ""
   },
+}
+
+-- * Linters (diagnostics).
+lspconfig.diagnosticls.setup {
+  capabilities = capabilities,
+  cmd = { ENV:PATH().npm_global_bin .. '/diagnostic-languageserver', "--stdio" },
+
+  filetypes = {
+    "javascript", "javascriptreact", "typescript", "typescriptreact", "css"
+  },
+
+  init_options = {
+    filetypes = {
+      javascript = "eslint",
+      typescript = "eslint",
+      javascriptreact = "eslint",
+      typescriptreact = "eslint"
+    },
+    linters = {
+      eslint = {
+        sourceName = "eslint",
+        command = "./node_modules/.bin/eslint",
+        rootPatterns = {
+          ".eslitrc.js",
+          ".eslitrc",
+          "package.json"
+        },
+        debounce = 100,
+        args = {
+          "--cache",
+          "--stdin",
+          "--stdin-filename",
+          "%filepath",
+          "--format",
+          "json"
+        },
+        parseJson = {
+          errorsRoot = "[0].messages",
+          line = "line",
+          column = "column",
+          endLine = "endLine",
+          endColumn = "endColumn",
+          message = "${message} [${ruleId}]",
+          security = "severity"
+        },
+        securities = {
+          [2] = "error",
+          [1] = "warning"
+        }
+      }
+    },
+    formatters = {
+      prettier = {
+        command = './node_modules/.bin/prettier',
+        args = {'--stdin-filepath', '%filepath'},
+      },
+      eslint = {
+        sourceName = "eslint",
+        command = "./node_modules/.bin/eslint",
+        rootPatterns = {
+          ".eslitrc.js",
+          ".eslitrc",
+          "package.json"
+        },
+        debounce = 100,
+        args = {
+          "--cache",
+          "--stdin",
+          "--fix",
+          "--stdin-filename",
+          "%filepath",
+          "--format",
+          "json",
+        },
+        parseJson = {
+          errorsRoot = "[0].messages",
+          line = "line",
+          column = "column",
+          endLine = "endLine",
+          endColumn = "endColumn",
+          message = "${message} [${ruleId}]",
+          security = "severity"
+        },
+        securities = {
+          [2] = "error",
+          [1] = "warning"
+        }
+      }
+    },
+    formatFiletypes = {
+      javascript = 'prettier',
+      javascriptreact = 'prettier',
+      typescript = 'prettier',
+      typescriptreact = 'eslint',
+      json = 'prettier',
+      scss = 'prettier',
+      less = 'prettier',
+      markdown = 'prettier',
+    },
+  }
 }
 
 -- * Emmet.

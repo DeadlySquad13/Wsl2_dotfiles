@@ -1,94 +1,19 @@
 set nocompatible
-" General.
-" Bash doesn’t load your .bashrc unless it’s interactive.
-set shellcmdflag=-ic
-
-" * Search.
-" - Making search case insensitive. Add \c to the command to make it sensitive.
-set ignorecase
-" - If a pattern contains an uppercase letter, it is case sensitive,
-"   otherwise, it's not. Should be set with ignorecase.
-set smartcase
+" Settings that I don't know how to translate to lua.
 " - Enable settings for specific filetypes.
 filetype plugin on
-set encoding=utf-8
-
-" - Delay before showing message in ms (which-key).
-set timeoutlen=500
 
 " Don't parse long lines for syntax highlight.
 set synmaxcol=256
 syntax sync minlines=256
 
-" Support for embedded scripts (for example, lua in init.vim)
-" - Syntax highlighting.
-let g:vimsyn_embed='l'
-" - Folding. a: augroups, f - functions.
-"let g:vimsyn_folding='af'
-
-" Behave like smartcase when adding word to dictionary.
-if has('syntax')
-  set spellcapcheck=
-endif
-
+" Languages of used dictionaries.
 set spell spelllang=en_us,ru_ru
-" Think of camelCased words as separate words (camel and Cased will be parsed). 
-set spelloptions=camel
 
-" Insert only one space after joining lines ending with '.', '?'...
-set nojoinspaces
-
-" Gutter.
-set number relativenumber
-
-set noswapfile
-
-" Number of lines visible before edge of viewport.
-set scrolloff=5
-set sidescrolloff=3
-
-" To much hassle with setting nice wrapping, too much inconsistencies across
-"   different environments. Just format text yourself and make people on
-"   github happier.
-" In case someone sends you unformatted text, format it or use horizontal
-"   commands.
-set nowrap
-
-" - Minimal configuration:
-"set autoindent
-"set smartindent   " Do smart autoindenting when starting a new line
-set shiftwidth=2  " Set number of spaces per auto indentation
-set expandtab     " When using <Tab>, put spaces instead of a <tab> character
-
-" - Good to have for consistency.
-set tabstop=2   " Number of spaces that a <Tab> in the file counts for
-set softtabstop=2
-set smarttab    " At <Tab> at beginning line inserts spaces set in shiftwidth
-
-"syntax on
-"filetype plugin indent on
-
-set fileformat=unix
-
-" - Persistant undo.
-set undodir=~/.config/.nvim/undo
-set undofile
-
-" - Persistant buffers.
-set hidden
-
-" - Try to reuse windows / tabs when switching buffers.
-set switchbuf=usetab
-
-" Motions that are allowed to cross line boundaries.
-"   Go the end of the previous line / start of the next line easier.
-set whichwrap+=h,l
-
-" Give freedom to visual mod by allowing it to travel when there's no text.
-if has('virtualedit')
-  set virtualedit=block
-endif
-
+" General settings.
+lua << EOF
+  require('general_settings');
+EOF
 " Plugins.
 lua << EOF
   -- require('plugins');
@@ -269,45 +194,6 @@ nnoremap <leader>st :%s;<\w*>\(<\\\w*>\)\?;;g<left><left>
 "source 'plug-config.vim'
 " Starting screen.
 " * Dashboard
-" - Select which fuzzy search plugins to apply.
-let g:dashboard_default_executive='telescope'
-" - Custom sections (commands).
-"let g:dashboard_custom_section={
-  "\ 'edit_config': {
-      "\ 'description': [' Edit config                 SPC e c'],
-      "\ 'command': ':e $MYVIMRC' }
-  "\ }
-"let g:dashboard_custom_section={
-      "\ 'a': {'description': [ "  Find File                        leader f f" ], 'command': "Telescope find_files"},
-      "\ 'b': {'description': [ "  Recents                          leader f h" ], 'command': "Telescope oldfiles"},
-      "\ 'c': {'description': [ "  Find Word                        leader f g" ], 'command': "Telescope live_grep"},
-      "\ 'd': {'description': [ "  New File                         leader e n" ], 'command': "DashboardNewFile"},
-      "\ 'e': {'description': [ "  Bookmarks                        leader m  " ], 'command': "Telescope marks"},
-      "\ 'f': {'description': [ "  Load Last Session                leader l  " ], 'command': "SessionLoad"},
-      "\ 'g': {'description': [ "  Update Plugins                   leader u  " ], 'command': "PlugUpdate"},
-      "\ 'h': {'description': [ "  Settings                         leader e v" ], 'command': "edit $MYVIMRC"},
-      "\ 'i': {'description': [ "  Exit                             leader q  " ], 'command': "exit"}
-    "\ }
-let s:dashboard_shortcut={}
-
-let s:dashboard_shortcut['last_session'] = 'SPC s l'
-let s:dashboard_shortcut['find_history'] = 'SPC f h'
-let s:dashboard_shortcut['find_file'] = 'SPC f f'
-let s:dashboard_shortcut['new_file'] = 'SPC c n'
-let s:dashboard_shortcut['change_colorscheme'] = 'SPC t c'
-let s:dashboard_shortcut['find_word'] = 'SPC f a'
-let s:dashboard_shortcut['book_marks'] = 'SPC f b'
-
-let s:dashboard_shortcut_icon={
-  \'last_session': ' ',
-  \'find_history': ' ',
-  \'find_file': ' ',
-  \'new_file': ' ',
-  \'change_colorscheme': ' ',
-  \'find_word': ' ',
-  \'book_marks': ' '
-\}
-
 lua << EOF
   require('config.dashboard')
 EOF
@@ -319,51 +205,6 @@ augroup Dashboard
      "autocmd User dashboardReady nnoremap <buffer> <leader>u <cmd>PackerUpdate<CR>
      autocmd User dashboardReady nnoremap <buffer> <leader>l <cmd>SessionLoad<CR>
 augroup END
-
-" - Custom header.
-let g:dashboard_custom_header=[
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                    ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣷⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⣶⣶⣿⡟⠀                   ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣦⣄⠀⣀⣠⣤⣤⣶⣶⣶⣶⣶⣴⣾⣿⣿⣿⣿⣿⣿⡟⠁⠀                   ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡿⠯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⡟⠀⠀    ___  ___________',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⡀⢨⣿⣿⡃⠀⠀⠀⠀ / _ \/ __<  /_  /',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀/ // /\ \ / //_ < ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⢫⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀/____/___//_/____/ ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢃⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣇⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⢇⣿⣿⣿⣿⡈⣻⡝⢿⣿⣿⢿⣟⣹⣁⢀⠘⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢙⠇⣿⣿⣿⠻⣿⣿⠢⠁⠉⠛⠛⠻⣿⣿⠿⠋⠓⠹⢋⡽⢹⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡎⢾⡏⢠⠍⢡⣳⡟⠀⠀⠀⠀⠀⠀⠁⠉⠀⠠⢆⠐⠍⠒⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⡘⠐⠁⠀⢁⡋⠄⠀⠀⠀⠀⠀⠀⠀⠀⠁⠒⡀⠂⠀⠀⢹⣿⣿⣿⣿⡿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡀⣻⣄⣣⡀⠻⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠡⠀⠀⠀⠀⣸⣿⣿⣿⣿⠃⠡⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣄⠀⠀⠈⠳⣦⠉⠀⠀⠀⢀⠠⡰⠁⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⡀⠀⠓⠠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⢸⣟⣀⡑⢄⠀⠀⢻⡇⣴⣶⣿⡆⡈⠀⠀⠀⠀⣰⣿⣿⣿⣿⡿⢀⡟⠁⠀⠀⠀⠐⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠁⠀⠀⠈⠙⣾⠀⣀⡼⢸⣿⣿⣿⣿⣿⡀⠀⠀⣸⣿⣿⣿⣿⡟⣠⡟⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡌⠀⠀⠀⠀⠀⠘⢸⠑⡁⢸⣿⣿⣿⣿⣿⠀⠉⠁⢸⣿⣿⣿⣿⣷⣿⠁⠀⠀⠀⠀⠀⠀⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠶⠁⠀⠀⠀⠈⠀⡇⠀⠀⠁⠸⣹⣿⡿⡿⣿⠀⠀⠀⢸⣿⣿⣿⣿⠏⣿⠀⠀⠀⠀⠀⠀⠀⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⣇⠀⠇⠀⠀⠀⠀⢱⠀⠀⠀⠀⠆⢿⣣⡄⠀⣺⠀⠀⠀⠘⣿⣿⣿⡟⢰⡇⡇⠀⠀⠀⠀⠀⠀⠘⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⢠⠀⠀⠀⣀⡜⠀⠀⠀⠀⢀⣆⣿⡶⠾⢻⠀⠀⠀⠀⢸⣿⣿⣧⣸⣧⡃⠀⢀⣀⣠⣤⣄⡀⡆⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⡷⣄⠀⠀⠇⠀⠀⠀⠀⢺⣿⡿⠀⠀⢀⠀⠀⠀⠀⠈⣿⣿⠛⣿⣯⠖⠊⠉⠀⠀⠀⣼⠙⠢⡀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⢠⣇⠈⠳⡼⠀⠀⠀⠀⠀⢸⣿⠃⡆⠀⢸⠀⠀⠀⠀⠀⢻⣿⣴⠟⠀⠀⠀⠀⠀⠀⣰⣿⠀⠀⡁⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⢿⠀⠀⠃⠀⠀⠀⠠⠄⢻⠇⢀⠁⠀⢸⠀⠀⠀⠀⠀⠘⣿⡇⠀⠀⠀⠀⠀⠀⠠⣸⢸⡤⠊⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠤⡈⠀⠀⠀⠀⠀⠀⢸⠀⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⢛⡟⠦⠤⠂⠀⠀⣠⠗⡏⠁⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠁⠀⠀⠀⠀⠀⠀⢸⡀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡌⠢⠀⠀⠀⣰⣿⣔⣀⣀⣸⠀⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡈⠀⠀⠀⠀⠀⠀⠀⢸⣷⣇⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⢘⠀⠀⠀⣰⣿⣏⢌⠀⠀⠀⠆             ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣦⣴⣿⡀⠀⠀⠀⠀⠀⠀⢸⡇⠀⣰⣿⣿⣷⣼⣀⡀⠜⠲⠀⠀⠀⠀⠀⠀⠀⠀     ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⡀⠀⠀⠀⠀⠀⠠⠛⠛⠋⠙⠿⣿⣷⡀⠀⠀⠀⠀⠀⠘⢀⣼⣿⣿⣿⣿⡝⠃⠀⠀⣼⠀⠀    ⠀⠀   ⠀ ',
-  \'⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣴⣶⣄⠀⠀⠀⣠⣷⣶⣶⣶⣶⣶⣶⣿⣷⡄⠀⠀⠀⣠⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋     ',
-  \'⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀      ',
-  \'⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠉          '
-\]
-
-let g:dashboard_custom_footer=[
-    \ 'I did your vim operator exercises and my hand ended up stuck inside my ass.
-    \ What should I do?',
-    \ '',
-    \ '                                         - Vim more.'
-  \ ]
 
 " Session.
 " * Save automatically.
@@ -651,9 +492,9 @@ set foldnestmax=3
 augroup Folding
   autocmd!
   autocmd BufReadPre * setlocal foldmethod=expr
-  "autocmd BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+  autocmd BufWinEnter * if &fdm == 'expr' | setlocal foldmethod=syntax | endif
   " Open all folds under cursor.
-  " autocmd BufWinEnter * silent normal! zO
+   "autocmd BufWinEnter * silent normal! zO
 augroup END
 
 augroup Markdown
@@ -741,22 +582,6 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-" Abbreviations.
-" # **P**ersons abbreviations (nicknames, names).
-iabbrev @@ sasha.pakalo@gmail.com
-" * Personal (**me**).
-" - 13 for nickname.
-iabbrev pme13 DeadlySquad13
-" - Re for real.
-iabbrev pmeRe Pakalo Alexander
-
-" # Ex-mode.
-" Edit file in current directory.
-cabbr %% <c-r>=expand('%:p:h')<cr>
-
-" - exec normal.
-cabbr exn exec "normal"<left>
-
 " Visuals.
 "Use 24-bit (true-color) mode in Vim/Neovim.
 if (has("termguicolors"))
@@ -810,6 +635,9 @@ EOF
 lua << EOF
   require('config.tabout')
 EOF
+
+" Abbreviations
+runtime abbreviations.vim
 
 " # Theme.
 " * Settings.
