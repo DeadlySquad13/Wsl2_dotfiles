@@ -150,7 +150,7 @@ if ! shopt -oq posix; then
   fi
 fi
 export NPM_CONFIG_PREFIX=~/.npm-global
-export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/e/soft/ConEmu/ConEmu/Scripts:/mnt/e/soft/ConEmu:/mnt/e/soft/ConEmu/ConEmu:/mnt/c/Users/Александр/AppData/Local/Programs/Python/Python38/Scripts/:/mnt/c/Users/Александр/AppData/Local/Programs/Python/Python38/:/mnt/c/Program
+export PATH='/home/dubuntus/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/e/soft/ConEmu/ConEmu/Scripts:/mnt/e/soft/ConEmu:/mnt/e/soft/ConEmu/ConEmu:/mnt/c/Users/Александр/AppData/Local/Programs/Python/Python38/Scripts/:/mnt/c/Users/Александр/AppData/Local/Programs/Python/Python38/:/mnt/c/Program
 Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Program Files
 (x86)/ffmpeg/bin:/mnt/c/ProgramData/Oracle/Java/javapath:/mnt/c/Program Files
 (x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma
@@ -190,9 +190,11 @@ Kits/10/bin/x86:/mnt/e/soft/Visual Studio Code/VIsual Studio Code
 2019/MSBuild/Current/Bin:/mnt/c/Windows/Microsoft.NET/Framework/v4.0.30319:/mnt/e/soft/Visual
 St:/mnt/c/Users/Александр/AppData/Local/Programs/Microsoft VS
 Code/bin:/mnt/c/Program Files/Azure Data
-Studio/bin:/mnt/e/Scripts/Batch/Lessons:/mnt/c/Users/Александр/AppData/Local/atom-nightly/bin:/mnt/c/Users/Александр/.npm-global/bin:/snap/bin:~/.npm-global/bin:/usr/local/go/bin:~/go/bin'
+Studio/bin:/mnt/e/Scripts/Batch/Lessons:/mnt/c/Users/Александр/AppData/Local/atom-nightly/bin:/mnt/c/Users/Александр/.npm-global/bin:/snap/bin:~/.npm-global/bin:/usr/local/go/bin:~/go/bin:/mnt/c/ProgramData/Microsoft/Windows/Start
+Menu/Programs:/mnt/c/Program Files (x86)/XYplorer';
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
+export CDPATH=:'~/.bookmarks';
 
 # Source goto.
 [[ -s "/usr/local/share/goto.sh" ]] && source /usr/local/share/goto.sh
@@ -206,7 +208,7 @@ WIN_USER=Александр
 WIN_HOME=/mnt/c/Users/$WIN_USER
 WIN_LOCALAPPDATA=$WIN_HOME/AppData/Local
 
-# * Some Paths.
+# * Some commonly used paths.
 WORK=/mnt/e/Work
 export WORK
 

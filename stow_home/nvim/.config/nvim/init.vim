@@ -198,6 +198,11 @@ lua << EOF
   require('config.dashboard')
 EOF
 
+if exists('g:started_by_firenvim')
+  " Disable status line.
+  set laststatus=0
+endif
+
 augroup Dashboard
      autocmd! * <buffer>
      autocmd User dashboardReady let &l:stl = 'Dashboard'
@@ -531,6 +536,19 @@ augroup Markdown
   " - Enalbe follow the anchors (links) inside file.
   let g:vim_markdown_follow_anchor = 1
 
+  " * mkdx settings.
+  " - Highlighting.
+  " - Enable shift+enter to create a new line with indentation but without new
+  "   item in list.
+  " - Enable dead link detection for external links.
+  " - Updates TOC before saving the file.
+  " - Enabling folding of inline code blocks and TOC.
+  let g:mkdx#settings = { 'highlight': { 'enable': 1 },
+    \ 'enter': { 'shift': 1 }, 
+    \ 'links': { 'external': { 'enable': 1 } },
+    \ 'toc': { 'position': 1, 'text': 'Table of Contents', 'update_on_write': 1 },
+    \ 'fold': { 'enable': 1 }}
+
   " - Concealing things like **bold**.
   autocmd FileType markdown setlocal conceallevel=2 
 augroup END
@@ -608,6 +626,9 @@ let g:rnvimr_ex_enable = 1
 " - Jump to link (have to define here too because which_key doesn't handle
 "   conflicts occured by <unique> mapping of a Rel.vim).
 nnoremap <leader>gl <Plug>(Rel)
+" - Url encode / decode.
+vnoremap <leader>en :!python3 -c 'import sys; from urllib import parse; print(parse.quote_plus(sys.stdin.read().strip()))'<cr>
+vnoremap <leader>de :!python3 -c 'import sys; from urllib import parse; print(parse.unquote_plus(sys.stdin.read().strip()))'<cr>
 
 " # Inside file.
 " * Matching targets
@@ -753,4 +774,6 @@ set colorcolumn=80,115,151,203,235
 "au BufWritePost *.md call MarkdownBlocks()
 
 runtime syntax/general/comments.vim
+
+autocmd BufNewFile,BufReadPost .wslconfig set syntax=sh
 
