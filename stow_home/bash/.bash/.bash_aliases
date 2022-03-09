@@ -1,24 +1,28 @@
 # Bash.
-alias b="bash"
+alias b='bash'
 
-# Open in wsl.
-alias open="cmd.exe /C start"
+# NeoVim.
+alias vi='nvim'
+
+# Open (for wsl).
+alias open='cmd.exe /C start'
 
 # Taskwarrior.
-alias t="task"
+alias t='task'
 
 # Goto.
-alias g="goto"
+alias g='goto'
 # automatically pushes directory to stack.
-alias gp="g -p"
+alias gp='g -p'
 
 # Ranger.
-alias r=". ranger"
-# - **D**etached.
-alias rd="ranger"
+alias r='ranger'
+
+# Batch.
+alias rn='batchRename --map '"'"'rename "$1" "$2"'"'"''
 
 # Python.
-alias py="python"
+alias py='python'
 
 # Directory aliases.
 alias ll='ls -alF'

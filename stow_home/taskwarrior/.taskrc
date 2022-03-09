@@ -40,7 +40,7 @@ color.blocking=rgb553 on yellow
 # Due.
 color.due=black on color9
 color.due.today=black on rgb300
-color.overdue=on color5
+color.overdue=rgb444 on color5
 
 # Tag.
 color.tag.none=gray11
@@ -57,6 +57,7 @@ color.project.Lessons=
 #color.tag.none=inverse
 
 # Contexts.
+context.side=+side
 context.personal=project:PrX
 context.soft=+soft
 context.work=project:OGP or +work
@@ -93,10 +94,23 @@ urgency.blocking.coefficient=8.0
 
 # * Specificity.
 urgency.annotations.coefficient=1.0
+
 # - Tags.
 urgency.tags.coefficient=1.0
+# Enforcing 50 % time working and 50 % time learning policy.
+urgency.user.tag.work.coefficient=5.0
+urgency.user.tag.lessons.coefficient=3.0
+
+# However, while we are in university, it's better to finish it properly.
+urgency.user.project.Bmstu.coefficient=5.0
+# Sync and backup are important.
+urgency.user.tag.sync.coefficient=5.0
+
 # - Projects.
 urgency.project.coefficient=1.0
-urgency.user.project.My .coefficient=5.0
-context=work
-context.side=+side
+# Sorting junk on computer is useful but never requires urgency.
+urgency.user.project.fs.coefficient=-3.0
+# In most cases something related to system should be done as quick as possible.
+urgency.user.project.sys.coefficient=5.0
+
+context=soft

@@ -1,6 +1,6 @@
 session: Work
 
-root: /mnt/e/Work/THMoon/${project}
+root: /mnt/e/Work/THMoon
 
 before_start:
   #- docker-compose -f my-microservices/docker-compose.yml up -d # my-microservices/docker-compose.yml is a relative to `root`
@@ -17,7 +17,12 @@ windows:
     manual: false
     layout: main-vertical
     commands:
+      - g ${project}
+      - cd Materials
+      # Searching for link to the KnowledgeBase.
+      - cd $(find . type l | rg 'KnowledgeBase__')
       - task
+      - ll
     panes:
       #- type: horizontal
         #root: ${project}
@@ -25,4 +30,7 @@ windows:
           - pydoro
 
         - commands:
+          - g ${project}
+          - cd dev
+          - clear
           - git status

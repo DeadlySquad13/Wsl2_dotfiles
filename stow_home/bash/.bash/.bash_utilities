@@ -1,5 +1,23 @@
 #!/bin/bash
 
+# General.
+# * Errors.
+echoerr() {
+  # Copy file descriptor #1 (stdout) to file descriptor #2 (stderr).
+  echo "$@" 1>&2;
+}
+
+throwException() {
+  echoerr "$@";
+  return 1;
+}
+
+fail() {
+  echoerror "$@1";
+  exit 1;
+}
+
+# * Config.
 config() {
   local configPath="$1";
   local command="$2";
@@ -11,12 +29,12 @@ config() {
 
     "-s" | "--source")
       source $configPath;
-      echo "$configPath was sourced!"
+      echo "$configPath was sourced!";
       ;;
 
-    "-d" | "--d")
-      local configDirectoryPath="$(dirname ${configPath})"
-      cd "$configDirectoryPath"
+    "-d" | "--dir" | "--directory")
+      local configDirectoryPath="$(dirname ${configPath})";
+      cd "$configDirectoryPath";
       ;;
 
     *)
@@ -49,11 +67,37 @@ tmux() {
   fi
 }
 
-wsltty() {
+# Ranger that will have a Q binding to exit and change your directory.
+# @see {@Link https://superuser.com/a/1436077/1133669} for origin.
+rangerWithFollow() {
+  local IFS=$'\t\n'
+  local tempfile="$(mktemp -t tmp.XXXXXX)"
+  local ranger_cmd=(
+    command
+    ranger
+    --cmd="map Q chain shell echo %d > \"$tempfile\"; quitall"
+  )
+
+  ${ranger_cmd[@]} "$@"
+  if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$PWD" ]]; then
+    cd -- "$(cat -- "$tempfile")" || return
+  fi
+  command rm -f -- "$tempfile" 2>/dev/null
+}
+
+ranger() {
   local parameters="$@";
-  config $WinLocalAppData/wsltty/home/$WinUser/.minttyrc $parameters;
+  config ~/.config/ranger/rc.conf $parameters;
   if [ $? -eq 1 ]; then
-    command wsltty $parameters;
+    rangerWithFollow $parameters;
+  fi
+}
+
+rg() {
+  local parameters="$@";
+  config $RIPGREP_CONFIG_PATH $parameters;
+  if [ $? -eq 1 ]; then
+    command rg $parameters;
   fi
 }
 
@@ -66,6 +110,106 @@ printColors() {
   done
 }
 
+isWsl() {
+  if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# Linux on Windows specific functions to interact with Windows.
+if isWsl; then
+  wsl() {
+    local parameters="$@";
+    config $WIN_HOME/.wslconfig $parameters;
+    if [ $? -eq 1 ]; then
+      command wsl $parameters;
+    fi
+  }
+
+  wsltty() {
+    local parameters="$@";
+    config $WinLocalAppData/wsltty/home/$WinUser/.minttyrc $parameters;
+    if [ $? -eq 1 ]; then
+      command wsltty $parameters;
+    fi
+  }
+
+  # Activating windows explorer from Wsl.
+  explorer() {
+    XYPlorer.exe "$@"
+  }
+fi
+
 dotPng() {
   dot -Tpng $1.dot > $1.png && open $1.png
+}
+
+smug() {
+  local command="$1";
+  local parameters="$@";
+  if [ "$command" = "start" ]; then
+    command smug $parameters --attach;
+  else
+    command smug $parameters;
+  fi 
+}
+
+# Timewarrior advanced aliases.
+tw() {
+  #local parameters="$@";
+  local command="$1";
+
+  case $command in
+    "-s")
+      local param="$2"
+      case $param in 
+        ":w")
+          timew summary \:week \:id;
+          ;;
+        ":lw")
+          timew summary \:lastweek \:id;
+          ;;
+        *)
+          # Should shift params and pass there.
+          timew summary \:id;
+          ;;
+      esac
+      ;;
+
+    *)
+      timew;
+      ;;
+  esac
+}
+
+#test() {
+  #echo "$@"
+  #while getopts ":a" opt; do
+    #case $opt in
+      #a)
+        #echo "-a was triggered!" >&2
+        #;;
+      #\?)
+        #echo "Invalid option: -$OPTARG" >&2
+        #;;
+    #esac
+  #done
+#}
+
+# * Which.
+# TODO: Support -a parameter of the which?
+whichd() {
+  local tmp="$(which $1)";
+  echo ${tmp%$1};
+}
+
+cdwhich() {
+  local whichSearchResult="$(whichd $1)";
+  if [[ -z "$whichSearchResult" ]]; then
+    throwException "${1} not found!"
+  else
+    cd $(whichd $1);
+  fi
 }
