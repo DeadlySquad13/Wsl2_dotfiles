@@ -29,5 +29,11 @@ $ stow -vt ~ *
 LINK: .config/smug => ../../../var/local/Backup/_dotfiles/stow_home/smug/.config/smug
 ```
 
+## Restoring backup
+- `git clone` this repo.
+- Go to stow_home and use `stow -vt ~ *`.
+- Change permissions of the stow_home recursively (for example, `chmod 777 -R stow_home`).
+
+
 ## References
 [Linux backup guide using stow](https://linustechtips.com/topic/1369746-howto-backup-your-configuration-files-dotfiles-in-linux-using-stow-and-git/?__cf_chl_jschl_tk__=pmd_BNJiX2FYMe8YiQvtpFOKs3V55h8G99xvMUZ4sCbE.EI-1635858821-0-gqNtZGzNArujcnBszRal)
