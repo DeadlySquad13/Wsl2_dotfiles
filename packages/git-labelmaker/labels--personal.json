@@ -75,8 +75,13 @@
     "description": ""
   },
   {
+    "name": "Type__Refactor",
+    "color": "3fb950",
+    "description": "Cleaning code"
+  },
+  {
     "name": "Type__Epic",
-    "color": "3E4B9E",
+    "color": "3e4b9e",
     "description": "A theme of work that contain sub-tasks"
   },
   {
@@ -88,5 +93,10 @@
     "name": "Type__Question",
     "color": "d876e3",
     "description": "Further information is requested"
+  },
+  {
+    "name": "Type__Newcomer",
+    "color": "58a6ff",
+    "description": "New program"
   }
 ]
