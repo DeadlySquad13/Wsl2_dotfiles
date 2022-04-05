@@ -49,6 +49,9 @@ then
   tmux attach -t main || tmux new -s main
 fi
 
+# Enable ssh authentication agent (for ssh-add).
+eval `ssh-agent -s`
+
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
@@ -85,6 +88,8 @@ xterm*|rxvt*)
 *)
     ;;
 esac
+# Ranger shell prompt indicator.
+if [ -n "$RANGER_LEVEL" ]; then export PS1="[ranger]$PS1"; fi
 
 # OLD:
 #LS_COLORS="rs=0:di=1;33;44:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:"
@@ -150,51 +155,15 @@ if ! shopt -oq posix; then
   fi
 fi
 export NPM_CONFIG_PREFIX=~/.npm-global
-export PATH='/home/dubuntus/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/e/soft/ConEmu/ConEmu/Scripts:/mnt/e/soft/ConEmu:/mnt/e/soft/ConEmu/ConEmu:/mnt/c/Users/Александр/AppData/Local/Programs/Python/Python38/Scripts/:/mnt/c/Users/Александр/AppData/Local/Programs/Python/Python38/:/mnt/c/Program
-Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Program Files
-(x86)/ffmpeg/bin:/mnt/c/ProgramData/Oracle/Java/javapath:/mnt/c/Program Files
-(x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma
-SDK/bin:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Program
-Files (x86)/NVIDIA
-Corporation/PhysX/Common:/mnt/e/TORRENT/Minecraft/WorldPainter:/mnt/e/Lessons/Informatics/Python:/mnt/e/Lessons/Informatics/Python
-Projects:/mnt/c/ProgramData/chocolatey/bin:/mnt/e/soft/php:/mnt/e/soft/Calibre
-(Editing Epub files/:/mnt/c/Program Files/MySQL/MySQL Utilities
-1.6/:/mnt/c/Program Files/Microsoft/Web Platform Installer/:/mnt/c/Program Files
-(x86)/Microsoft ASP.NET/ASP.NET Web Pages/v1.0/:/mnt/c/Program Files/Microsoft
-SQL Server/110/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL
-Server/120/Tools/Binn/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA
-NvDLISR:/mnt/e/soft/Node.js/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program
-Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL
-Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files
-(x86)/IncrediBuild:/mnt/e/soft/Graphics
-Editors/QuickTime/QTSystem/:/mnt/e/soft/Git for Windows/Git/cmd:/mnt/c/Program
-Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL
-Server/150/DTS/Binn/:/mnt/c/Program Files/Azure Data Studio/bin:/mnt/c/Program
-Files (x86)/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Microsoft
-SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL
-Server/150/DTS/Binn/:/mnt/c/Users/Александр/.windows-build-tools/python27/:/mnt/e/soft/JetBrains/JetBrains
-PyCharm Professional/JetBrains PyCharm Professional
-2019.2.4/bin:/mnt/e/soft/Visual Studio Code/VIsual Studio Code
-2019/VC/Tools/MSVC/14.25.28610/bin/HostX86/x86:/mnt/e/soft/Visual Studio
-Code/VIsual Studio Code 2019/Common7/IDE/VC/VCPackages:/mnt/e/soft/Visual Studio
-Code/VIsual Studio Code
-2019/Common7/IDE/CommonExtensions/Microsoft/TestWindow:/mnt/e/soft/Visual Studio
-Code/VIsual Studio Code
-2019/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team
-Explorer:/mnt/e/soft/Visual Studio Code/VIsual Studio Code
-2019/MSBuild/Current/bin/Roslyn:/mnt/e/soft/Visual Studio Code/VIsual Studio
-Code 2019/Team Tools/Performance Tools:/mnt/c/Program Files (x86)/Microsoft
-Visual Studio/Shared/Common/VSPerfCollectionTools/vs2019/:/mnt/c/Program Files
-(x86)/Windows Kits/10/bin/10.0.18362.0/x86:/mnt/c/Program Files (x86)/Windows
-Kits/10/bin/x86:/mnt/e/soft/Visual Studio Code/VIsual Studio Code
-2019/MSBuild/Current/Bin:/mnt/c/Windows/Microsoft.NET/Framework/v4.0.30319:/mnt/e/soft/Visual
-St:/mnt/c/Users/Александр/AppData/Local/Programs/Microsoft VS
-Code/bin:/mnt/c/Program Files/Azure Data
-Studio/bin:/mnt/e/Scripts/Batch/Lessons:/mnt/c/Users/Александр/AppData/Local/atom-nightly/bin:/mnt/c/Users/Александр/.npm-global/bin:/snap/bin:~/.npm-global/bin:/usr/local/go/bin:~/go/bin:/mnt/c/ProgramData/Microsoft/Windows/Start
-Menu/Programs:/mnt/c/Program Files (x86)/XYplorer';
+
+WIN_PATH_BACKUP="/mnt/e/soft/ConEmu/ConEmu/Scripts:/mnt/e/soft/ConEmu:/mnt/e/soft/ConEmu/ConEmu:/mnt/c/Users/Александр/AppData/Local/Programs/Python/Python38/Scripts/:/mnt/c/Users/Александр/AppData/Local/Programs/Python/Python38/:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/ffmpeg/bin:/mnt/c/ProgramData/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma SDK/bin:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/e/TORRENT/Minecraft/WorldPainter:/mnt/e/Lessons/Informatics/Python:/mnt/e/Lessons/Informatics/Python Projects:/mnt/c/ProgramData/chocolatey/bin:/mnt/e/soft/php:/mnt/e/soft/Calibre (Editing Epub files/:/mnt/c/Program Files/MySQL/MySQL Utilities 1.6/:/mnt/c/Program Files/Microsoft/Web Platform Installer/:/mnt/c/Program Files (x86)/Microsoft ASP.NET/ASP.NET Web Pages/v1.0/:/mnt/c/Program Files/Microsoft SQL Server/110/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/120/Tools/Binn/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/e/soft/Node.js/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files (x86)/IncrediBuild:/mnt/e/soft/Graphics Editors/QuickTime/QTSystem/:/mnt/e/soft/Git for Windows/Git/cmd:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/150/DTS/Binn/:/mnt/c/Program Files/Azure Data Studio/bin:/mnt/c/Program Files (x86)/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/150/DTS/Binn/:/mnt/c/Users/Александр/.windows-build-tools/python27/:/mnt/e/soft/JetBrains/JetBrains PyCharm Professional/JetBrains PyCharm Professional 2019.2.4/bin:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/VC/Tools/MSVC/14.25.28610/bin/HostX86/x86:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/Common7/IDE/VC/VCPackages:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/Common7/IDE/CommonExtensions/Microsoft/TestWindow:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/MSBuild/Current/bin/Roslyn:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/Team Tools/Performance Tools:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Shared/Common/VSPerfCollectionTools/vs2019/:/mnt/c/Program Files (x86)/Windows Kits/10/bin/10.0.18362.0/x86:/mnt/c/Program Files (x86)/Windows Kits/10/bin/x86:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/MSBuild/Current/Bin:/mnt/c/Windows/Microsoft.NET/Framework/v4.0.30319:/mnt/e/soft/Visual St:/mnt/c/Users/Александр/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/Azure Data Studio/bin:/mnt/e/Scripts/Batch/Lessons:/mnt/c/Users/Александр/AppData/Local/atom-nightly/bin:/mnt/c/Users/Александр/.npm-global/bin"
+# For clipping and pasting.
+WIN_PATH="/mnt/c/ProgramData/WslProgramData";
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.npm-global/bin:$HOME/.local/bin:$HOME/go/bin:/usr/local/go/bin:/mnt/c/ProgramData/Microsoft/Windows/Start Menu/Programs:/mnt/c/Program Files (x86)/XYplorer:$WIN_PATH";
+
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
-export CDPATH=:'~/.bookmarks';
+export CDPATH=:'~/.bookmarks:/mnt/e';
 
 # Source goto.
 [[ -s "/usr/local/share/goto.sh" ]] && source /usr/local/share/goto.sh
