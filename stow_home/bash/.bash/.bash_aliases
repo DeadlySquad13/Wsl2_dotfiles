@@ -1,3 +1,10 @@
+# Directories.
+alias ..='cd ..'
+alias ...='cd ../../../'
+alias ....='cd ../../../../'
+alias .....='cd ../../../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../..'
 # Bash.
 alias b='bash'
 
@@ -22,7 +29,15 @@ alias r='ranger'
 alias rn='batchRename --map '"'"'rename "$1" "$2"'"'"''
 
 # Python.
-alias py='python'
+alias py='python';
+alias venv_create='python -m venv ./venv';
+alias venv_activate='source ./venv/bin/activate'
+alias pipi='pip install -U';
+alias piprm='pip uninstall';
+# Data science kit.
+# TODO: Wrap pip into it's own function.
+alias pipi_ds='pipi numpy pandas seaborn matplotlib';
+alias jupyter-lab='jupyter-lab --no-browser';
 
 # Directory aliases.
 alias ll='ls -alF'
