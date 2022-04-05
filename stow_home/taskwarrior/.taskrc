@@ -113,4 +113,4 @@ urgency.user.project.fs.coefficient=-3.0
 # In most cases something related to system should be done as quick as possible.
 urgency.user.project.sys.coefficient=5.0
 
-context=soft
+context=work

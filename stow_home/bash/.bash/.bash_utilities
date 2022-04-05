@@ -101,6 +101,15 @@ rg() {
   fi
 }
 
+ssh() {
+  local parameters="$@";
+  # System config, there's also user config.
+  config "/etc/ssh/ssh_config" $parameters;
+  if [ $? -eq 1 ]; then
+    command ssh $parameters;
+  fi
+}
+
 printColors() {
   for i in {0..255}; do
     printf "\x1b[38;5;${i}mcolor%-5i\x1b[0m" $i;
@@ -130,7 +139,7 @@ if isWsl; then
 
   wsltty() {
     local parameters="$@";
-    config $WinLocalAppData/wsltty/home/$WinUser/.minttyrc $parameters;
+    config $WIN_LOCALAPPDATA/wsltty/home/$WIN_USER/.minttyrc $parameters;
     if [ $? -eq 1 ]; then
       command wsltty $parameters;
     fi
