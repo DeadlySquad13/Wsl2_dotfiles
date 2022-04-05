@@ -14,15 +14,18 @@ set spell spelllang=en_us,ru_ru
 lua << EOF
   require('general_settings');
 EOF
+
 " Plugins.
 lua << EOF
-  -- require('plugins');
+  require('plugins');
 EOF
 
 " Plugins.
 call plug#begin('~/.vim/plugged')
   " General.
   Plug 'folke/which-key.nvim'
+  " Xonsh syntax file.
+  Plug 'abhishekmukherg/xonsh-vim'
   " - Yank without moving cursor.
   Plug 'svban/YankAssassin.vim'
   " * Integration.
@@ -507,7 +510,10 @@ augroup Markdown
   autocmd!
   "autocmd BufNewFile,BufReadPost *.markdown,*.mdown,*.mkd,*.mkdn,*.mdwn,*.md
    "autocmd Filetype markdown set filetype=markdown
-  let g:vim_markdown_fenced_languages = [
+  let g:markdown_fenced_languages = [
+    \'sh',
+    \'bash=sh',
+    \
     \'css',
     \'sass',
     \
@@ -551,6 +557,8 @@ augroup Markdown
 
   " - Concealing things like **bold**.
   autocmd FileType markdown setlocal conceallevel=2 
+  " - Disabling concealing on current line for all mods.
+  autocmd FileType markdown setlocal concealcursor= 
 augroup END
 
 augroup Python
@@ -645,6 +653,11 @@ function! SynStack()
 endfunc
 
 " Mappings.
+  " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+  vmap <Enter> <Plug>(EasyAlign)
+
+  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  nmap ga <Plug>(EasyAlign)
 lua << EOF
   -- # Tinykeymap transitive mappings.
   require('config.tinykeymap')
@@ -776,4 +789,6 @@ set colorcolumn=80,115,151,203,235
 runtime syntax/general/comments.vim
 
 autocmd BufNewFile,BufReadPost .wslconfig set syntax=sh
+
+autocmd BufNewFile,BufReadPost .wyrdrc set syntax=conf
 
