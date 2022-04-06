@@ -70,6 +70,7 @@ time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
   ["TrueZen.nvim"] = {
+    config = { " require ('config.true_zen') " },
     loaded = true,
     path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/TrueZen.nvim",
     url = "https://github.com/Pocco81/TrueZen.nvim"
@@ -91,6 +92,11 @@ _G.packer_plugins = {
     needs_bufread = false,
     path = "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/cmp-buffer",
     url = "https://github.com/hrsh7th/cmp-buffer"
+  },
+  ["cmp-cmdline"] = {
+    loaded = true,
+    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/cmp-cmdline",
+    url = "https://github.com/hrsh7th/cmp-cmdline"
   },
   ["cmp-nvim-lsp"] = {
     after = { "nvim-lspconfig" },
@@ -123,8 +129,12 @@ _G.packer_plugins = {
     url = "https://github.com/tjdevries/colorbuddy.nvim"
   },
   ["dashboard-nvim"] = {
-    loaded = true,
-    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/dashboard-nvim",
+    cond = { "\27LJ\2\0025\0\0\1\0\3\0\0056\0\0\0009\0\1\0009\0\2\0\19\0\0\0L\0\2\0\24started_by_firenvim\6g\bvim\0" },
+    config = { " require('config.dashboard') " },
+    loaded = false,
+    needs_bufread = false,
+    only_cond = true,
+    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/dashboard-nvim",
     url = "https://github.com/glepnir/dashboard-nvim"
   },
   ["emmet-vim"] = {
@@ -153,6 +163,10 @@ _G.packer_plugins = {
     url = "https://github.com/lewis6991/impatient.nvim"
   },
   ["indent-blankline.nvim"] = {
+    config = { " require('config.indent_blankline') " },
+    load_after = {
+      ["nvim-treesitter"] = true
+    },
     loaded = false,
     needs_bufread = false,
     only_cond = false,
@@ -173,8 +187,10 @@ _G.packer_plugins = {
     url = "https://github.com/iamcco/markdown-preview.nvim"
   },
   mkdx = {
-    loaded = true,
-    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/mkdx",
+    loaded = false,
+    needs_bufread = true,
+    only_cond = false,
+    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/mkdx",
     url = "https://github.com/SidOfc/mkdx"
   },
   nerdcommenter = {
@@ -190,6 +206,7 @@ _G.packer_plugins = {
     url = "https://github.com/preservim/nerdtree"
   },
   ["nvim-autopairs"] = {
+    config = { " require ('config.nvim_autopairs') " },
     loaded = true,
     path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/nvim-autopairs",
     url = "https://github.com/windwp/nvim-autopairs"
@@ -200,6 +217,7 @@ _G.packer_plugins = {
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
   ["nvim-colorizer.lua"] = {
+    config = { " require ('config.colorizer') " },
     loaded = true,
     path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua",
     url = "https://github.com/norcalli/nvim-colorizer.lua"
@@ -230,6 +248,8 @@ _G.packer_plugins = {
     url = "https://github.com/gennaro-tedesco/nvim-peekup"
   },
   ["nvim-treesitter"] = {
+    after = { "indent-blankline.nvim", "twilight.nvim" },
+    config = { " require('config.treesitter')" },
     loaded = false,
     needs_bufread = true,
     only_cond = false,
@@ -237,8 +257,10 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
   ["nvim-ts-rainbow"] = {
-    loaded = true,
-    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow",
+    loaded = false,
+    needs_bufread = false,
+    only_cond = false,
+    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/nvim-ts-rainbow",
     url = "https://github.com/p00f/nvim-ts-rainbow"
   },
   ["packer.nvim"] = {
@@ -253,6 +275,7 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
   ["range-highlight.nvim"] = {
+    config = { " require('config.range_highlight') " },
     loaded = true,
     path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/range-highlight.nvim",
     url = "https://github.com/winston0410/range-highlight.nvim"
@@ -278,8 +301,13 @@ _G.packer_plugins = {
     url = "https://github.com/lambdalisue/suda.vim"
   },
   ["tabout.nvim"] = {
-    loaded = true,
-    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/tabout.nvim",
+    config = { " require('config.tabout') " },
+    load_after = {
+      ["which-key.nvim"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/tabout.nvim",
     url = "https://github.com/abecodes/tabout.nvim"
   },
   ["targets.vim"] = {
@@ -290,11 +318,8 @@ _G.packer_plugins = {
     url = "https://github.com/wellle/targets.vim"
   },
   ["telescope.nvim"] = {
-    commands = { "Telescope" },
-    loaded = false,
-    needs_bufread = true,
-    only_cond = false,
-    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/telescope.nvim",
+    loaded = true,
+    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
   ["textobj-word-column.vim"] = {
@@ -305,9 +330,9 @@ _G.packer_plugins = {
     url = "https://github.com/idbrii/textobj-word-column.vim"
   },
   tinykeymap_vim = {
+    after = { "tabout.nvim" },
     loaded = true,
-    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/tinykeymap_vim",
-    url = "https://github.com/tomtom/tinykeymap_vim"
+    only_config = true
   },
   ["train.nvim"] = {
     loaded = true,
@@ -315,8 +340,13 @@ _G.packer_plugins = {
     url = "https://github.com/tjdevries/train.nvim"
   },
   ["twilight.nvim"] = {
-    loaded = true,
-    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/twilight.nvim",
+    config = { " require ('config.twilight') " },
+    load_after = {
+      ["nvim-treesitter"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/twilight.nvim",
     url = "https://github.com/folke/twilight.nvim"
   },
   ultisnips = {
@@ -422,6 +452,9 @@ _G.packer_plugins = {
     url = "https://github.com/chaoren/vim-wordmotion"
   },
   ["which-key.nvim"] = {
+    after = { "tabout.nvim" },
+    config = { "\27LJ\2\0020\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\21config.which_key\frequire-\1\0\3\0\3\0\0066\0\0\0009\0\1\0003\1\2\0)\2Ð\aB\0\3\1K\0\1\0\0\rdefer_fn\bvim\0" },
+    load_after = {},
     loaded = false,
     needs_bufread = false,
     only_cond = false,
@@ -436,28 +469,52 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: nvim-colorizer.lua
+time([[Config for nvim-colorizer.lua]], true)
+ require ('config.colorizer') 
+time([[Config for nvim-colorizer.lua]], false)
+-- Config for: nvim-autopairs
+time([[Config for nvim-autopairs]], true)
+ require ('config.nvim_autopairs') 
+time([[Config for nvim-autopairs]], false)
+-- Config for: range-highlight.nvim
+time([[Config for range-highlight.nvim]], true)
+ require('config.range_highlight') 
+time([[Config for range-highlight.nvim]], false)
+-- Config for: tinykeymap_vim
+time([[Config for tinykeymap_vim]], true)
+ require('config.tinykeymap') 
+time([[Config for tinykeymap_vim]], false)
+-- Config for: TrueZen.nvim
+time([[Config for TrueZen.nvim]], true)
+ require ('config.true_zen') 
+time([[Config for TrueZen.nvim]], false)
+-- Conditional loads
+time([[Conditional loading of dashboard-nvim]], true)
+  require("packer.load")({"dashboard-nvim"}, {}, _G.packer_plugins)
+time([[Conditional loading of dashboard-nvim]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd ultisnips ]]
+vim.cmd [[ packadd telescope.nvim ]]
 vim.cmd [[ packadd nvim-cmp ]]
-vim.cmd [[ packadd cmp-path ]]
-vim.cmd [[ packadd cmp-nvim-ultisnips ]]
 vim.cmd [[ packadd cmp-nvim-lsp ]]
 vim.cmd [[ packadd nvim-lspconfig ]]
+vim.cmd [[ packadd cmp-nvim-ultisnips ]]
+vim.cmd [[ packadd cmp-path ]]
 vim.cmd [[ packadd cmp-buffer ]]
 time([[Sequenced loading]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Telescope lua require("packer.load")({'telescope.nvim'}, { cmd = "Telescope", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MarkdownPreview lua require("packer.load")({'markdown-preview.nvim'}, { cmd = "MarkdownPreview", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 time([[Defining lazy-load commands]], false)
 
 -- Keymap lazy-loads
 time([[Defining lazy-load keymaps]], true)
+vim.cmd [[nnoremap <silent> n <cmd>lua require("packer.load")({'nvim-hlslens'}, { keys = "n", prefix = "" }, _G.packer_plugins)<cr>]]
 vim.cmd [[nnoremap <silent> # <cmd>lua require("packer.load")({'nvim-hlslens'}, { keys = "#", prefix = "" }, _G.packer_plugins)<cr>]]
 vim.cmd [[nnoremap <silent> * <cmd>lua require("packer.load")({'nvim-hlslens'}, { keys = "*", prefix = "" }, _G.packer_plugins)<cr>]]
-vim.cmd [[nnoremap <silent> n <cmd>lua require("packer.load")({'nvim-hlslens'}, { keys = "n", prefix = "" }, _G.packer_plugins)<cr>]]
 vim.cmd [[nnoremap <silent> N <cmd>lua require("packer.load")({'nvim-hlslens'}, { keys = "N", prefix = "" }, _G.packer_plugins)<cr>]]
 time([[Defining lazy-load keymaps]], false)
 
@@ -465,12 +522,13 @@ vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
+vim.cmd [[au FileType markdown ++once lua require("packer.load")({'mkdx'}, { ft = "markdown" }, _G.packer_plugins)]]
 vim.cmd [[au FileType python ++once lua require("packer.load")({'vim-autopep8'}, { ft = "python" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
-vim.cmd [[au VimEnter * ++once lua require("packer.load")({'textobj-word-column.vim', 'indent-blankline.nvim', 'vim-textobj-user', 'nerdcommenter', 'which-key.nvim', 'targets.vim', 'vim-textobj-indent', 'vim-wordmotion', 'vim-textobj-indented-paragraph', 'vim-repeat'}, { event = "VimEnter *" }, _G.packer_plugins)]]
-vim.cmd [[au BufEnter * ++once lua require("packer.load")({'nvim-treesitter'}, { event = "BufEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au VimEnter * ++once lua require("packer.load")({'textobj-word-column.vim', 'indent-blankline.nvim', 'vim-textobj-user', 'nerdcommenter', 'which-key.nvim', 'vim-textobj-indented-paragraph', 'vim-textobj-indent', 'vim-wordmotion', 'targets.vim', 'vim-repeat'}, { event = "VimEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au BufEnter * ++once lua require("packer.load")({'nvim-treesitter', 'nvim-ts-rainbow'}, { event = "BufEnter *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end

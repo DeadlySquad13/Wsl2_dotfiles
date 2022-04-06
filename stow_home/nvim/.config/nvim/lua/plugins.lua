@@ -26,37 +26,56 @@ local util = require('packer.util')
 
 require('packer').startup({
   function(use)
-  -- it is recommened to put impatient.nvim before any other plugins
-  use {'lewis6991/impatient.nvim'
-}
-    use({'wbthomason/packer.nvim', opt = true})
+    -- - It is recommened to put impatient.nvim before any other plugins.
+    use({ 'lewis6991/impatient.nvim' })
+    -- - Packer itself can be managed.
+    use({ 'wbthomason/packer.nvim', opt = true })
 
-  -- General.
+    -- General.
     use ({
       'folke/which-key.nvim',
-      event = 'VimEnter'
+      event = 'VimEnter',
+      config = function()
+        vim.defer_fn(function()
+          require('config.which_key')
+        end, 2000)
+      end,
+      after = 'telescope.nvim',
+      config = [[ require('config.which_key') ]],
     });
-  -- Xonsh syntax file.
-  use({ 'abhishekmukherg/xonsh-vim' });
-  -- - Yank without moving cursor.
-  use({ 'svban/YankAssassin.vim' });
-  -- * Integration.
-  -- - With system.
-  use({ 'majkinetor/vim-omnipresence' });
-  -- - With browser.
-  use({
-    'glacambre/firenvim',
-    run = function() vim.fn['firenvim#install'](0) end
-  });
-  -- * Open and write files with sudo.
-  use({ 'lambdalisue/suda.vim' });
+
+    -- - Xonsh syntax file.
+    use({ 'abhishekmukherg/xonsh-vim' });
+    -- - Yank without moving cursor.
+    use({ 'svban/YankAssassin.vim' });
+
+    -- * Integration.
+    -- - With system.
+    use({ 'majkinetor/vim-omnipresence' });
+    -- - With browser.
+    use({
+      'glacambre/firenvim',
+      run = function() vim.fn['firenvim#install'](0) end
+    });
+
+    -- - Open and write files with sudo.
+    use({ 'lambdalisue/suda.vim' });
 
     use({'tpope/vim-repeat', event = 'VimEnter'})
-  use({ 'tomtom/tinykeymap_vim' });
+    use({
+      'tomtom/tinykeymap_vim',
+      config = [[ require('config.tinykeymap') ]]
+    });
 
   -- * Starting page.
   --use({ 'mhinz/vim-startify' });
-  use({ 'glepnir/dashboard-nvim' });
+    use({
+      'glepnir/dashboard-nvim',
+      cond = function()
+        return not vim.g.started_by_firenvim;
+      end,
+      config = [[ require('config.dashboard') ]],
+    });
 
   -- * Sessions.
   --use({ 'rmagatti/auto-session' });
@@ -96,7 +115,10 @@ require('packer').startup({
 
   -- Coding.
   -- * Brackets.
-  use({ 'windwp/nvim-autopairs' });
+  use({
+    'windwp/nvim-autopairs',
+    config = [[ require ('config.nvim_autopairs') ]]
+  });
 
   -- * Comments.
   use({ 'preservim/nerdcommenter', event = 'VimEnter' });
@@ -125,7 +147,12 @@ require('packer').startup({
 
   -- * Motion.
   use({ 'tjdevries/train.nvim' });
-  use({ 'ggandor/lightspeed.nvim' });
+    use({
+      'ggandor/lightspeed.nvim',
+      -- Unfortunately has a bug in main...
+      branch = 'main',
+      commit = '005320ff9e128de8689c6e675fa64ed5963e2d1c'
+    });
 
 
   -- # Targets.
@@ -143,27 +170,36 @@ require('packer').startup({
   use({ 'chaoren/vim-wordmotion', event = 'VimEnter' });
 
 
-  -- # Navigation.
-  -- * Inside  file.
-  -- * Across files.
-  use({ 'kevinhwang91/rnvimr' });
-  use({ 'preservim/nerdtree' });
+    -- # Navigation.
+    -- * Inside  file.
+    -- * Across files.
+    use({ 'kevinhwang91/rnvimr' });
+    use({ 'preservim/nerdtree' });
 
-  -- * Telescope deps.
-  use({ 'nvim-lua/plenary.nvim' });
+    -- * Telescope deps.
+    use({ 'nvim-lua/plenary.nvim' });
     use {
-      'nvim-telescope/telescope.nvim', cmd = 'Telescope',
-      requires = { {'nvim-lua/plenary.nvim'} }
+      'nvim-telescope/telescope.nvim',
+      requires = {{ 'nvim-lua/plenary.nvim' }}
     }
-  -- - We recommend updating the parsers on update
-  use({ 'nvim-treesitter/nvim-treesitter', event = 'BufEnter', run = ':TSUpdate' });
+
+    -- - We recommend updating the parsers on update
+    use({
+      'nvim-treesitter/nvim-treesitter',
+      event = 'BufEnter',
+      run = ':TSUpdate',
+      config = [[ require('config.treesitter')]],
+    });
 
   -- - Jumping to file under cursor.
   use({ 'aklt/rel.vim' });
 
   -- Markdown.
   -- use({ 'plasticboy/vim-markdown' })
-  use({ 'SidOfc/mkdx' });
+    use({
+      'SidOfc/mkdx',
+      ft = { 'markdown' },
+    });
   -- * Preview.
   use ({ 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' });
   -- Visuals.
@@ -175,18 +211,34 @@ require('packer').startup({
   })
   -- * Highlight range of an exmode command.
   use({ 'winston0410/cmd-parser.nvim' });
-  use({ 'winston0410/range-highlight.nvim' });
+  use({
+    'winston0410/range-highlight.nvim',
+    config = [[ require('config.range_highlight') ]]
+  });
 
   -- * Workspace.
-  use({ 'Pocco81/TrueZen.nvim' });
-  use({ 'folke/twilight.nvim' });
+  use({
+    'Pocco81/TrueZen.nvim',
+    config = [[ require ('config.true_zen') ]]
+  });
+  use({
+    'folke/twilight.nvim',
+    -- Uses treesitter to automatically expand the visible text.
+    after = 'nvim-treesitter',
+    config = [[ require ('config.twilight') ]]
+  });
 
   -- * Status line.
   use({ 'vim-airline/vim-airline' });
 
   -- Coding.
   -- Should be loaded after all plugins that use trigger key ('tab').
-  use({ 'abecodes/tabout.nvim' });
+  use({
+    'abecodes/tabout.nvim',
+    config = [[ require('config.tabout') ]],
+    -- Should be after mappings to overwrite the trigger key ('tab').
+    after = {'which-key.nvim', 'tinykeymap_vim'}
+  });
 
   -- * Theme.
   use({ 'morhetz/gruvbox' });
@@ -195,17 +247,28 @@ require('packer').startup({
   -- - Helpers for creating a theme.
   use({ 'tjdevries/colorbuddy.nvim' });
 
-  -- * Highlight colors.
-  use({ 'norcalli/nvim-colorizer.lua' });
-  -- * Hide cursorline during moving, highlight words under cursor.
+  -- * Highlighting.
+  -- - Colors.
+  use({
+    'norcalli/nvim-colorizer.lua',
+    config = [[ require ('config.colorizer') ]]
+  });
+  -- - Hide cursorline during moving, highlight words under cursor.
   use({ 'yamatsum/nvim-cursorline' });
-  -- * Brackets.
-  use({ 'p00f/nvim-ts-rainbow' });
-  -- * Indents.
+  -- - Brackets.
+  use({
+    'p00f/nvim-ts-rainbow',
+    event = 'BufEnter',
+  });
+
+  -- - Indents.
     use({
       'lukas-reineke/indent-blankline.nvim',
-      event = 'VimEnter'
-    })
+      event = 'VimEnter',
+      -- Uses treesitter to calculate indentation when possible.
+      after = 'nvim-treesitter',
+      config = [[ require('config.indent_blankline') ]],
+    });
   -- * Icons. (!) Should be loaded last (after nerd-tree, airline, etc...).
   --   Nerd patched fonts required.
   use({ 'ryanoasis/vim-devicons' });
