@@ -1,3 +1,5 @@
+; The variable names (and alises too) are case-insensitive, allow only alphanumeric characters
+;   and -, and must start with an alphabetic character.
 [core]
 	autocrlf = input
 [user]
@@ -5,6 +7,17 @@
 	email = 46250621+DeadlySquad13@users.noreply.github.com
 [alias]
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  ; - Add all.
+  aa = add -A
+	co = checkout
+  sw = switch
+  br = branch
+  st = status
+  cm = commit -m
+  ; - Push head.
+  puh = push -u origin HEAD
+  unstage = restore --staged
+  unstage-all = reset HEAD --
 [credential]
   helper = /mnt/e/soft/GitForWindows/Git/mingw64/libexec/git-core/git-credential-manager-core.exe
 [init]
