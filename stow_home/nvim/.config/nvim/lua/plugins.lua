@@ -55,8 +55,11 @@ require('packer').startup({
     -- - With browser.
     use({
       'glacambre/firenvim',
-      run = function() vim.fn['firenvim#install'](0) end
+      run = function() vim.fn['firenvim#install'](0) end,
+      config = [[ require('config.firenvim') ]],
     });
+    -- - With Jupyter.
+    use({ 'untitled-ai/jupyter_ascending.vim' });
 
     -- - Open and write files with sudo.
     use({ 'lambdalisue/suda.vim' });
@@ -147,12 +150,7 @@ require('packer').startup({
 
   -- * Motion.
   use({ 'tjdevries/train.nvim' });
-    use({
-      'ggandor/lightspeed.nvim',
-      -- Unfortunately has a bug in main...
-      branch = 'main',
-      commit = '005320ff9e128de8689c6e675fa64ed5963e2d1c'
-    });
+    use({ 'ggandor/lightspeed.nvim' });
 
 
   -- # Targets.

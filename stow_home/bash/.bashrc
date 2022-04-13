@@ -255,3 +255,4 @@ fi
 #pacs() {
     #sudo pacman -Syy $(pacman -Ssq | fzf -m --preview="pacman -Si {}" --preview-window=:hidden --bind=space:toggle-preview)
 #}
+function gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}

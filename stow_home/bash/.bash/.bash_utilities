@@ -222,3 +222,15 @@ cdwhich() {
     cd $(whichd $1);
   fi
 }
+
+
+# Generate gitignore.
+gengi() {
+  curl -sL https://www.toptal.com/developers/gitignore/api/$@
+}
+
+# Go to corresponding KnowledgeBase section of a current directory (searches
+#   symlinks).
+goToKbd() {
+  cd $(find . -maxdepth 1 -type l | rg 'KnowledgeBase__') && ll
+}

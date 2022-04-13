@@ -590,7 +590,13 @@ set colorcolumn=80,115,151,203,235
 
 runtime syntax/general/comments.vim
 
+" Filetypes.
+" - Config for Wsl.
 autocmd BufNewFile,BufReadPost .wslconfig set syntax=sh
-
+" - Config for Wyrd.
 autocmd BufNewFile,BufReadPost .wyrdrc set syntax=conf
+" - LaTex templates.
+autocmd BufNewFile,BufReadPost *.tplx set syntax=tex
+" - LaTeX templates for notebook.
+autocmd BufNewFile,BufReadPost *.tex.j2 set syntax=tex
 
