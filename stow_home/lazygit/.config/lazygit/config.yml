@@ -1,0 +1,11 @@
+customCommands:
+  - key: 'C'
+    description: 'Commit without verifying files'
+    command: 'git commit -m "{{index .PromptResponses 0}}" --no-verify'
+    context: 'files'
+    prompts:
+      - type: 'input'
+        title: 'Commit Message'
+        initialValue: ''
+    loadingText: 'commiting'
+    subprocess: true
