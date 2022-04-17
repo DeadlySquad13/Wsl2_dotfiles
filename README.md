@@ -1,3 +1,11 @@
+# Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Wsl2_dotfiles](#wsl2_dotfiles)
+  - [Stow utility](#stow-utility)
+  - [Restoring backup](#restoring-backup)
+  - [References](#references)
+
 # Wsl2_dotfiles
 Configuration files of my Windows 10 Subsystem for Linux.
 
@@ -8,7 +16,7 @@ There the file path to this program configuration should be recreated.
 # Recreate a file structure. ${path_to_program} is a path to the ${program} configuration folder
 # relative to ${starting_point} - root of the programs configurations (most often ~):
 $ mkdir -p ${STOW_HOME}/${program}/${path_to_program}
-$ mv ${starting_point}/${path_to_program}/ ${STOW_HOME}/${program}/${path_to_program}/
+$ mv ${starting_point}/${path_to_program}/* ${STOW_HOME}/${program}/${path_to_program}
 # Link everything.
 $ cd ${STOW_HOME}
 $ stow -vt {starting_point} *
