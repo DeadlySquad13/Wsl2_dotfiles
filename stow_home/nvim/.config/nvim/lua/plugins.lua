@@ -152,43 +152,42 @@ require('packer').startup({
   use({ 'tjdevries/train.nvim' });
     use({ 'ggandor/lightspeed.nvim' });
 
-
-  -- # Targets.
+    -- # Targets.
     use({
       'wellle/targets.vim',
       event = 'VimEnter',
     });
-  -- Textobj-user extensions.
+    -- Textobj-user extensions.
     use({
       'kana/vim-textobj-user',
       event = 'VimEnter',
     });
-  -- - Columns.
+    -- - Columns.
     use({
       'idbrii/textobj-word-column.vim',
       event = 'VimEnter',
       after = 'vim-textobj-user',
     });
-  -- - Indented paragraph.
+    -- - Indented paragraph.
     use({
       'pianohacker/vim-textobj-indented-paragraph',
       event = 'VimEnter',
       after = 'vim-textobj-user',
     });
-  -- - Indents.
+    -- - Indents.
     use({
       'kana/vim-textobj-indent',
       event = 'VimEnter',
       after = 'vim-textobj-user',
     });
-  -- - Hydrogen (jupyter notebook cells).
+    -- - Hydrogen (jupyter notebook cells).
     use({
       'GCBallesteros/vim-textobj-hydrogen',
       event = 'VimEnter',
       after = 'vim-textobj-user',
     })
 
-  -- * Case delimited and _ delimited words.
+    -- * Case delimited and _ delimited words.
     use({
       'chaoren/vim-wordmotion',
       event = 'VimEnter',
