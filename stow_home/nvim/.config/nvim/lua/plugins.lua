@@ -154,18 +154,46 @@ require('packer').startup({
 
 
   -- # Targets.
-  use({ 'wellle/targets.vim', event = 'VimEnter' });
+    use({
+      'wellle/targets.vim',
+      event = 'VimEnter',
+    });
   -- Textobj-user extensions.
-  use({ 'kana/vim-textobj-user', event = 'VimEnter' });
+    use({
+      'kana/vim-textobj-user',
+      event = 'VimEnter',
+    });
   -- - Columns.
-  use({ 'idbrii/textobj-word-column.vim', event = 'VimEnter' });
+    use({
+      'idbrii/textobj-word-column.vim',
+      event = 'VimEnter',
+      after = 'vim-textobj-user',
+    });
   -- - Indented paragraph.
-  use({ 'pianohacker/vim-textobj-indented-paragraph', event = 'VimEnter' });
+    use({
+      'pianohacker/vim-textobj-indented-paragraph',
+      event = 'VimEnter',
+      after = 'vim-textobj-user',
+    });
   -- - Indents.
-  use({ 'kana/vim-textobj-indent', event = 'VimEnter' });
+    use({
+      'kana/vim-textobj-indent',
+      event = 'VimEnter',
+      after = 'vim-textobj-user',
+    });
+  -- - Hydrogen (jupyter notebook cells).
+    use({
+      'GCBallesteros/vim-textobj-hydrogen',
+      event = 'VimEnter',
+      after = 'vim-textobj-user',
+    })
 
   -- * Case delimited and _ delimited words.
-  use({ 'chaoren/vim-wordmotion', event = 'VimEnter' });
+    use({
+      'chaoren/vim-wordmotion',
+      event = 'VimEnter',
+      after = 'vim-textobj-user',
+    });
 
 
     -- # Navigation.
