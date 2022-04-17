@@ -167,7 +167,7 @@ smug() {
 
 # Timewarrior advanced aliases.
 tw() {
-  #local parameters="$@";
+  local parameters="$@";
   local command="$1";
 
   case $command in
@@ -188,7 +188,7 @@ tw() {
       ;;
 
     *)
-      timew;
+      timew $parameters;
       ;;
   esac
 }
