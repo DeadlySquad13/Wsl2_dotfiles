@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Lazygit.
+# System info such as history, saved repos, etc...
+/stow_home/lazygit/.config/lazygit/state.yml

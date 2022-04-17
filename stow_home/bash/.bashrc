@@ -168,14 +168,22 @@ export CDPATH=:'~/.bookmarks:/mnt/e';
 # Source goto.
 [[ -s "/usr/local/share/goto.sh" ]] && source /usr/local/share/goto.sh
 
-# Trim path.
+# Trim path up to `n` instances.
 PROMPT_DIRTRIM=3
 
 # Windows System Variables.
-WIN_USER=Александр
+# # Converted to work with Linux filesystem.
+# * Special variables.
+export WIN_USER=Александр
 
-WIN_HOME=/mnt/c/Users/$WIN_USER
-WIN_LOCALAPPDATA=$WIN_HOME/AppData/Local
+# * Paths.
+export WIN_HOME=/mnt/c/Users/$WIN_USER
+export WIN_LOCALAPPDATA=$WIN_HOME/AppData/Local
+
+
+# # Not converted to work with Windows filesystem.
+# * Paths (APPDATA exists already).
+export LOCALAPPDATA="C:\Users\\$WIN_USER\AppData\Local"
 
 # * Some commonly used paths.
 WORK=/mnt/e/Work
