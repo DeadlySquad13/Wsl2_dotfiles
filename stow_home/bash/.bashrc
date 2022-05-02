@@ -199,6 +199,38 @@ set -o vi
 # Exceptions.
 wrongParameters=2
 
+# Config.
+# * Completion.
+if [[  $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
+  . /usr/share/bash-completion/bash_completion
+fi
+
+# * History.
+# - Directory where all history files are stored.
+export HISTPATH='/var/log/BashHistory';
+# - Saving history to file
+export PROMPT_COMMAND='\
+  if [ "$(id -u)" -ne 0 ]; then\
+    echo "$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) $(history 1)" >>\
+    ${HISTPATH}/BashHistory{$(date "+%Y-%m-%d")}.log;\
+  fi';
+# - Max size (?).
+export HISTSIZE=100000
+# - History file contents format.
+export HISTTIMEFORMAT="%d/%m/%y %T  "
+# - Avoid duplicates
+export HISTCONTROL=ignoredups:erasedups  
+# - When the shell exits, append to the history file instead of overwriting it
+shopt -s histappend
+# - After each command, append to the history file and reread it
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
+# First argument is a command to search
+historySearch() {
+  ls -rt $HISTPATH/*.log | xargs rg "$1";
+}
+alias hs='historySearch';
+
 # Powerline.
 if [ -f `which powerline-daemon` ]; then
     powerline-daemon -q
@@ -210,15 +242,31 @@ if [ -f /home/dubuntus/.local/lib/python3.8/site-packages/powerline/bindings/bas
     #source /usr/local/lib/python3.8/dist-packages/powerline/bindings/bash/powerline.sh
 fi
 
-# Config.
-if [ -f ~./bash/__config ]; then
-  . /usr/share/bash-completion/bash_completion
-fi
 
 # Utilities.
 if [ -f ~/.bash/.bash_utilities ]; then
   . ~/.bash/.bash_utilities
 fi
+
+# Templates.
+export TEMPLATE_PATH="/mnt/e/Projects/--personal/ModuleT/src";
+createModuleThmoon() {
+  local componentName=$1;
+  local moduleName='thmoon';
+
+  mkdir $componentName;
+
+  tpage --define Component=$componentName \
+  $TEMPLATE_PATH/$moduleName/Component.tsx >> \
+  $componentName/$componentName.tsx;
+
+  tpage --define Component=$componentName \
+  $TEMPLATE_PATH/$moduleName/Component.types.ts >> \
+  $componentName/$componentName.types.ts;
+
+  tpage $TEMPLATE_PATH/$moduleName/Component.module.css >> \
+  $componentName/$componentName.module.css
+}
 
 # Taskwarrior project management.
 # Declares an array of projects in bash

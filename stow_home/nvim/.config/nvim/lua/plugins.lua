@@ -164,7 +164,7 @@ require('packer').startup({
     });
     -- - Columns.
     use({
-      'idbrii/textobj-word-column.vim',
+      'coderifous/textobj-word-column.vim',
       event = 'VimEnter',
       after = 'vim-textobj-user',
     });

@@ -110,6 +110,25 @@ ssh() {
   fi
 }
 
+#export GOTO_CONFIG_PATH="$HOME/.config/goto";
+#goto() {
+  #local parameters="$@";
+  #config $GOTO_CONFIG_PATH $parameters;
+  #if [ $? -eq 1 ]; then
+    #command goto $parameters;
+  #fi
+#}
+
+export LAZYGIT_CONFIG_PATH="$HOME/.config/lazygit/config.yml";
+lazygit() {
+  local parameters="$@";
+  # System config, there's also user config.
+  config $LAZYGIT_CONFIG_PATH $parameters;
+  if [ $? -eq 1 ]; then
+    command lazygit $parameters;
+  fi
+}
+
 printColors() {
   for i in {0..255}; do
     printf "\x1b[38;5;${i}mcolor%-5i\x1b[0m" $i;

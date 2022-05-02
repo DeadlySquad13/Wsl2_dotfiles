@@ -14,6 +14,8 @@ set spell spelllang=en_us,ru_ru
 lua << EOF
   require('general_settings');
 EOF
+" Follow directory according to current buffer. Helps creating files relatively.
+set autochdir
 
 " Plugins.
 lua << EOF
