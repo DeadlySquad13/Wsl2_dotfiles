@@ -1,5 +1,5 @@
 customCommands:
-  - key: 'C'
+  - key: '<c-c>'
     description: 'Commit without verifying files'
     command: 'git commit -m "{{index .PromptResponses 0}}" --no-verify'
     context: 'files'
@@ -7,5 +7,18 @@ customCommands:
       - type: 'input'
         title: 'Commit Message'
         initialValue: ''
-    loadingText: 'commiting'
+    loadingText: 'commiting without verifying files'
     subprocess: true
+
+  - key: 'c'
+    command: 'git cz'
+    context: 'files'
+    loadingText: 'opening commitizen commit tool'
+    subprocess: true
+
+keybinding:
+  universal:
+    scrollUpMain-alt1: '<c-k>'
+    scrollDownMain-alt1: '<c-j>'
+  files:
+    commitChanges: 'C'
