@@ -110,10 +110,6 @@ lua << EOF
   vim.g.python3_host_prog = '/usr/bin/python'
 EOF
 
-lua << EOF
-  require('config.lsp')
-EOF
-
 " * General.
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 
@@ -340,6 +336,11 @@ augroup Folding
   autocmd BufWinEnter * if &fdm == 'expr' | setlocal foldmethod=syntax | endif
   " Open all folds under cursor.
    "autocmd BufWinEnter * silent normal! zO
+augroup END
+
+augroup LspFix
+  autocmd!
+  autocmd BufWinEnter * :LspStart
 augroup END
 
 augroup Markdown
