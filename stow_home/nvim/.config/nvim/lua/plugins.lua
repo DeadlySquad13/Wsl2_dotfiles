@@ -91,9 +91,21 @@ require('packer').startup({
 
   -- LSP.
   -- - Config for completion engine, needs completion engine.
-  use({ 'neovim/nvim-lspconfig', after = 'cmp-nvim-lsp'
-})
-
+    -- use({
+    --   'williamboman/nvim-lsp-installer',
+    -- },
+    -- {
+    --   'neovim/nvim-lspconfig',
+    --   --after = 'cmp-nvim-lsp',
+    --   config = [[ require('config.lsp') ]],
+    -- });
+  use {
+    'williamboman/nvim-lsp-installer',
+    {
+        'neovim/nvim-lspconfig',
+        config = [[ require('config.lsp') ]]
+    }
+  }
   -- * Snippets.
   use({ 'SirVer/ultisnips' });
   -- - Collections of snippets.
@@ -226,7 +238,19 @@ require('packer').startup({
       ft = { 'markdown' },
     });
   -- * Preview.
-  use ({ 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' });
+  --use ({ 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' });
+    use({
+      'iamcco/markdown-preview.nvim',
+      run = function() vim.fn['mkdp#util#install']() end,
+    });
+    -- use({
+    --   'iamcco/markdown-preview.nvim',
+    --   run = 'cd app && npm install',
+    --   setup = function()
+    --     vim.g.mkdp_filetypes = { 'markdown' }
+    --   end,
+    --   ft = { 'markdown' },
+    -- })
   -- Visuals.
   -- Show match number and index for searching
   use ({

@@ -36,6 +36,13 @@ noremap <leader>gih K
 " - Search for tags.
 nnoremap <leader>st :%s;<\w*>\(<\\\w*>\)\?;;g<left><left>
 
+" # Custom commands.
+" * File related.
+" - Move visually selected chunk of text into a new file.
+:command! -bang -range -nargs=1 -complete=file MoveWrite  <line1>,<line2>write<bang> <args> | <line1>,<line2>delete _
+" - Append visually selected chunk of text to a file.
+:command! -bang -range -nargs=1 -complete=file MoveAppend <line1>,<line2>write<bang> >> <args> | <line1>,<line2>delete _
+
 if exists('g:started_by_firenvim')
   " Disable status line.
   set laststatus=0
@@ -389,6 +396,10 @@ augroup Markdown
   autocmd FileType markdown setlocal conceallevel=2 
   " - Disabling concealing on current line for all mods.
   autocmd FileType markdown setlocal concealcursor= 
+
+  " # Markdown Preview.
+  " Echo preview page url in command line when open preview page.
+  let g:mkdp_echo_preview_url = 1
 augroup END
 
 augroup Python

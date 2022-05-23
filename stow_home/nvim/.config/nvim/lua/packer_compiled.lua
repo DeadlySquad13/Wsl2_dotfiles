@@ -99,7 +99,6 @@ _G.packer_plugins = {
     url = "https://github.com/hrsh7th/cmp-cmdline"
   },
   ["cmp-nvim-lsp"] = {
-    after = { "nvim-lspconfig" },
     after_files = { "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/cmp-nvim-lsp/after/plugin/cmp_nvim_lsp.lua" },
     load_after = {},
     loaded = true,
@@ -185,11 +184,8 @@ _G.packer_plugins = {
     url = "https://github.com/ggandor/lightspeed.nvim"
   },
   ["markdown-preview.nvim"] = {
-    commands = { "MarkdownPreview" },
-    loaded = false,
-    needs_bufread = false,
-    only_cond = false,
-    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/markdown-preview.nvim",
+    loaded = true,
+    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/markdown-preview.nvim",
     url = "https://github.com/iamcco/markdown-preview.nvim"
   },
   mkdx = {
@@ -241,11 +237,15 @@ _G.packer_plugins = {
     path = "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/nvim-hlslens",
     url = "https://github.com/kevinhwang91/nvim-hlslens"
   },
-  ["nvim-lspconfig"] = {
-    load_after = {},
+  ["nvim-lsp-installer"] = {
     loaded = true,
-    needs_bufread = false,
-    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/opt/nvim-lspconfig",
+    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer",
+    url = "https://github.com/williamboman/nvim-lsp-installer"
+  },
+  ["nvim-lspconfig"] = {
+    config = { " require('config.lsp') " },
+    loaded = true,
+    path = "/home/dubuntus/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
   },
   ["nvim-peekup"] = {
@@ -458,7 +458,7 @@ _G.packer_plugins = {
     url = "https://github.com/pianohacker/vim-textobj-indented-paragraph"
   },
   ["vim-textobj-user"] = {
-    after = { "vim-textobj-hydrogen", "vim-textobj-indent", "vim-textobj-indented-paragraph", "vim-wordmotion", "textobj-word-column.vim" },
+    after = { "textobj-word-column.vim", "vim-textobj-hydrogen", "vim-textobj-indent", "vim-textobj-indented-paragraph", "vim-wordmotion" },
     loaded = false,
     needs_bufread = false,
     only_cond = false,
@@ -498,10 +498,22 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: nvim-autopairs
+time([[Config for nvim-autopairs]], true)
+ require ('config.nvim_autopairs') 
+time([[Config for nvim-autopairs]], false)
 -- Config for: TrueZen.nvim
 time([[Config for TrueZen.nvim]], true)
  require ('config.true_zen') 
 time([[Config for TrueZen.nvim]], false)
+-- Config for: firenvim
+time([[Config for firenvim]], true)
+ require('config.firenvim') 
+time([[Config for firenvim]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+ require('config.lsp') 
+time([[Config for nvim-lspconfig]], false)
 -- Config for: tinykeymap_vim
 time([[Config for tinykeymap_vim]], true)
  require('config.tinykeymap') 
@@ -514,35 +526,20 @@ time([[Config for nvim-colorizer.lua]], false)
 time([[Config for range-highlight.nvim]], true)
  require('config.range_highlight') 
 time([[Config for range-highlight.nvim]], false)
--- Config for: firenvim
-time([[Config for firenvim]], true)
- require('config.firenvim') 
-time([[Config for firenvim]], false)
--- Config for: nvim-autopairs
-time([[Config for nvim-autopairs]], true)
- require ('config.nvim_autopairs') 
-time([[Config for nvim-autopairs]], false)
 -- Conditional loads
 time([[Conditional loading of dashboard-nvim]], true)
   require("packer.load")({"dashboard-nvim"}, {}, _G.packer_plugins)
 time([[Conditional loading of dashboard-nvim]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
-vim.cmd [[ packadd ultisnips ]]
-vim.cmd [[ packadd telescope.nvim ]]
 vim.cmd [[ packadd nvim-cmp ]]
-vim.cmd [[ packadd cmp-nvim-lsp ]]
-vim.cmd [[ packadd nvim-lspconfig ]]
 vim.cmd [[ packadd cmp-path ]]
 vim.cmd [[ packadd cmp-buffer ]]
+vim.cmd [[ packadd cmp-nvim-lsp ]]
+vim.cmd [[ packadd telescope.nvim ]]
+vim.cmd [[ packadd ultisnips ]]
 vim.cmd [[ packadd cmp-nvim-ultisnips ]]
 time([[Sequenced loading]], false)
-
--- Command lazy-loads
-time([[Defining lazy-load commands]], true)
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file MarkdownPreview lua require("packer.load")({'markdown-preview.nvim'}, { cmd = "MarkdownPreview", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-time([[Defining lazy-load commands]], false)
-
 -- Keymap lazy-loads
 time([[Defining lazy-load keymaps]], true)
 vim.cmd [[nnoremap <silent> N <cmd>lua require("packer.load")({'nvim-hlslens'}, { keys = "N", prefix = "" }, _G.packer_plugins)<cr>]]
@@ -555,13 +552,13 @@ vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
-vim.cmd [[au FileType python ++once lua require("packer.load")({'vim-autopep8'}, { ft = "python" }, _G.packer_plugins)]]
 vim.cmd [[au FileType markdown ++once lua require("packer.load")({'mkdx'}, { ft = "markdown" }, _G.packer_plugins)]]
+vim.cmd [[au FileType python ++once lua require("packer.load")({'vim-autopep8'}, { ft = "python" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
 vim.cmd [[au BufEnter * ++once lua require("packer.load")({'nvim-treesitter', 'nvim-ts-rainbow'}, { event = "BufEnter *" }, _G.packer_plugins)]]
-vim.cmd [[au VimEnter * ++once lua require("packer.load")({'vim-repeat', 'vim-textobj-hydrogen', 'vim-textobj-indent', 'vim-textobj-indented-paragraph', 'vim-wordmotion', 'vim-textobj-user', 'indent-blankline.nvim', 'targets.vim', 'textobj-word-column.vim', 'nerdcommenter', 'which-key.nvim'}, { event = "VimEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au VimEnter * ++once lua require("packer.load")({'targets.vim', 'textobj-word-column.vim', 'indent-blankline.nvim', 'vim-repeat', 'vim-textobj-hydrogen', 'vim-textobj-indent', 'vim-textobj-indented-paragraph', 'vim-wordmotion', 'nerdcommenter', 'vim-textobj-user', 'which-key.nvim'}, { event = "VimEnter *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end
