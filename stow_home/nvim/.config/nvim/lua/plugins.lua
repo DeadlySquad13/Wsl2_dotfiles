@@ -35,11 +35,11 @@ require('packer').startup({
     use ({
       'folke/which-key.nvim',
       event = 'VimEnter',
-      config = function()
-        vim.defer_fn(function()
-          require('config.which_key')
-        end, 2000)
-      end,
+      -- config = function()
+      --   vim.defer_fn(function()
+      --     require('config.which_key')
+      --   end, 2000)
+      -- end,
       after = 'telescope.nvim',
       config = [[ require('config.which_key') ]],
     });
@@ -113,17 +113,22 @@ require('packer').startup({
   use({ 'mattn/emmet-vim' });
 
   -- * Autocomplete
-    use ({
-      'hrsh7th/nvim-cmp'
-    });
-
-    use {'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp'}
+   use ({
+      "hrsh7th/nvim-cmp",
+      event = "InsertEnter", -- for lazyload
+      requires = {
+        { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+        { "f3fora/cmp-spell", after = "nvim-cmp" },
+        { "hrsh7th/cmp-path", after = "nvim-cmp" },
+        { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
+        { "hrsh7th/cmp-calc", after = "nvim-cmp" },
+        { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
+        -- for ultisnips users.
+        { "quangnguyen30192/cmp-nvim-ultisnips", after = {"nvim-cmp", 'ultisnips' } },
+      },
+      config = [[ require('config.lsp.completion') ]],
+    })
     --use {'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp'}
-    use {'hrsh7th/cmp-path', after = 'nvim-cmp'}
-    use {'hrsh7th/cmp-buffer', after = 'nvim-cmp'}
-    use {'hrsh7th/cmp-cmdline' }
-    -- for ultisnips users.
-    use {'quangnguyen30192/cmp-nvim-ultisnips', after = {'nvim-cmp', 'ultisnips'}}
 
     -- - Python formatter.
     use({ 'tell-k/vim-autopep8', ft = { 'python' } });
