@@ -20,7 +20,7 @@ windows:
       - g ${project}
       - cd Materials
       # Searching for link to the KnowledgeBase.
-      - cd $(find . type l | rg 'KnowledgeBase__') && ll
+      - cd $(find . -maxdepth 1 -type l | rg 'KnowledgeBase__') && ll
       - task context work
       - task
     panes:

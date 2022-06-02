@@ -40,14 +40,46 @@ alias b='buku --suggest';
 
 # Python.
 alias py='python';
-alias venv_create='python -m venv ./venv';
-alias venv_activate='source ./venv/bin/activate';
+# * Venv.
+alias venv='python -m venv';
+# - Install from requirements (not actually venv functionality but highly
+#   related (similar to npm i)).
+# TODO: checks for running env.
+alias venv_i='pip install -r requirements.txt';
+# TODO: optional venv location.
+alias venv_create='python -m venv ./.venv';
+# TODO: optional venv location.
+alias venv_activate='source ./.venv/bin/activate';
+alias venv_deactivate='deactivate';
+# TODO: venv_init (create, activate, i), venv_run (create if no .venv, activate)
+
 alias pipi='pip install -U';
 alias piprm='pip uninstall';
 # Data science kit.
 # TODO: Wrap pip into it's own function.
 alias pipi_ds='pipi numpy pandas seaborn matplotlib';
-alias jupyter-lab='jupyter-lab --no-browser';
+# # Jupyter
+# * Jupyter Lab.
+# - Start jupyter lab server.
+alias julab='jupyter-lab'
+alias julab_start='jupyter-lab --no-browser';
+
+# * Jupyter Notebook.
+# - Start jupyter notebook server.
+alias junote='jupyter notebook';
+
+# * Jupyter ascending.
+# - Make pair python file for notebook via jupyter ascending.
+alias juasc='python -m jupyter_ascending.scripts.make_pair --base';
+
+# * Jupytext.
+# @see{@link [jupytextCliDocs]{https://github.com/mwouts/jupytext/blob/main/docs/using-cli.md}}.
+# - Alias.
+alias jutext='jupytext';
+# - Convert existing file to python in preferred cell format.
+preferredCellFormat='percent'
+alias jutextconvert="jupytext --to py:$preferredCellFormat";
+
 
 # Directory aliases.
 alias ll='ls -alF';
@@ -70,3 +102,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto';
     alias egrep='egrep --color=auto';
 fi
+
+# Only the newer Ubuntus get the unified names (datediff, dateadd...).
+alias datediff='dateutils.ddiff';

@@ -7,6 +7,7 @@
 	email = 46250621+DeadlySquad13@users.noreply.github.com
 [alias]
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  c = clone
   ; - Add all.
   aa = add -A
 	co = checkout
@@ -14,8 +15,10 @@
   br = branch
   st = status
   cm = commit -m
+  pl = pull
+  ps = push
   ; - Push head.
-  puh = push -u origin HEAD
+  psh = push -u origin HEAD
   unstage = restore --staged
   unstage-all = reset HEAD --
 [credential]
