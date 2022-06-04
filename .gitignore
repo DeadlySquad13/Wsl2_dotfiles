@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Compiled
+# - nvim
+**/packer_compiled.lua
+
 # C extensions
 *.so
 
