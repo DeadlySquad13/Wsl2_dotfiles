@@ -20,7 +20,7 @@
   ; - Push head.
   psh = push -u origin HEAD
   unstage = restore --staged
-  unstage-all = reset HEAD --
+  unstage-all = reset HEAD -- ; Performs mixed reset.
 [credential]
   helper = /mnt/e/soft/GitForWindows/Git/mingw64/libexec/git-core/git-credential-manager-core.exe
 [init]
