@@ -231,6 +231,11 @@ require('packer').startup({
       config = [[ require('config.treesitter')]],
     });
 
+    use({
+      'nvim-treesitter/playground',
+      event = 'BufEnter',
+    })
+
   -- - Jumping to file under cursor.
   use({ 'aklt/rel.vim' });
 
@@ -281,7 +286,21 @@ require('packer').startup({
   });
 
   -- * Status line.
-  use({ 'vim-airline/vim-airline' });
+  --use({ 'vim-airline/vim-airline' });
+    --use {
+      --'tjdevries/express_line.nvim',
+      ----event = 'VimEnter',
+      --requires = 'nvim-lua/plenary.nvim',
+      --config = [[ require('config.express_line') ]],
+    --}
+    use {
+      'nvim-lualine/lualine.nvim',
+      requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+      event = 'VimEnter',
+      config = [[ require('config.lualine') ]]
+    }
+
+
 
   -- Coding.
   -- Should be loaded after all plugins that use trigger key ('tab').
@@ -293,11 +312,21 @@ require('packer').startup({
   });
 
   -- * Theme.
-  use({ 'morhetz/gruvbox' });
-  use({ 'sainnhe/gruvbox-material' });
-  use({ 'vim-airline/vim-airline-themes' });
   -- - Helpers for creating a theme.
-  use({ 'tjdevries/colorbuddy.nvim' });
+    use({ 'rktjmp/lush.nvim' });
+  -- - Themes.
+  --use({ 'morhetz/gruvbox' });
+  --use({ 'sainnhe/gruvbox-material' });
+  use({ 'vim-airline/vim-airline-themes' });
+
+    use({
+      '~/nvim/CustomThemes/deadly-gruv.nvim',
+      config = [[ require('config.theme') ]],
+    });
+    --use({
+      --'DeadlySquad13/deadly-gruv.nvim',
+      --config = [[ require('config.theme') ]],
+    --});
 
   -- * Highlighting.
   -- - Colors.
@@ -395,11 +424,6 @@ require('packer').startup({
 
     --use {'kyazdani42/nvim-web-devicons', event = 'VimEnter'}
 
-    --use {
-      --'nvim-lualine/lualine.nvim',
-      --event = 'VimEnter',
-      --config = [[require('config.statusline')]]
-    --}
 
     --use({ 'akinsho/bufferline.nvim', event = 'VimEnter', config = [[require('config.bufferline')]] })
 
@@ -527,6 +551,9 @@ require('packer').startup({
     },
   },
 })
+
+
+--require('config.theme');
 
 local status, _ = pcall(require, 'packer_compiled')
 if not status then

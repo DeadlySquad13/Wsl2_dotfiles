@@ -158,7 +158,8 @@ local settings_mappings = {
   v = { 'Open Vim config' },
   -- Colors.
   c = { '<cmd>highlight<cr>', 'Show highlight groups colors' },
-  ['*'] = { function() vim.fn['SynStack']() end, 'Show highlight groups under the cursor' }
+  --['*'] = { function() vim.fn['SynStack']() end, 'Show highlight groups under the cursor' }
+  ['*'] = { ':TSHighlightCapturesUnderCursor<cr>', 'Show highlight groups under the cursor' }
 }
 
 local mappings = {

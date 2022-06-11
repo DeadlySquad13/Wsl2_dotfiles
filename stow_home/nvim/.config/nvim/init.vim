@@ -7,9 +7,6 @@ filetype plugin on
 set synmaxcol=256
 syntax sync minlines=256
 
-" Languages of used dictionaries.
-set spell spelllang=en_us,ru_ru
-
 " General settings.
 lua << EOF
   require('general_settings');
@@ -478,6 +475,7 @@ nnoremap [b :call searchpair('\[','','\]','b')<cr>
 " * Show group highlights of the item under the cursor.
 function! SynStack()
   if !exists("*synstack")
+    echo xyi
     return
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
@@ -517,24 +515,24 @@ runtime abbreviations.vim
 syntax enable
 set background=light
 
-colorscheme gruvbox-material
-highlight Pmenu ctermbg=240 gui=bold
+"colorscheme gruvbox-material
+"highlight Pmenu ctermbg=240 gui=bold
 " CursorLineNr doesn't work without it.
 set cursorline
-highlight LineNr ctermfg=248 guifg=#bbbbbb
-highlight CursorLineNr ctermfg=137
-highlight Statement ctermfg=186
+"highlight LineNr ctermfg=248 guifg=#bbbbbb
+"highlight CursorLineNr ctermfg=137
+"highlight Statement ctermfg=186
 " * Contrasting.
 " - 1. Declarations.
-highlight Identifier cterm=bold ctermfg=32
-highlight Comment gui=italicbold guifg=#5555aa
+"highlight Identifier cterm=bold ctermfg=32
+"highlight Comment gui=italicbold guifg=#5555aa
 " * Inconspicious.
-highlight Whitespace guifg=#cccccc
+"highlight Whitespace guifg=#cccccc
 "highlight SpecialKey guifg=#555555
 
 lua << EOF
   -- - Helpers for creating a theme.
-  require('config.theme')
+  -- require('config.theme')
 EOF
 
 " * Rnvimr.

@@ -38,10 +38,12 @@ cmp.setup {
     { name = 'path' }, -- Path completion.
     { name = 'nvim_lsp' }, -- Nvim-lsp.
     { name = 'ultisnips' }, -- Ultisnips.
-    -- { name = 'nvim_lua' }, -- Nvim-lua functions
+		-- Setting spell (and spelllang) is mandatory to use spellsuggest.
+		-- { name = 'spell' }, -- Spellsuggest.
+		{ name = 'nvim_lua' }, -- Nvim-lua functions.
+	  { name = 'buffer', keyword_length = 2 }, -- Buffer word completion.
     -- { name = 'omni' },
-    -- { name = 'buffer', keyword_length = 2 }, -- Buffer word completion.
-    -- { name = 'emoji', insert = true, } -- Emoji completion
+		{ name = 'emoji', insert = true, } -- Emoji completion.
     }, {
       { name = 'buffer' },
     }

@@ -27,6 +27,13 @@ vim.g.vimsyn_embed = 'l';
 set.whichwrap:append('hl');
 
 local function load_options()
+	local buffer_local_settings = {
+    -- * Languages.
+    spell = true,
+    -- - Language dictionaries.
+    spelllang = { 'en_us', 'ru_ru' },
+	}
+
   local global_local = {
     -- * Search.
     -- - Making search case insensitive. Add \c to the command to make it sensitive.
@@ -42,9 +49,12 @@ local function load_options()
     -- - Folding. a: augroups, f - functions.
     --let g:vimsyn_folding='af'
 
-    -- Behave like smartcase when adding word to dictionary.
+
+
+    -- * Languages.
+    -- - Behave like smartcase when adding word to dictionary.
     spellcapcheck = '',
-    -- Think of camelCased words as separate words (camel and Cased will be parsed). 
+    -- - Think of camelCased words as separate words (camel and Cased will be parsed). 
     spelloptions = 'camel',
 
     -- Insert only one space after joining lines ending with '.', '?'...
@@ -198,6 +208,9 @@ local function load_options()
 
   --vim.g.python_host_prog = '/usr/bin/python'
   --vim.g.python3_host_prog = '/usr/local/bin/python3'
+  for name, value in pairs(buffer_local_settings) do
+    vim.opt[name] = value
+  end
   for name, value in pairs(global_local) do
     vim.o[name] = value
   end
