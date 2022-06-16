@@ -1,10 +1,6 @@
 local ENV = require('global');
 local set = vim.opt;
 
-local global = {
-  cache_dir = ENV.HOME .. '/.cache/nvim/'
-}
-
 local function bind_option(options)
   for k, v in pairs(options) do
     if v == true or v == false then
@@ -106,15 +102,15 @@ local function load_options()
     virtualedit = 'block',
     termguicolors  = true,
 
-    -- Caching.
+    -- Supplementary data persistance.
     backup = false,
     writebackup = false,
     swapfile = false,
-    directory = global.cache_dir .. "swag/",
-    undodir = global.cache_dir .. "undo/",
-    backupdir = global.cache_dir .. "backup/",
-    viewdir = global.cache_dir .. "view/",
-    spellfile = global.cache_dir .. "spell/en.uft-8.add",
+    directory = ENV.NVIM_DATA .. '/swag/',
+    undodir = ENV.NVIM_DATA .. '/undo/',
+    backupdir = ENV.NVIM_DATA .. '/backup/',
+    viewdir = ENV.NVIM_DATA .. '/view/',
+    spellfile = ENV.NVIM_DATA .. '/spell/en.uft-8.add',
     history = 2000,
 
     --mouse          = "nv",
