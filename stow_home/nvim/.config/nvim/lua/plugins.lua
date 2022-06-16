@@ -32,6 +32,16 @@ require('packer').startup({
     use({ 'wbthomason/packer.nvim', opt = true })
 
     -- General.
+    -- * UI Utilities.
+    -- - Prettier wrappers for vim.ui.select. Can use telescope layouts.
+    use ({
+      'stevearc/dressing.nvim'
+    });
+    -- - Add nice looking ui for notifications.
+    use ({
+      'rcarriga/nvim-notify',
+    });
+
     use ({
       'folke/which-key.nvim',
       event = 'VimEnter',
@@ -84,6 +94,32 @@ require('packer').startup({
       'olimorris/persisted.nvim',
       --module = "persisted", -- For lazy loading
       config = [[ require('config.persisted') ]],
+    });
+
+    -- * Window management.
+    -- - Keep window layout after closing the buffer.
+    use({
+      'famiu/bufdelete.nvim',
+    });
+    -- - Focus on window: keep it dynamically larger, remove numbers, cursor
+    --   and signcolumn on inactive windows.
+    -- To enable lazy load @see{github plugin page @link{https://github.com/beauwilliams/focus.nvim}}
+    use({
+      'beauwilliams/focus.nvim',
+
+      config = [[ require('config.focus') ]],
+    });
+    -- Jump to specified window.
+    use({
+      'https://gitlab.com/yorickpeterse/nvim-window.git',
+
+      config = [[ require('config.nvim-window') ]],
+    });
+    -- Move windows without changing layout.
+    use({
+      'sindrets/winshift.nvim',
+
+      config = [[ require('config.winshift') ]],
     });
 
 
