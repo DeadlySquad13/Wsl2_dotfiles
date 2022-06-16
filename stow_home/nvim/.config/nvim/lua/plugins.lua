@@ -70,8 +70,7 @@ require('packer').startup({
       config = [[ require('config.tinykeymap') ]]
     });
 
-  -- * Starting page.
-  --use({ 'mhinz/vim-startify' });
+    -- * Starting page.
     use({
       'glepnir/dashboard-nvim',
       cond = function()
@@ -80,11 +79,13 @@ require('packer').startup({
       config = [[ require('config.dashboard') ]],
     });
 
-  -- * Sessions.
-  --use({ 'rmagatti/auto-session' });
+    -- * Session management.
+    use({
+      'olimorris/persisted.nvim',
+      --module = "persisted", -- For lazy loading
+      config = [[ require('config.persisted') ]],
+    });
 
-  -- * Session management.
-  --use({ 'rmagatti/session-lens' });
 
   -- * Russian layout.
   use({ 'powerman/vim-plugin-ruscmd' });
@@ -218,17 +219,19 @@ require('packer').startup({
 
     -- * Telescope deps.
     use({ 'nvim-lua/plenary.nvim' });
-    use {
+    use({
       'nvim-telescope/telescope.nvim',
-      requires = {{ 'nvim-lua/plenary.nvim' }}
-    }
+      requires = {{ 'nvim-lua/plenary.nvim' }},
+
+      config = [[ require('config.telescope') ]],
+    });
 
     -- - We recommend updating the parsers on update
     use({
       'nvim-treesitter/nvim-treesitter',
       event = 'BufEnter',
       run = ':TSUpdate',
-      config = [[ require('config.treesitter')]],
+      config = [[ require('config.treesitter') ]],
     });
 
     use({
