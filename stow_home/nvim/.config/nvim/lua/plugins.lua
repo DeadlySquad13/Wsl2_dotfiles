@@ -300,11 +300,11 @@ require('packer').startup({
     -- })
   -- Visuals.
   -- Show match number and index for searching
-  use ({
-    'kevinhwang91/nvim-hlslens',
-    branch = 'main',
-    keys = {{'n', '*'}, {'n', '#'}, {'n', 'n'}, {'n', 'N'}}
-  })
+  --use ({
+    --'kevinhwang91/nvim-hlslens',
+    --branch = 'main',
+    --keys = {{'n', '*'}, {'n', '#'}, {'n', 'n'}, {'n', 'N'}}
+  --})
   -- * Highlight range of an exmode command.
   use({ 'winston0410/cmd-parser.nvim' });
   use({
@@ -332,12 +332,20 @@ require('packer').startup({
       --requires = 'nvim-lua/plenary.nvim',
       --config = [[ require('config.express_line') ]],
     --}
-    use {
+    use({
       'nvim-lualine/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons', opt = true },
       event = 'VimEnter',
       config = [[ require('config.lualine') ]]
-    }
+    });
+
+    -- * Buffer line.
+    use({
+      'akinsho/bufferline.nvim',
+      requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+      event = 'VimEnter',
+      config = [[ require('config.bufferline') ]],
+    })
 
 
 
@@ -355,7 +363,7 @@ require('packer').startup({
     use({ 'rktjmp/lush.nvim' });
   -- - Themes.
   --use({ 'morhetz/gruvbox' });
-  --use({ 'sainnhe/gruvbox-material' });
+  use({ 'sainnhe/gruvbox-material' });
   use({ 'vim-airline/vim-airline-themes' });
 
     use({
@@ -464,7 +472,6 @@ require('packer').startup({
     --use {'kyazdani42/nvim-web-devicons', event = 'VimEnter'}
 
 
-    --use({ 'akinsho/bufferline.nvim', event = 'VimEnter', config = [[require('config.bufferline')]] })
 
     -- Highlight URLs inside vim
     --use({'itchyny/vim-highlighturl', event = 'VimEnter'})
