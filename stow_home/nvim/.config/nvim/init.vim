@@ -30,9 +30,6 @@ let g:omnipresence_hotkey = 'f11'
 " - 'investigate help'
 noremap <leader>gih K
 
-" - Search for tags.
-nnoremap <leader>st :%s;<\w*>\(<\\\w*>\)\?;;g<left><left>
-
 " # Custom commands.
 " * File related.
 " - Move visually selected chunk of text into a new file.
@@ -53,35 +50,6 @@ augroup Dashboard
   autocmd User dashboardReady nnoremap <buffer> <leader>l <cmd>SessionLoad<CR>
 augroup END
 
-" Session.
-" * Save automatically.
-"function! MakeSession()
-  "let b:sessiondir = $HOME . "/.vim/sessions" . getcwd()
-  "if (filewritable(b:sessiondir) != 2)
-    "exe 'silent !mkdir -p ' b:sessiondir
-    "redraw!
-  "endif
-  "let b:filename = b:sessiondir . '/session.vim'
-  "exe "mksession! " . b:filename
-"endfunction
-
-"" * Load automatically.
-"function! LoadSession()
-  "let b:sessiondir = $HOME . "/.vim/sessions" . getcwd()
-  "let b:sessionfile = b:sessiondir . "/session.vim"
-  "if (filereadable(b:sessionfile))
-    "exe 'source ' b:sessionfile
-  "else
-    "echo "No session loaded."
-  "endif
-"endfunction
-
-"" Adding automatons for when entering or leaving Vim
-"if(argc() == 0)
-  "au VimEnter * nested :call LoadSession()
-"endif
-"au VimLeave * :call MakeSession()
-
 " LSP
 " * Autocomplete.
 set completeopt=menu,menuone,noselect
@@ -89,23 +57,6 @@ let g:autopep8_disable_show_diff=1
 
 " Use omni completion provided by lsp.
 autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
-" Ultisnips.
-"let g:UltiSnipsExpandTrigger = '<c-g>'
-let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'             
-let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jump_forward)'  
-let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jump_backward)'
-let g:UltiSnipsListSnippets = '<c-x><c-s>'                            
-let g:UltiSnipsRemoveSelectModeMappings = 0 
-" - Optimizing `provider#python3#Call()` by hardcoding python path (which
-"   python).
-lua << EOF
-  vim.g.loaded_python_provider = 1
-  vim.g.python_host_skip_check = 1
-  vim.g.python_host_prog = '/usr/bin/python'
-  vim.g.python3_host_skip_check = 1
-  vim.g.python3_host_prog = '/usr/bin/python'
-EOF
 
 " * General.
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
@@ -184,24 +135,9 @@ nnoremap <c-w>v :vnew<cr>
 " * Remaping line concatenation for use of j with modifier in non-vim apps.
 noremap <a-j> J
 
-" * Search and replace:
-" - Current word under cursor.
-nnoremap <leader>sw :%s;\<<c-r><c-w>\>;;g<left><left>
-"vnoremap <leader>sw <esc>:%s;\<<c-r><c-w>\>;;g<left><left>
-
 " NERDCommenter.
 nmap <C-_> <Plug>NERDCommenterToggle
 vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
-
-" * Shortcuts for settings.
-" - Open vimrc in vertical split
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-" - Source vimrc.
-nnoremap <leader>sv :source $MYVIMRC<cr>
-" - Source current file (indented for lua file).
-nnoremap <leader>sl :source %<cr>
-" - Recompile settings after changing Packer configuration.
-nnoremap <leader>sp :source $HOME/.config/nvim/lua/plugins.lua<cr>:PackerCompile<cr>
 
 "function! HorizontalScrollMode( call_char )
     "if &wrap
