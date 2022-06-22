@@ -1,22 +1,37 @@
 --local prequire = require('utils').prequire;
 local tinykeymap_transitive_catalizator = '.';
 
+-- Split line by delimiter: '<,'>s;\(delimiter\) ;\1\r;g
+-- Uppercase all comments and add dot at the end:
+--   '<,'>s;^\(-- \w\)\(.*\);\U\1\e\2.;
 -- # Buffer.
---   @see{the lua api at @link{https://github.com/akinsho/bufferline.nvim/blob/main/lua/bufferline.lua}}
-buffer_mappings = {
+local buffer_mappings = {
   name = 'Buffer',
 
+  -- Deletes buffer without closing vim if it was in the only window.
+  d = { ':Bdelete<cr>', 'Delete' },
+
+  -- @see{the lua api at @link{https://github.com/akinsho/bufferline.nvim/blob/main/lua/bufferline.lua}}
   --p = { function() bufferline.pick_buffer() end, 'Pick' },
   p = { '<cmd>BufferLinePick<cr>', 'Pick' },
 }
 
+local comment_mappings = {
+  d = { ':Neogen<cr>', 'Create Documentation comment' },
+}
+
 local e_mappings = {
   name = 'Edit',
+
+  e = { ':ChooseAndEditConfigs<cr>', 'Choose and Edit configs'},
   -- Open vimrc in vertical split.
-  v = { '<cmd>vsplit $MYVIMRC<cr>', 'Edit vimrc' },
+  v = { '<cmd>vsplit $MYVIMRC<cr>', 'Vimrc' },
+  s = { '<cmd>UltiSnipsEdit<cr>', 'Snippets definitions'},
+  S = { '<cmd>UltiSnipsEdit!<cr>', 'Choose Snippets definitions'},
 }
 
 -- # File.
+-- Buffer mappings are mostly used, for now don't know what to place here.
 local file_mappings = {
   name = 'File'
 }
@@ -32,6 +47,21 @@ local go_mappings = {
 -- for example, in browser.
 local help_mappings = {
   name = 'Help',
+
+  -- `<c-r><c-w>` won't work on namespaced commands like 
+  --   vim.split - it will send you to vim or split depending on your cursor
+  --   location. Default command K can work on visually selected text solving
+  --   this issue. Unfortunately, I can't get visually selected by myself, it
+  --   seems complicated to achieve with marks.
+  -- Maybe this might help:
+  --   https://github.com/theHamsta/nvim-treesitter/blob/a5f2970d7af947c066fb65aef2220335008242b7/lua/nvim-treesitter/incremental_selection.lua#L22-L30
+  -- But here author gets only range, I still don't understand how to get the
+  --   text by that range.
+  -- Here author gets text somehow but in vimscript:
+  --   https://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
+  --Should be `:set keywordprg=:help` (on Linux will be `:Man` by default!)
+  v = { 'K', 'Vim help' },
+  m = { ':Man <c-r><c-w><cr>', 'Man page' },
 }
 
 -- # Jump. Movement inside file.
@@ -70,6 +100,7 @@ local toggle_mappings = {
   name = 'Toggle',
 
   f = { ':FocusToggle<cr>', 'Focus' },
+  i = { function() require('incline').toggle() end, 'Incline (winbar)' },
 }
 
 -- # Navigation. Helps find things, used as lookup table (navigation panel).
@@ -138,7 +169,7 @@ local mappings = {
     name = 'Leader',
     -- a = a_mappings,
     b = buffer_mappings,
-    -- c = comment_mappings, -- Not sure, maybe leave <leader><c-/>.
+    c = comment_mappings, -- <leader><c-/> can be used instead if there's a candidate for `c`.
     -- d = d_mappings,
     e = e_mappings,
     f = file_mappings,
@@ -203,7 +234,7 @@ local x_mappings = {
     name = 'Leader',
     -- a = a_mappings,
     -- b = buffer_mappings,
-    -- c = comment_mappings, -- Not sure, maybe leave <leader><c-/>.
+    c = comment_mappings, -- <leader><c-/> can be used instead if there's a candidate for `c`.
     -- d = d_mappings,
     -- e = e_mappings,
     -- f = file_mappings,

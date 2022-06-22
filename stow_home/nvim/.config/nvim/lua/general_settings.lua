@@ -136,6 +136,7 @@ local function load_options()
     --timeoutlen     = 500,
     --ttimeoutlen    = 10,
     --updatetime     = 100,
+    lazyredraw = true,
     --redrawtime     = 1500,
     --ignorecase     = true,
     --smartcase      = true,
@@ -166,19 +167,23 @@ local function load_options()
     --showtabline    = 2,
     --winwidth       = 30,
     --winminwidth    = 10,
-    --pumheight      = 15,
     --helpheight     = 12,
     --previewheight  = 12,
     --showcmd        = false,
     --cmdheight      = 2,
     --cmdwinheight   = 5,
     --equalalways    = false,
-    --laststatus     = 2,
+    laststatus     = 0,
+    fillchars = 'fold: ,stlnc:-',
     --display        = "lastline",
     --showbreak      = "↳  ",
     --listchars      = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",
-    --pumblend       = 10,
+    pumheight      = 20,
+    pumblend       = 10, -- Transparency of the popup menu (for autocompletion).
     --winblend       = 10,
+
+   -- Program that will be used when asking for help by pressing K
+   keywordprg = ':help',
   }
 
   local bw_local  = {
@@ -214,4 +219,6 @@ local function load_options()
 end
 
 load_options()
+
+require('config.commands');
 

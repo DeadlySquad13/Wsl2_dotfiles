@@ -13,8 +13,15 @@ focus.setup({
   -- Prevents focus automatically resizing windows based on configured excluded
   --   filetypes or buftypes Query filetypes using :lua print(vim.bo.ft) or
   --   buftypes using :lua print(vim.bo.buftype).
-  excluded_filetypes = { 'toggleterm' },
-  --excluded_buftypes = { 'help' },
+  excluded_filetypes = {
+    'TelescopePrompt',
+    'toggleterm',
+  },
+  excluded_buftypes = {
+    'help',
+    'prompt',
+    'popup',
+  },
   -- Enable resizing for excluded filetypes using forced_filetypes.
   --forced_filetypes = { 'dan_repl' },
 

@@ -123,43 +123,52 @@ require('packer').startup({
     });
 
 
-  -- * Russian layout.
-  use({ 'powerman/vim-plugin-ruscmd' });
+    -- * Russian layout.
+    use({ 'powerman/vim-plugin-ruscmd' });
 
-  -- LSP.
-  use {
-    'williamboman/nvim-lsp-installer',
-    {
+    -- LSP.
+    use({
+      'williamboman/nvim-lsp-installer',
+      {
         'neovim/nvim-lspconfig',
         -- Lsp relies on cmp-nvim-lsp during capabilities initialization.
         after = 'cmp-nvim-lsp',
         config = [[ require('config.lsp') ]]
-    }
-  }
-  -- * Snippets.
-  use({ 'SirVer/ultisnips' });
-  -- - Collections of snippets.
-  use({ 'honza/vim-snippets' });
-  use({ 'mattn/emmet-vim' });
+      }
+    });
+    -- # Snippets.
+    use({
+      'SirVer/ultisnips',
+
+      config = [[ require('config.ultisnips') ]],
+    });
+    -- * Collections of snippets.
+    -- - General and specific for popular filetypes.
+    use({ 'honza/vim-snippets' });
+    -- - Emmet for html.
+    use({ 'mattn/emmet-vim' });
 
   -- * Autocomplete
-   use ({
-      "hrsh7th/nvim-cmp",
+    use ({
+      'hrsh7th/nvim-cmp',
       -- event = "InsertEnter", -- for lazyload
       requires = {
-        { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
-        { "f3fora/cmp-spell", after = "nvim-cmp" },
-        { "hrsh7th/cmp-path", after = "nvim-cmp" },
-        { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
-        { "hrsh7th/cmp-calc", after = "nvim-cmp" },
-        { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
-        { "hrsh7th/cmp-omni", after = "nvim-cmp" },
+        { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
+        { 'f3fora/cmp-spell', after = 'nvim-cmp' },
+        { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
+        { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
+        { 'hrsh7th/cmp-calc', after = 'nvim-cmp' },
+        { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
+        { 'hrsh7th/cmp-omni', after = 'nvim-cmp' },
         -- for ultisnips users.
-        { "quangnguyen30192/cmp-nvim-ultisnips", after = { "nvim-cmp", 'ultisnips' } },
+        { 'quangnguyen30192/cmp-nvim-ultisnips', after = { 'nvim-cmp', 'ultisnips' } },
 
         -- Not yet intergrated with ultisnips, have to separately define jumps
         --   in mappings.
         { 'danymat/neogen' },
+
+        -- Cool icons.
+        { 'onsails/lspkind.nvim' },
       },
       config = [[ require('config.lsp.completion') ]],
     })
@@ -174,7 +183,6 @@ require('packer').startup({
     'windwp/nvim-autopairs',
     config = [[ require ('config.nvim_autopairs') ]]
   });
-
   -- * Comments.
   use({ 'preservim/nerdcommenter', event = 'VimEnter' });
 
@@ -249,8 +257,17 @@ require('packer').startup({
 
     -- # Navigation.
     -- * Inside  file.
+    -- - Marks.
+    use({
+      'chentoast/marks.nvim',
+
+      config = [[ require('config.marks') ]],
+    });
     -- * Across files.
+    -- - Harpoon?
+    -- - Ranger filemanager.
     use({ 'kevinhwang91/rnvimr' });
+    -- - NERDTree.
     use({ 'preservim/nerdtree' });
 
     -- * Telescope deps.
@@ -272,7 +289,9 @@ require('packer').startup({
 
     use({
       'nvim-treesitter/playground',
+
       event = 'BufEnter',
+      requires = 'nvim-treesitter/nvim-treesitter',
     })
 
   -- - Jumping to file under cursor.
@@ -312,7 +331,7 @@ require('packer').startup({
     config = [[ require('config.range_highlight') ]]
   });
 
-  -- * Workspace.
+  -- # Workspace.
   use({
     'Pocco81/TrueZen.nvim',
     config = [[ require ('config.true_zen') ]]
@@ -324,14 +343,14 @@ require('packer').startup({
     config = [[ require ('config.twilight') ]]
   });
 
-  -- * Status line.
-  --use({ 'vim-airline/vim-airline' });
-    --use {
-      --'tjdevries/express_line.nvim',
-      ----event = 'VimEnter',
-      --requires = 'nvim-lua/plenary.nvim',
-      --config = [[ require('config.express_line') ]],
-    --}
+    -- * Status line.
+    -- Move status line to the tmux.
+    use({
+      'vimpostor/vim-tpipeline',
+
+      config = [[ require('config.tpipeline') ]],
+    });
+
     use({
       'nvim-lualine/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons', opt = true },
@@ -346,6 +365,13 @@ require('packer').startup({
       event = 'VimEnter',
       config = [[ require('config.bufferline') ]],
     })
+
+    -- * Winbar: statusline at the top of the window.
+    use({
+      'b0o/incline.nvim',
+
+      config = [[ require('config.incline') ]],
+    });
 
 
 
@@ -409,6 +435,14 @@ require('packer').startup({
       -- Uncomment next line if you want to follow only stable versions.
       -- tag = "*",
     });
+    --use({
+			--"danymat/neogen",
+			---- "~/Developer/neogen/",
+			--config = function()
+				---- require("neogen").setup({ snippet_engine = "luasnip" })
+			--end,
+			--requires = "nvim-treesitter/nvim-treesitter",
+		--});
 
     -- Python indent (follows the PEP8 style)
     --use({ 'Vimjas/vim-python-pep8-indent', ft = { 'python' } })
@@ -597,9 +631,6 @@ require('packer').startup({
     },
   },
 })
-
-
---require('config.theme');
 
 local status, _ = pcall(require, 'packer_compiled')
 if not status then

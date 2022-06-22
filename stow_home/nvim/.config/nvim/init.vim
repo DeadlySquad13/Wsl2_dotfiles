@@ -7,16 +7,12 @@ filetype plugin on
 set synmaxcol=256
 syntax sync minlines=256
 
-" General settings.
-lua << EOF
-  require('general_settings');
-EOF
 " Follow directory according to current buffer. Helps creating files relatively.
 set autochdir
 
-" Plugins.
+" Lua config.
 lua << EOF
-  require('plugins');
+  require('init');
 EOF
 
 " General keybindings.
@@ -200,7 +196,7 @@ set splitright
 " * Folding.
 " - Characters shown on the right of the fold.
 " Middle dot 0119·
-set fillchars+=fold:\ 
+"set fillchars+=fold:\ 
 set foldtext=CustomFoldText()
 
 setlocal foldexpr=GetPotionFold(v:lnum)
