@@ -66,7 +66,7 @@ alias julab_start='jupyter-lab --no-browser';
 
 # * Jupyter Notebook.
 # - Start jupyter notebook server.
-alias junote='jupyter notebook';
+alias junote='jupyter notebook --no-browser';
 
 # * Jupyter ascending.
 # - Make pair python file for notebook via jupyter ascending.
