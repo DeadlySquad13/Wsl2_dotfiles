@@ -3,10 +3,10 @@
 # for examples
 
 # If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+#case $- in
+    #*i*) ;;
+      #*) return;;
+#esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -50,7 +50,7 @@ then
 fi
 
 # Enable ssh authentication agent (for ssh-add).
-eval `ssh-agent -s`
+#eval `ssh-agent -s`
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
