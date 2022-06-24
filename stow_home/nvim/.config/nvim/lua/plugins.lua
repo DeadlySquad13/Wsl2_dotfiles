@@ -146,7 +146,19 @@ require('packer').startup({
     -- - General and specific for popular filetypes.
     use({ 'honza/vim-snippets' });
     -- - Emmet for html.
-    use({ 'mattn/emmet-vim' });
+    use({
+      'mattn/emmet-vim',
+
+      -- Specifies code to run before this plugin is loaded.
+      --  Have to disable it globally before it's loaded. Otherwise plugin will
+      --  polute all filetypes with it's keybindings after it has been loaded
+      --  in some file.
+      setup = [[ require('config.emmet-vim_setup') ]],
+
+      ft = { 'css', 'html', 'javascriptreact', 'typescriptreact' },
+
+      config = [[ require('config.emmet-vim') ]],
+    });
 
   -- * Autocomplete
     use ({
@@ -162,10 +174,6 @@ require('packer').startup({
         { 'hrsh7th/cmp-omni', after = 'nvim-cmp' },
         -- for ultisnips users.
         { 'quangnguyen30192/cmp-nvim-ultisnips', after = { 'nvim-cmp', 'ultisnips' } },
-
-        -- Not yet intergrated with ultisnips, have to separately define jumps
-        --   in mappings.
-        { 'danymat/neogen' },
 
         -- Cool icons.
         { 'onsails/lspkind.nvim' },
@@ -431,6 +439,9 @@ require('packer').startup({
     use({
       'danymat/neogen',
       config = [[ require('config.neogen') ]],
+      --config = function()
+        --require('neogen').setup();
+      --end,
       requires = 'nvim-treesitter/nvim-treesitter',
       -- Uncomment next line if you want to follow only stable versions.
       -- tag = "*",
