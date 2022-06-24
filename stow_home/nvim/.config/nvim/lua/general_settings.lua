@@ -174,7 +174,7 @@ local function load_options()
     --cmdwinheight   = 5,
     --equalalways    = false,
     laststatus     = 0,
-    fillchars = 'fold: ,stlnc:-',
+    fillchars = 'fold: ',
     --display        = "lastline",
     --showbreak      = "↳  ",
     --listchars      = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",

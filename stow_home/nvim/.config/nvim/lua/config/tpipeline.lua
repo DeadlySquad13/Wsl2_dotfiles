@@ -1,4 +1,4 @@
-local global_local = {
+local tpipeline_settings = {
   tpipeline_autoembed = 0,
   tpipeline_fillcentre = 1,
   --tpipeline_preservebg = 1,
@@ -7,13 +7,17 @@ local global_local = {
   --   them manually:
   tpipeline_clearstl = 1,
 }
---local global_local = ([test]
 
---)
+-- Settings crisp borders.
+local tpipeline_related_settings = {
+  fillchars = vim.o.fillchars .. ',' .. 'stlnc:-,stl:-',
+}
 
-local fillchars = 'fold: ,stlnc:-,stl:-';
+for name, value in pairs(tpipeline_settings) do
+  vim.g[name] = value;
+end
 
-for name, value in pairs(global_local) do
-  vim.g[name] = value
+for name, value in pairs(tpipeline_related_settings) do
+  vim.o[name] = value;
 end
 
