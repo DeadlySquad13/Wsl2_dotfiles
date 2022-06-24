@@ -203,6 +203,8 @@ cmp.setup {
           return snippets_engine.jump()
         end
         
+        -- Not yet intergrated with ultisnips, have to separately define jumps
+        --   in mappings.
         if neogen.jumpable() then
           return neogen.jump_next()
         end
@@ -220,6 +222,8 @@ cmp.setup {
         end
 
         local backwards = true
+        -- Not yet intergrated with ultisnips, have to separately define jumps
+        --   in mappings.
         if neogen.jumpable(backwards) then
           return neogen.jump_prev()
         end

@@ -14,14 +14,14 @@ local snippets_create_autocmd = function(options)
 end
 
 snippets_create_autocmd({
-  desc = 'Adds packer.snippets as a main snippet definition source while editing plugins file.',
+  desc = 'Added packer.snippets as a main snippet definition source while editing plugins file',
 
   pattern = 'plugins.lua',
   command = 'UltiSnipsAddFiletypes packer.lua',
 });
 
 snippets_create_autocmd({
-  desc = 'Adds jupyter_ascending.snippets as a main snippet definition source while editing python files ending on sync.py.',
+  desc = 'Added jupyter_ascending.snippets as a main snippet definition source while editing python files ending on sync.py',
 
   pattern = '*.sync.py',
   command = 'UltiSnipsAddFiletypes jupyter_ascending.py',
