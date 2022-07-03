@@ -132,8 +132,8 @@ nnoremap <c-w>v :vnew<cr>
 noremap <a-j> J
 
 " NERDCommenter.
-nmap <C-_> <Plug>NERDCommenterToggle
-vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
+" nmap <C-_> <Plug>NERDCommenterToggle
+" vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
 
 "function! HorizontalScrollMode( call_char )
     "if &wrap

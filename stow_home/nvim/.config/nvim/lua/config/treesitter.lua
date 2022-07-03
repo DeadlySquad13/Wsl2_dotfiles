@@ -53,7 +53,14 @@ require'nvim-treesitter.configs'.setup {
     max_file_lines = nil, -- Do not enable for files with more than n lines, int
     -- colors = {}, -- table of hex strings
     -- termcolors = {} -- table of colour name strings
-  }
+  },
+
+  context_commentstring = {
+    enable = true,
+    -- Disable the CursorHold autocommand of this plugin to work with
+    --   Comment.nvim.
+    enable_autocmd = false,
+  },
 }
 
 -- Needed for parser generator to work. TS will try compilers from left to

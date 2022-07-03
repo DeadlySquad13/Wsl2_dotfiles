@@ -7,21 +7,34 @@ local env = require('global')
 -- testing.
 ---@param data any data.
 ---@return data without changes.
-_G.P = function (data)
+_G.P = function(data)
   vim.pretty_print(data)
   return data;
 end
 
+--- Notify user with nvim.notify. If it is not available, fallback to
+--vim.notify.
+---@param message to display.
+---@param level of notification (see `:h vim.log.levels`).
+---@param opts additional options for nvim.notify visualization (see `:h
+--notify.Options`).
+_G.notify = function(message, level, opts)
+  local nvim_notify_is_available, nvim_notify = pcall(require, 'notify');
+
+  local notify = vim.notify;
+  if nvim_notify_is_available then
+    notify = nvim_notify;
+  end
+
+  notify(message, level, opts)
+end
+
 local function prequire(plugin_name)
   local plugin_loading_error_handler = function(error)
-    local nvim_notify_is_available, nvim_notify = pcall(require, 'notify');
-
-    local notify = vim.notify;
-    if nvim_notify_is_available then
-      notify = nvim_notify;
-    end
-
-    notify('Error in loading plugin ' .. plugin_name .. '!');
+    notify(
+      'Error in loading plugin ' .. plugin_name .. '!',
+      vim.log.levels.ERROR
+    );
   end
 
   local status_ok, plugin = xpcall(require, plugin_loading_error_handler, plugin_name);
@@ -32,6 +45,7 @@ local function prequire(plugin_name)
 
   return status_ok, plugin;
 end
+
 
 -- Shortcut for printing variables in a meaningless way: showing contents of a
 --   table via vim.inspect. Used log as console.log in js works pretty the same
@@ -91,7 +105,41 @@ local function apply_global_variables(global_variables)
   end
 end
 
-return {
+local function is_loaded(plugin_name)
+  return packer_plugins and packer_plugins[plugin_name] and
+    packer_plugins[plugin_name].loaded;
+end
+
+--- Convert list to the table that you can use for fast find.
+-- It is indexed so you can easily get index of the item in initial list. If
+-- you work with large list, you may need `Set`.
+---@param list (table) list of items { 'a', 'b', 'c' }.
+---@return (table) table #table of items { 'a' = 1, 'b' = 2, 'c' = 3 }.
+local function IndexedSet(list)
+  local set = {}
+  for i, item in ipairs(list) do
+    set[item] = i
+  end
+  return set
+end
+
+---Create a function that runs functions passed in the argument.
+--They will be called in the same order that they were passed in.
+--Useful for composing multiple `on_attach` functions.
+---@vararg (function) variable number of functions
+---@return (function) composed function that will run all functions (accepts
+--variable number of arguments).
+local function compose(...)
+  local fns = { ... }
+
+  return function(...)
+    for _, fn in ipairs(fns) do
+      fn(...)
+    end
+  end
+end
+
+local M = {
   prequire = prequire,
   log = log,
 
@@ -108,5 +156,24 @@ return {
       global = apply_global_variables,
     },
   },
+
+  is_loaded = is_loaded,
+
+  compose = compose,
+
+  IndexedSet = IndexedSet,
 };
 
+
+--- Convert list to the table that you can use for fast find.
+---@param list (table) list of items { 'a', 'b', 'c' }.
+---@return (table) table #table of items { 'a' = true, 'b' = true, 'c' = true }.
+M.Set = function (list)
+  local set = {}
+  for _, item in ipairs(list) do
+    set[item] = true
+  end
+  return set
+end
+
+return M

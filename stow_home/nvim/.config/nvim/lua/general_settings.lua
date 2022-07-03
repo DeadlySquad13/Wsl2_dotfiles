@@ -122,12 +122,13 @@ local function load_options()
     --virtualedit    = "block",
     --encoding       = "utf-8",
     --viewoptions    = "folds,cursor,curdir,slash,unix",
-    --sessionoptions = "curdir,help,tabpages,winsize",
+    --sessionoptions = "blank,buffers,curdir,folds,localoptions,options,help,tabpages,winsize",
+    sessionoptions = "buffers,curdir,folds,help,tabpages,winsize",
     --clipboard      = "unnamedplus",
     --wildignorecase = true,
     --wildignore     = ".git,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**",
 
-    --shada          = "!,'300,<50,@100,s10,h",
+    shada          = "!,'300,<50,@100,s10,h",
     --backupskip     = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim",
     --smarttab       = true,
     --shiftround     = true,
@@ -173,7 +174,7 @@ local function load_options()
     --cmdheight      = 2,
     --cmdwinheight   = 5,
     --equalalways    = false,
-    laststatus     = 0,
+    laststatus     = 0, -- Better to use 0 with tpipeline.
     fillchars = 'fold: ',
     --display        = "lastline",
     --showbreak      = "↳  ",
@@ -182,7 +183,7 @@ local function load_options()
     pumblend       = 10, -- Transparency of the popup menu (for autocompletion).
     --winblend       = 10,
 
-   -- Program that will be used when asking for help by pressing K
+   -- Program that will be used when asking for help by pressing K.
    keywordprg = ':help',
   }
 

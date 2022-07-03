@@ -1,6 +1,5 @@
 --local utils = require('utils')
 local fn = vim.fn
-
 vim.g.package_home = fn.stdpath('data') .. '/site/pack/packer/'
 local packer_install_dir = vim.g.package_home .. '/opt/packer.nvim'
 
@@ -12,7 +11,11 @@ else
 end
 
 local packer_repo = string.format(plug_url_format, 'wbthomason/packer.nvim')
-local install_cmd = string.format('10split |term git clone --depth=1 %s %s', packer_repo, packer_install_dir)
+local install_cmd = string.format(
+  '10split |term git clone --depth=1 %s %s',
+  packer_repo,
+  packer_install_dir
+)
 
 -- Auto-install packer in case it hasn't been installed.
 if fn.glob(packer_install_dir) == '' then
@@ -32,17 +35,28 @@ require('packer').startup({
     use({ 'wbthomason/packer.nvim', opt = true })
 
     -- General.
+    use({ 'nvim-lua/plenary.nvim' })
     -- * UI Utilities.
     -- - Prettier wrappers for vim.ui.select. Can use telescope layouts.
-    use ({
-      'stevearc/dressing.nvim'
-    });
-    -- - Add nice looking ui for notifications.
-    use ({
-      'rcarriga/nvim-notify',
-    });
+    use({
+      'stevearc/dressing.nvim',
 
-    use ({
+      config = [[ require('config.dressing') ]],
+    })
+    -- - Add nice looking ui for notifications.
+    use({
+      'rcarriga/nvim-notify',
+      
+      config = [[ require('config.nvim-notify') ]],
+    })
+    -- - Progress handler.
+    use({
+      'j-hui/fidget.nvim',
+
+      config = [[ require('config.fidget') ]],
+    })
+
+    use({
       'folke/which-key.nvim',
       event = 'VimEnter',
       -- config = function()
@@ -52,55 +66,66 @@ require('packer').startup({
       -- end,
       after = 'telescope.nvim',
       config = [[ require('config.which_key') ]],
-    });
+    })
+    -- - Better UI for LSP rename.
+    use({
+      'filipdutescu/renamer.nvim',
+      branch = 'master',
+      requires = { { 'nvim-lua/plenary.nvim' } },
+
+      config = [[ require('config.renamer') ]],
+    })
 
     -- - Xonsh syntax file.
-    use({ 'abhishekmukherg/xonsh-vim' });
+    use({ 'abhishekmukherg/xonsh-vim' })
     -- - Yank without moving cursor.
-    use({ 'svban/YankAssassin.vim' });
+    use({ 'svban/YankAssassin.vim' })
 
     -- * Integration.
     -- - With system.
-    use({ 'majkinetor/vim-omnipresence' });
+    use({ 'majkinetor/vim-omnipresence' })
     -- - With browser.
     use({
       'glacambre/firenvim',
-      run = function() vim.fn['firenvim#install'](0) end,
+      run = function()
+        vim.fn['firenvim#install'](0)
+      end,
       config = [[ require('config.firenvim') ]],
-    });
+    })
     -- - With Jupyter.
-    use({ 'untitled-ai/jupyter_ascending.vim' });
+    use({ 'untitled-ai/jupyter_ascending.vim' })
 
     -- - Open and write files with sudo.
-    use({ 'lambdalisue/suda.vim' });
+    use({ 'lambdalisue/suda.vim' })
 
-    use({'tpope/vim-repeat', event = 'VimEnter'})
+    use({ 'tpope/vim-repeat', event = 'VimEnter' })
     use({
       'tomtom/tinykeymap_vim',
-      config = [[ require('config.tinykeymap') ]]
-    });
+      config = [[ require('config.tinykeymap') ]],
+    })
 
     -- * Starting page.
     use({
       'glepnir/dashboard-nvim',
       cond = function()
-        return not vim.g.started_by_firenvim;
+        return not vim.g.started_by_firenvim
       end,
       config = [[ require('config.dashboard') ]],
-    });
+    })
 
-    -- * Session management.
+    -- * Project management.
+    -- - Session management.
     use({
       'olimorris/persisted.nvim',
       --module = "persisted", -- For lazy loading
       config = [[ require('config.persisted') ]],
-    });
+    })
 
     -- * Window management.
     -- - Keep window layout after closing the buffer.
     use({
       'famiu/bufdelete.nvim',
-    });
+    })
     -- - Focus on window: keep it dynamically larger, remove numbers, cursor
     --   and signcolumn on inactive windows.
     -- To enable lazy load @see{github plugin page @link{https://github.com/beauwilliams/focus.nvim}}
@@ -108,43 +133,73 @@ require('packer').startup({
       'beauwilliams/focus.nvim',
 
       config = [[ require('config.focus') ]],
-    });
+    })
     -- Jump to specified window.
     use({
       'https://gitlab.com/yorickpeterse/nvim-window.git',
 
       config = [[ require('config.nvim-window') ]],
-    });
+    })
     -- Move windows without changing layout.
     use({
       'sindrets/winshift.nvim',
 
       config = [[ require('config.winshift') ]],
-    });
-
+    })
 
     -- * Russian layout.
-    use({ 'powerman/vim-plugin-ruscmd' });
+    use({ 'powerman/vim-plugin-ruscmd' })
 
-    -- LSP.
+    -- Lsp.
     use({
       'williamboman/nvim-lsp-installer',
       {
         'neovim/nvim-lspconfig',
         -- Lsp relies on cmp-nvim-lsp during capabilities initialization.
         after = 'cmp-nvim-lsp',
-        config = [[ require('config.lsp') ]]
-      }
-    });
-    -- # Snippets.
+        config = [[ require('config.lsp') ]],
+      },
+    })
+    -- * Lsp Utilities.
     use({
-      'SirVer/ultisnips',
+      'jose-elias-alvarez/nvim-lsp-ts-utils',
+      -- See config in `lsp.server_configurations`.
 
-      config = [[ require('config.ultisnips') ]],
-    });
+      requires = 'neovim/nvim-lspconfig',
+    })
+
+
+    -- # Formatting.
+    use({
+      'jose-elias-alvarez/null-ls.nvim',
+      requires = { 'nvim-lua/plenary.nvim' },
+
+      config = [[ require('config.lsp.null-ls') ]],
+    })
+
+    -- # Snippets.
+    --use({
+    --'SirVer/ultisnips',
+
+    --setup = [[ require('autocommands.ultisnips') ]],
+    --config = [[ require('config.ultisnips') ]],
+    --});
+    use({
+      'L3MON4D3/LuaSnip',
+
+      -- Breaks as cmp is loaded earlier. Make as a dep for cmp?
+      --event = 'BufReadPre',
+
+      config = [[ require('config.luasnip') ]],
+
+      requires = {
+        'molleweide/LuaSnip-snippets.nvim',
+      },
+    })
+
     -- * Collections of snippets.
     -- - General and specific for popular filetypes.
-    use({ 'honza/vim-snippets' });
+    use({ 'honza/vim-snippets' })
     -- - Emmet for html.
     use({
       'mattn/emmet-vim',
@@ -158,10 +213,10 @@ require('packer').startup({
       ft = { 'css', 'html', 'javascriptreact', 'typescriptreact' },
 
       config = [[ require('config.emmet-vim') ]],
-    });
+    })
 
-  -- * Autocomplete
-    use ({
+    -- * Autocomplete
+    use({
       'hrsh7th/nvim-cmp',
       -- event = "InsertEnter", -- for lazyload
       requires = {
@@ -173,7 +228,8 @@ require('packer').startup({
         { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
         { 'hrsh7th/cmp-omni', after = 'nvim-cmp' },
         -- for ultisnips users.
-        { 'quangnguyen30192/cmp-nvim-ultisnips', after = { 'nvim-cmp', 'ultisnips' } },
+        --{ 'quangnguyen30192/cmp-nvim-ultisnips', after = { 'nvim-cmp', 'ultisnips' } },
+        { 'saadparwaiz1/cmp_luasnip' },
 
         -- Cool icons.
         { 'onsails/lspkind.nvim' },
@@ -183,71 +239,86 @@ require('packer').startup({
     --use {'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp'}
 
     -- - Python formatter.
-    use({ 'tell-k/vim-autopep8', ft = { 'python' } });
+    use({ 'tell-k/vim-autopep8', ft = { 'python' } })
 
-  -- Coding.
-  -- * Brackets.
-  use({
-    'windwp/nvim-autopairs',
-    config = [[ require ('config.nvim_autopairs') ]]
-  });
-  -- * Comments.
-  use({ 'preservim/nerdcommenter', event = 'VimEnter' });
+    -- Coding.
+    -- * Brackets.
+    use({
+      'windwp/nvim-autopairs',
+      config = [[ require('config.nvim_autopairs') ]],
+    })
+    -- * Comments.
+    --use({ 'preservim/nerdcommenter', event = 'VimEnter' })
+    use({
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      event = 'VimEnter',
 
-  -- * Surround.
-  use({ 'tpope/vim-surround' });
+      -- Configuration is in treesitter.
+      require = 'nvim-treesitter/nvim-treesitter',
+    })
 
-  -- * Find.
-  use({ 'gennaro-tedesco/nvim-peekup' });
+    use({
+      'numToStr/Comment.nvim',
+      event = 'VimEnter',
+      require = 'JoosepAlviste/nvim-ts-context-commentstring',
 
-  -- * Batching.
-  use({ 'terryma/vim-expand-region' });
-  use({
-    'mg979/vim-visual-multi',
-    branch = 'master'
-  });
+      config = [[ require('config.comment') ]],
+    })
 
-  -- * Permutations.
-  use({ 'tpope/vim-abolish' });
+    -- * Surround.
+    use({ 'tpope/vim-surround' })
 
-  -- * Formatting.
-  -- - Align by symbol or regex pattern.
-  use({ 'junegunn/vim-easy-align' });
-  -- - Change object from inline to multi-line and vice versa.
-  use({ 'AndrewRadev/splitjoin.vim' });
+    -- * Find.
+    use({ 'gennaro-tedesco/nvim-peekup' })
 
-  -- * Motion.
-  use({ 'tjdevries/train.nvim' });
-    use({ 'ggandor/lightspeed.nvim' });
+    -- * Batching.
+    use({ 'terryma/vim-expand-region' })
+    use({
+      'mg979/vim-visual-multi',
+      branch = 'master',
+    })
+
+    -- * Permutations.
+    use({ 'tpope/vim-abolish' })
+
+    -- * Formatting.
+    -- - Align by symbol or regex pattern.
+    use({ 'junegunn/vim-easy-align' })
+    -- - Change object from inline to multi-line and vice versa.
+    use({ 'AndrewRadev/splitjoin.vim' })
+
+    -- * Motion.
+    use({ 'tjdevries/train.nvim' })
+    use({ 'ggandor/lightspeed.nvim' })
 
     -- # Targets.
     use({
       'wellle/targets.vim',
       event = 'VimEnter',
-    });
+    })
     -- Textobj-user extensions.
     use({
       'kana/vim-textobj-user',
       event = 'VimEnter',
-    });
+    })
     -- - Columns.
     use({
       'coderifous/textobj-word-column.vim',
       event = 'VimEnter',
       after = 'vim-textobj-user',
-    });
+    })
     -- - Indented paragraph.
     use({
       'pianohacker/vim-textobj-indented-paragraph',
       event = 'VimEnter',
       after = 'vim-textobj-user',
-    });
+    })
     -- - Indents.
     use({
       'kana/vim-textobj-indent',
       event = 'VimEnter',
       after = 'vim-textobj-user',
-    });
+    })
     -- - Hydrogen (jupyter notebook cells).
     use({
       'GCBallesteros/vim-textobj-hydrogen',
@@ -260,8 +331,7 @@ require('packer').startup({
       'chaoren/vim-wordmotion',
       event = 'VimEnter',
       after = 'vim-textobj-user',
-    });
-
+    })
 
     -- # Navigation.
     -- * Inside  file.
@@ -270,22 +340,21 @@ require('packer').startup({
       'chentoast/marks.nvim',
 
       config = [[ require('config.marks') ]],
-    });
+    })
     -- * Across files.
     -- - Harpoon?
     -- - Ranger filemanager.
-    use({ 'kevinhwang91/rnvimr' });
+    use({ 'kevinhwang91/rnvimr' })
     -- - NERDTree.
-    use({ 'preservim/nerdtree' });
+    use({ 'preservim/nerdtree' })
 
     -- * Telescope deps.
-    use({ 'nvim-lua/plenary.nvim' });
     use({
       'nvim-telescope/telescope.nvim',
-      requires = {{ 'nvim-lua/plenary.nvim' }},
+      requires = { { 'nvim-lua/plenary.nvim' } },
 
       config = [[ require('config.telescope') ]],
-    });
+    })
 
     -- - We recommend updating the parsers on update
     use({
@@ -293,7 +362,7 @@ require('packer').startup({
       event = 'BufEnter',
       run = ':TSUpdate',
       config = [[ require('config.treesitter') ]],
-    });
+    })
 
     use({
       'nvim-treesitter/playground',
@@ -302,21 +371,23 @@ require('packer').startup({
       requires = 'nvim-treesitter/nvim-treesitter',
     })
 
-  -- - Jumping to file under cursor.
-  use({ 'aklt/rel.vim' });
+    -- - Jumping to file under cursor.
+    use({ 'aklt/rel.vim' })
 
-  -- Markdown.
-  -- use({ 'plasticboy/vim-markdown' })
+    -- Markdown.
+    -- use({ 'plasticboy/vim-markdown' })
     use({
       'SidOfc/mkdx',
       ft = { 'markdown' },
-    });
-  -- * Preview.
-  --use ({ 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' });
+    })
+    -- * Preview.
+    --use ({ 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' });
     use({
       'iamcco/markdown-preview.nvim',
-      run = function() vim.fn['mkdp#util#install']() end,
-    });
+      run = function()
+        vim.fn['mkdp#util#install']()
+      end,
+    })
     -- use({
     --   'iamcco/markdown-preview.nvim',
     --   run = 'cd app && npm install',
@@ -325,31 +396,31 @@ require('packer').startup({
     --   end,
     --   ft = { 'markdown' },
     -- })
-  -- Visuals.
-  -- Show match number and index for searching
-  --use ({
+    -- Visuals.
+    -- Show match number and index for searching
+    --use ({
     --'kevinhwang91/nvim-hlslens',
     --branch = 'main',
     --keys = {{'n', '*'}, {'n', '#'}, {'n', 'n'}, {'n', 'N'}}
-  --})
-  -- * Highlight range of an exmode command.
-  use({ 'winston0410/cmd-parser.nvim' });
-  use({
-    'winston0410/range-highlight.nvim',
-    config = [[ require('config.range_highlight') ]]
-  });
+    --})
+    -- * Highlight range of an exmode command.
+    use({ 'winston0410/cmd-parser.nvim' })
+    use({
+      'winston0410/range-highlight.nvim',
+      config = [[ require('config.range_highlight') ]],
+    })
 
-  -- # Workspace.
-  use({
-    'Pocco81/TrueZen.nvim',
-    config = [[ require ('config.true_zen') ]]
-  });
-  use({
-    'folke/twilight.nvim',
-    -- Uses treesitter to automatically expand the visible text.
-    after = 'nvim-treesitter',
-    config = [[ require ('config.twilight') ]]
-  });
+    -- # Workspace.
+    use({
+      'Pocco81/TrueZen.nvim',
+      config = [[ require ('config.true_zen') ]],
+    })
+    use({
+      'folke/twilight.nvim',
+      -- Uses treesitter to automatically expand the visible text.
+      after = 'nvim-treesitter',
+      config = [[ require ('config.twilight') ]],
+    })
 
     -- * Status line.
     -- Move status line to the tmux.
@@ -357,14 +428,14 @@ require('packer').startup({
       'vimpostor/vim-tpipeline',
 
       config = [[ require('config.tpipeline') ]],
-    });
+    })
 
     use({
       'nvim-lualine/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons', opt = true },
       event = 'VimEnter',
-      config = [[ require('config.lualine') ]]
-    });
+      config = [[ require('config.lualine') ]],
+    })
 
     -- * Buffer line.
     use({
@@ -379,81 +450,82 @@ require('packer').startup({
       'b0o/incline.nvim',
 
       config = [[ require('config.incline') ]],
-    });
+    })
 
+    -- Coding.
+    -- Should be loaded after all plugins that use trigger key ('tab').
+    use({
+      'abecodes/tabout.nvim',
+      config = [[ require('config.tabout') ]],
+      -- Should be after mappings to overwrite the trigger key ('tab').
+      after = { 'which-key.nvim', 'tinykeymap_vim' },
+    })
 
-
-  -- Coding.
-  -- Should be loaded after all plugins that use trigger key ('tab').
-  use({
-    'abecodes/tabout.nvim',
-    config = [[ require('config.tabout') ]],
-    -- Should be after mappings to overwrite the trigger key ('tab').
-    after = {'which-key.nvim', 'tinykeymap_vim'}
-  });
-
-  -- * Theme.
-  -- - Helpers for creating a theme.
-    use({ 'rktjmp/lush.nvim' });
-  -- - Themes.
-  --use({ 'morhetz/gruvbox' });
-  use({ 'sainnhe/gruvbox-material' });
-  use({ 'vim-airline/vim-airline-themes' });
+    -- * Theme.
+    -- - Helpers for creating a theme.
+    use({ 'rktjmp/lush.nvim' })
+    -- - Themes.
+    --use({ 'morhetz/gruvbox' });
+    use({ 'sainnhe/gruvbox-material' })
+    use({ 'vim-airline/vim-airline-themes' })
 
     use({
       '~/nvim/CustomThemes/deadly-gruv.nvim',
       config = [[ require('config.theme') ]],
-    });
+    })
     --use({
-      --'DeadlySquad13/deadly-gruv.nvim',
-      --config = [[ require('config.theme') ]],
+    --'DeadlySquad13/deadly-gruv.nvim',
+    --config = [[ require('config.theme') ]],
     --});
 
-  -- * Highlighting.
-  -- - Colors.
-  use({
-    'norcalli/nvim-colorizer.lua',
-    config = [[ require ('config.colorizer') ]]
-  });
-  -- - Hide cursorline during moving, highlight words under cursor.
-  use({ 'yamatsum/nvim-cursorline' });
-  -- - Brackets.
-  use({
-    'p00f/nvim-ts-rainbow',
-    event = 'BufEnter',
-  });
+    -- * Highlighting.
+    -- - Colors.
+    use({
+      'norcalli/nvim-colorizer.lua',
+      config = [[ require('config.colorizer') ]],
+    })
+    -- - Hide cursorline during moving, highlight words under cursor.
+    use({ 'yamatsum/nvim-cursorline' })
+    -- - Brackets.
+    use({
+      'p00f/nvim-ts-rainbow',
+      event = 'BufEnter',
+    })
 
-  -- - Indents.
+    -- - Indents.
     use({
       'lukas-reineke/indent-blankline.nvim',
       event = 'VimEnter',
       -- Uses treesitter to calculate indentation when possible.
       after = 'nvim-treesitter',
       config = [[ require('config.indent_blankline') ]],
-    });
-  -- * Icons. (!) Should be loaded last (after nerd-tree, airline, etc...).
-  --   Nerd patched fonts required.
-  use({ 'ryanoasis/vim-devicons' });
+    })
+    -- * Icons. (!) Should be loaded last (after nerd-tree, airline, etc...).
+    --   Nerd patched fonts required.
+    use({ 'ryanoasis/vim-devicons' })
+    use({
+      'bryanmylee/vim-colorscheme-icons',
+    })
 
     -- - Documentation generation.
     use({
       'danymat/neogen',
       config = [[ require('config.neogen') ]],
       --config = function()
-        --require('neogen').setup();
+      --require('neogen').setup();
       --end,
       requires = 'nvim-treesitter/nvim-treesitter',
       -- Uncomment next line if you want to follow only stable versions.
       -- tag = "*",
-    });
+    })
     --use({
-			--"danymat/neogen",
-			---- "~/Developer/neogen/",
-			--config = function()
-				---- require("neogen").setup({ snippet_engine = "luasnip" })
-			--end,
-			--requires = "nvim-treesitter/nvim-treesitter",
-		--});
+    --"danymat/neogen",
+    ---- "~/Developer/neogen/",
+    --config = function()
+    ---- require("neogen").setup({ snippet_engine = "luasnip" })
+    --end,
+    --requires = "nvim-treesitter/nvim-treesitter",
+    --});
 
     -- Python indent (follows the PEP8 style)
     --use({ 'Vimjas/vim-python-pep8-indent', ft = { 'python' } })
@@ -465,11 +537,11 @@ require('packer').startup({
 
     -- Super fast buffer jump
     --use {
-      --'phaazon/hop.nvim',
-      --event = 'VimEnter',
-      --config = function()
-        --vim.defer_fn(function() require('config.nvim_hop') end, 2000)
-      --end
+    --'phaazon/hop.nvim',
+    --event = 'VimEnter',
+    --config = function()
+    --vim.defer_fn(function() require('config.nvim_hop') end, 2000)
+    --end
     --}
 
     -- Clear highlight search automatically for you
@@ -480,9 +552,9 @@ require('packer').startup({
 
     -- File search, tag search and more
     --if vim.g.is_win then
-      --use({'Yggdroot/LeaderF', cmd = 'Leaderf'})
+    --use({'Yggdroot/LeaderF', cmd = 'Leaderf'})
     --else
-      --use({ 'Yggdroot/LeaderF', cmd = 'Leaderf', run = ':LeaderfInstallCExtension' })
+    --use({ 'Yggdroot/LeaderF', cmd = 'Leaderf', run = ':LeaderfInstallCExtension' })
     --end
 
     -- search emoji and other symbols
@@ -516,31 +588,29 @@ require('packer').startup({
 
     --use {'kyazdani42/nvim-web-devicons', event = 'VimEnter'}
 
-
-
     -- Highlight URLs inside vim
     --use({'itchyny/vim-highlighturl', event = 'VimEnter'})
 
     -- notification plugin
     --use({
-      --'rcarriga/nvim-notify',
-      --event = 'BufEnter',
-      --config = function()
-        --vim.defer_fn(function() require('config.nvim-notify') end, 2000)
-      --end
+    --'rcarriga/nvim-notify',
+    --event = 'BufEnter',
+    --config = function()
+    --vim.defer_fn(function() require('config.nvim-notify') end, 2000)
+    --end
     --})
 
     -- For Windows and Mac, we can open an URL in the browser. For Linux, it may
     -- not be possible since we maybe in a server which disables GUI.
     --if vim.g.is_win or vim.g.is_mac then
-      ---- open URL in browser
-      --use({'tyru/open-browser.vim', event = 'VimEnter'})
+    ---- open URL in browser
+    --use({'tyru/open-browser.vim', event = 'VimEnter'})
     --end
 
     -- Only install these plugins if ctags are installed on the system
     --if utils.executable('ctags') then
-      ---- show file tags in vim window
-      --use({'liuchengxu/vista.vim', cmd = 'Vista'})
+    ---- show file tags in vim window
+    --use({'liuchengxu/vista.vim', cmd = 'Vista'})
     --end
 
     -- Automatic insertion and deletion of a pair of characters
@@ -548,11 +618,11 @@ require('packer').startup({
 
     -- Autosave files on certain events
     --use({
-      --'Pocco81/AutoSave.nvim',
-      --event = 'VimEnter',
-      --config = function()
-        --vim.defer_fn(function() require('config.autosave') end, 1500)
-      --end
+    --'Pocco81/AutoSave.nvim',
+    --event = 'VimEnter',
+    --config = function()
+    --vim.defer_fn(function() require('config.autosave') end, 1500)
+    --end
     --})
 
     -- Show undo history visually
@@ -560,7 +630,7 @@ require('packer').startup({
 
     -- Manage your yank history
     --if vim.g.is_win or vim.g.is_mac then
-      --use({'svermeulen/vim-yoink', event = 'VimEnter'})
+    --use({'svermeulen/vim-yoink', event = 'VimEnter'})
     --end
 
     -- Handy unix command inside Vim (Rename, Move etc.)
@@ -571,9 +641,9 @@ require('packer').startup({
     --use({ 'jdhao/better-escape.vim', event = { 'InsertEnter' } })
 
     --if vim.g.is_mac then
-      --use({ 'lyokha/vim-xkbswitch', event = { 'InsertEnter' } })
+    --use({ 'lyokha/vim-xkbswitch', event = { 'InsertEnter' } })
     --elseif vim.g.is_win then
-      --use({ 'Neur1n/neuims', event = { 'InsertEnter' } })
+    --use({ 'Neur1n/neuims', event = { 'InsertEnter' } })
     --end
 
     -- Syntax check and make
@@ -605,10 +675,10 @@ require('packer').startup({
 
     -- Only use these plugin on Windows and Mac and when LaTeX is installed
     --if vim.g.is_win or vim.g.is_mac and utils.executable('latex') then
-      --use({ 'lervag/vimtex', ft = { 'tex' } })
+    --use({ 'lervag/vimtex', ft = { 'tex' } })
 
-      ---- use {'matze/vim-tex-fold', ft = {'tex', }}
-      ---- use 'Konfekt/FastFold'
+    ---- use {'matze/vim-tex-fold', ft = {'tex', }}
+    ---- use 'Konfekt/FastFold'
     --end
 
     -- Modern matchit implementation
@@ -618,14 +688,14 @@ require('packer').startup({
     -- Edit text area in browser using nvim
     -- Debugger plugin
     --if vim.g.is_win or vim.g.is_linux then
-      --use({ 'sakhnik/nvim-gdb', run = { 'bash install.sh' }, opt = true, setup = [[vim.cmd('packadd nvim-gdb')]] })
+    --use({ 'sakhnik/nvim-gdb', run = { 'bash install.sh' }, opt = true, setup = [[vim.cmd('packadd nvim-gdb')]] })
     --end
 
     -- Session management plugin
     --use({'tpope/vim-obsession', cmd = 'Obsession'})
 
     --if vim.g.is_linux then
-      --use({'ojroques/vim-oscyank', cmd = {'OSCYank', 'OSCYankReg'}})
+    --use({'ojroques/vim-oscyank', cmd = {'OSCYank', 'OSCYankReg'}})
     --end
 
     -- The missing auto-completion for cmdline!
@@ -636,7 +706,11 @@ require('packer').startup({
   end,
   config = {
     max_jobs = 16,
-    compile_path = util.join_paths(vim.fn.stdpath('config'), 'lua', 'packer_compiled.lua'),
+    compile_path = util.join_paths(
+      vim.fn.stdpath('config'),
+      'lua',
+      'packer_compiled.lua'
+    ),
     git = {
       default_url_format = plug_url_format,
     },
@@ -645,5 +719,5 @@ require('packer').startup({
 
 local status, _ = pcall(require, 'packer_compiled')
 if not status then
-  vim.notify('Error requiring packer_compiled.lua: run PackerSync to fix!')
+  notify('Error requiring packer_compiled.lua: run PackerSync to fix!')
 end

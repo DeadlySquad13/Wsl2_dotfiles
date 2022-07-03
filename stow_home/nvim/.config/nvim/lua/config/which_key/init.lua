@@ -98,3 +98,6 @@ which_key.register(format_mappings_names(mappings.n, 'M'), n_options);
 local x_options = { mode = 'x', unpack(options) }
 which_key.register(format_mappings_names(mappings.x, 'M'), x_options);
 
+local i_options = { mode = 'i', unpack(options) }
+which_key.register(format_mappings_names(mappings.i, 'M'), i_options);
+

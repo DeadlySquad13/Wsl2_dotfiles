@@ -37,6 +37,7 @@ local function replace_char(pos, str, r)
   return not pos and str or str:sub(1, pos-1) .. r .. str:sub(pos+1)
 end
 
+-- TODO: use <https://github.com/delphinus/artify.nvim> 'artify.nvim'
 -- Formats first found character according to dictionary of a special symbols.
 -- str - string to format,
 -- char - character to find.
@@ -50,23 +51,31 @@ local function format(str, char)
   return replace_char(str:upper():find(char), str, special_symbols[char])
 end
 
+-- TOFIX: Prefer uppercase letters.
 -- Iterates through mappings, applying `format` function.
 local function format_mappings_names(mappings, group_mapping_key)
   local formatted_mappings = {} 
 
+  -- If we get key like: '<space>gd' we will get an error, so get only last
+  --   char.
+  local group_mapping_key_char = group_mapping_key:sub(-1):upper();
+
   for key, mapping in pairs(mappings) do
     if (key == 'name') then
       -- Now have only capitals in dictionary so uppercasing.
-      formatted_mappings[key] = format(mapping, group_mapping_key:upper())
+      formatted_mappings[key] = format(mapping, group_mapping_key_char)
     else
+      -- Analogous to group_mapping_key_char.
+      local key_char = key:sub(-1):upper();
+
       -- Mapping group.
       if (mapping.name) then
-        formatted_mappings[key] = format_mappings_names(mapping, key:upper())
+        formatted_mappings[key] = format_mappings_names(mapping, key_char)
       else
         local mapping_name = mapping[2]
 
         -- Now have only capitals in dictionary so uppercasing.
-        mapping[2] = format(mapping_name, key:upper())
+        mapping[2] = format(mapping_name, key_char)
         formatted_mappings[key] = mapping
       end
     end
