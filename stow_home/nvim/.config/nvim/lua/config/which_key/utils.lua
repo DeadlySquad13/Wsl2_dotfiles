@@ -1,4 +1,4 @@
--- How to specify it programmatically (start and end of the range)?
+-- How to specify it programatically (start and end of the range)?
 local special_symbols = {
   -- Mathematical Alphanumeric Symbols (Range: 1D400—1D7FF).
   A = '𝐀',
@@ -26,24 +26,24 @@ local special_symbols = {
   W = '𝐖',
   X = '𝐗',
   Y = '𝐘',
-  Z = '𝐙'
+  Z = '𝐙',
 }
 
 -- pos - index of a char to replace,
 -- str - string we want to modify,
 -- r - replacement char (char to replace).
 local function replace_char(pos, str, r)
-  -- Checking for nil pos (kind of ternary operator). 
-  return not pos and str or str:sub(1, pos-1) .. r .. str:sub(pos+1)
+  -- Checking for nil pos (kind of ternary operator).
+  return not pos and str or str:sub(1, pos - 1) .. r .. str:sub(pos + 1)
 end
 
 -- TODO: use <https://github.com/delphinus/artify.nvim> 'artify.nvim'
 -- Formats first found character according to dictionary of a special symbols.
 -- str - string to format,
 -- char - character to find.
-local function format(str, char) 
+local function format(str, char)
   -- - Checking for nil str and characters that will be interpreted wrong (as regex?).
-  if (not str or char == '.') then
+  if not str or char == '.' then
     return str
   end
 
@@ -54,22 +54,22 @@ end
 -- TOFIX: Prefer uppercase letters.
 -- Iterates through mappings, applying `format` function.
 local function format_mappings_names(mappings, group_mapping_key)
-  local formatted_mappings = {} 
+  local formatted_mappings = {}
 
   -- If we get key like: '<space>gd' we will get an error, so get only last
   --   char.
-  local group_mapping_key_char = group_mapping_key:sub(-1):upper();
+  local group_mapping_key_char = group_mapping_key:sub(-1):upper()
 
   for key, mapping in pairs(mappings) do
-    if (key == 'name') then
+    if key == 'name' then
       -- Now have only capitals in dictionary so uppercasing.
       formatted_mappings[key] = format(mapping, group_mapping_key_char)
     else
       -- Analogous to group_mapping_key_char.
-      local key_char = key:sub(-1):upper();
+      local key_char = key:sub(-1):upper()
 
       -- Mapping group.
-      if (mapping.name) then
+      if mapping.name then
         formatted_mappings[key] = format_mappings_names(mapping, key_char)
       else
         local mapping_name = mapping[2]
@@ -84,6 +84,51 @@ local function format_mappings_names(mappings, group_mapping_key)
   return formatted_mappings
 end
 
+---@class DefaultKeymapOptions
+---@field buffer (number) Specify a buffer number for buffer local mappings.
+---@see which_key documentation for all options.
+local default_keymap_options = {
+  prefix = '',
+  silent = true, -- use `silent` when creating keymaps.
+  -- Use `noremap` when creating keymaps (when command starts with <Plug>,
+  -- noremap = false is set automatically).
+  noremap = true,
+  nowait = false, -- use `nowait` when creating keymaps
+}
+
+local prequire = require('utils').prequire
+
+local which_key_is_available, which_key = prequire('which-key')
+
+---@param keymappings
+---@param mode ('n'|'v'|'i'|'s'|'o'|'c'|'t')
+---@param custom_options (DefaultKeymapOptions?) Options to pass into mappings.
+local function apply_keymappings(keymappings, mode, custom_options)
+  if not which_key_is_available then
+    return
+  end
+
+  custom_options = custom_options or {}
+
+  ---@diagnostic disable-next-line: undefined-field
+  if custom_options.mode then
+    return notify(
+      'Mode options passed in `custom_options` table is overriden by `mode` argument!',
+      { title = 'Keymapping' }
+    )
+  end
+
+  local options = vim.tbl_extend(
+    'force',
+    default_keymap_options,
+    custom_options
+  )
+  options.mode = mode
+
+  return which_key.register(format_mappings_names(keymappings, 'M'), options)
+end
+
 return {
-  format_mappings_names = format_mappings_names,
-};
+  apply_keymappings = apply_keymappings,
+}
+

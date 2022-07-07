@@ -31,6 +31,10 @@ cmp.setup({
     -- Setting spell (and spelllang) is mandatory to use spellsuggest.
     -- { name = 'spell' }, -- Spellsuggest.
     { name = 'nvim_lua' }, -- Nvim-lua functions.
+
+    -- * Ai assitance.
+    { name = 'copilot' },
+
     { name = 'buffer', keyword_length = 2 }, -- Buffer word completion.
     -- { name = 'omni' },
     { name = 'emoji', insert = true }, -- Emoji completion.
