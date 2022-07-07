@@ -1,4 +1,4 @@
-require('autocommands');
-require('general_settings');
-require('plugins');
-
+require('autocommands')
+require('general_settings')
+require('plugins')
+require('config.theme')

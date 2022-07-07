@@ -1,4 +1,5 @@
 --local utils = require('utils')
+local ENV = require('global')
 local fn = vim.fn
 vim.g.package_home = fn.stdpath('data') .. '/site/pack/packer/'
 local packer_install_dir = vim.g.package_home .. '/opt/packer.nvim'
@@ -46,7 +47,7 @@ require('packer').startup({
     -- - Add nice looking ui for notifications.
     use({
       'rcarriga/nvim-notify',
-      
+
       config = [[ require('config.nvim-notify') ]],
     })
     -- - Progress handler.
@@ -58,16 +59,18 @@ require('packer').startup({
 
     use({
       'folke/which-key.nvim',
-      event = 'VimEnter',
+      -- I use it for binding here and there, with lazy loading there's a lot
+      --   of problems. Unfortunately, setting 'after' doesn't help in
+      --   lspconfig case.
+      -- event = 'VimEnter',
       -- config = function()
       --   vim.defer_fn(function()
       --     require('config.which_key')
       --   end, 2000)
       -- end,
-      after = 'telescope.nvim',
       config = [[ require('config.which_key') ]],
     })
-    -- - Better UI for LSP rename.
+    -- - Better UI for Lsp rename.
     use({
       'filipdutescu/renamer.nvim',
       branch = 'master',
@@ -107,6 +110,7 @@ require('packer').startup({
     -- * Starting page.
     use({
       'glepnir/dashboard-nvim',
+      lock = true, -- Author made breaking changes during refactor.
       cond = function()
         return not vim.g.started_by_firenvim
       end,
@@ -160,6 +164,11 @@ require('packer').startup({
         config = [[ require('config.lsp') ]],
       },
     })
+    -- # Ai assitance.
+    use({
+      'github/copilot.vim',
+    })
+
     -- * Lsp Utilities.
     use({
       'jose-elias-alvarez/nvim-lsp-ts-utils',
@@ -167,7 +176,6 @@ require('packer').startup({
 
       requires = 'neovim/nvim-lspconfig',
     })
-
 
     -- # Formatting.
     use({
@@ -227,6 +235,10 @@ require('packer').startup({
         { 'hrsh7th/cmp-calc', after = 'nvim-cmp' },
         { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
         { 'hrsh7th/cmp-omni', after = 'nvim-cmp' },
+
+        -- * Ai assitance
+        { 'hrsh7th/cmp-copilot', after = 'nvim-cmp' },
+
         -- for ultisnips users.
         --{ 'quangnguyen30192/cmp-nvim-ultisnips', after = { 'nvim-cmp', 'ultisnips' } },
         { 'saadparwaiz1/cmp_luasnip' },
@@ -367,12 +379,34 @@ require('packer').startup({
     use({
       'nvim-treesitter/playground',
 
-      event = 'BufEnter',
+      cmd = 'TSPlaygroundToggle',
       requires = 'nvim-treesitter/nvim-treesitter',
     })
 
     -- - Jumping to file under cursor.
     use({ 'aklt/rel.vim' })
+
+    -- * Quickfix list.
+    use({
+      'kevinhwang91/nvim-bqf',
+
+      requires = {
+        {
+          'junegunn/fzf.vim',
+          requires = {
+            'junegunn/fzf',
+            opt = false,
+            run = function() -- Make sure that you have the latest binary.
+              vim.fn['fzf#install']()
+            end,
+          }
+        },
+        {
+          'nvim-treesitter/nvim-treesitter',
+          opt = true, -- Highly recommended.
+        },
+      },
+    })
 
     -- Markdown.
     -- use({ 'plasticboy/vim-markdown' })
@@ -471,7 +505,6 @@ require('packer').startup({
 
     use({
       '~/nvim/CustomThemes/deadly-gruv.nvim',
-      config = [[ require('config.theme') ]],
     })
     --use({
     --'DeadlySquad13/deadly-gruv.nvim',
@@ -691,28 +724,29 @@ require('packer').startup({
     --use({ 'sakhnik/nvim-gdb', run = { 'bash install.sh' }, opt = true, setup = [[vim.cmd('packadd nvim-gdb')]] })
     --end
 
-    -- Session management plugin
-    --use({'tpope/vim-obsession', cmd = 'Obsession'})
-
     --if vim.g.is_linux then
     --use({'ojroques/vim-oscyank', cmd = {'OSCYank', 'OSCYankReg'}})
     --end
-
-    -- The missing auto-completion for cmdline!
-    --use({'gelguy/wilder.nvim', opt = true, setup = [[vim.cmd('packadd wilder.nvim')]]})
 
     -- show and trim trailing whitespaces
     --use {'jdhao/whitespace.nvim', event = 'VimEnter'}
   end,
   config = {
     max_jobs = 16,
+
+    -- snapshot = util.join_paths(ENV.NVIM_CONFIG, "packer-lock.json"),
+    snapshot_path = ENV.NVIM_CONFIG,
+
     compile_path = util.join_paths(
-      vim.fn.stdpath('config'),
-      'lua',
+      ENV.NVIM_LUA_CONFIG,
       'packer_compiled.lua'
     ),
     git = {
       default_url_format = plug_url_format,
+    },
+
+    display = {
+      open_fn = require('packer.util').float,
     },
   },
 })
