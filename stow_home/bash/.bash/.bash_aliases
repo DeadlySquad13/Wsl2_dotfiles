@@ -24,7 +24,7 @@ alias t='task';
 # Goto.
 alias g='goto';
 # automatically pushes directory to stack.
-alias gp='g -p';
+alias gp='goto -p';
 
 # Ranger.
 alias r='ranger';
