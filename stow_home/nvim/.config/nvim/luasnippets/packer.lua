@@ -11,6 +11,7 @@ local sn = utils_ls.sn
 local r = utils_ls.r
 local c = utils_ls.c
 local delete_unmodified_node = utils_ls.delete_unmodified_node
+local conds = utils_ls.conds
 
 return {}, {
   s(
@@ -34,7 +35,8 @@ return {}, {
         [2] = {
           [events.leave] = delete_unmodified_node
         }
-      }
+      },
+      condition = conds.line_begin,
     }
   ),
   s("class", {

@@ -370,7 +370,7 @@ runtime abbreviations.vim
 " # Theme.
 " * Settings.
 " syntax enable
-" set background=light
+set background=light
 
 "colorscheme gruvbox-material
 "highlight Pmenu ctermbg=240 gui=bold

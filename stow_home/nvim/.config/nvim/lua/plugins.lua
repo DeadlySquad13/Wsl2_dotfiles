@@ -28,8 +28,60 @@ end
 vim.cmd('packadd packer.nvim')
 local util = require('packer.util')
 
-require('packer').startup({
-  function(use)
+local packer = require('packer')
+
+local layer_utils = {}
+layer_utils.use_plugin = function(plugin_settings, plugin_config)
+  local configuration = vim.tbl_extend(
+    'error',
+    plugin_settings,
+    { config = plugin_config }
+  )
+  packer.use(configuration)
+end
+
+--- Allows to use custom functions inside (removed custom override).
+---@param specification 
+---@return 
+local function startup(specification)
+  local plugins_callback = specification[1]
+  local plugins_config = specification.config
+
+  packer.init(plugins_config)
+  packer.reset()
+
+  --setfenv(
+  -- plugins_callback,
+  -- vim.tbl_extend(
+  --   'force',
+  --   getfenv(),
+  --   {
+  --     use = packer.use,
+  --     use_plugin = modules.use_plugin,
+  --     use_rocks = packer.use_rocks,
+  --   }
+  -- )
+  --)
+  local status, err = pcall(
+    plugins_callback,
+    packer.use,
+    layer_utils.use_plugin,
+    packer.use_rocks
+  )
+  if not status then
+    log.error('Failure running setup function: ' .. vim.inspect(err))
+    error(err)
+  end
+
+  if plugins_config.snapshot ~= nil then
+    packer.rollback(plugins_config.snapshot)
+  end
+
+  return packer
+end
+
+startup({
+  function(use, use_plugin, _)
     -- - It is recommened to put impatient.nvim before any other plugins.
     use({ 'lewis6991/impatient.nvim' })
     -- - Packer itself can be managed.
@@ -59,15 +111,7 @@ require('packer').startup({
 
     use({
       'folke/which-key.nvim',
-      -- I use it for binding here and there, with lazy loading there's a lot
-      --   of problems. Unfortunately, setting 'after' doesn't help in
-      --   lspconfig case.
-      -- event = 'VimEnter',
-      -- config = function()
-      --   vim.defer_fn(function()
-      --     require('config.which_key')
-      --   end, 2000)
-      -- end,
+      event = 'BufWinEnter',
       config = [[ require('config.which_key') ]],
     })
     -- - Better UI for Lsp rename.
@@ -87,6 +131,21 @@ require('packer').startup({
     -- * Integration.
     -- - With system.
     use({ 'majkinetor/vim-omnipresence' })
+    -- - With terminal.
+
+    local Toggleterm = require('ds_omega.layers.integrations.toggleterm')
+    use_plugin(
+      Toggleterm.plugins['toggleterm.nvim'],
+      Toggleterm.configs['toggleterm.nvim']
+    )
+
+    -- use(
+    --   vim.tbl_extend(
+    --     'error',
+    --     Toggleterm.plugins['toggleterm.nvim'],
+    --     { config = Toggleterm.configs['toggleterm.nvim'] }
+    --   )
+    -- )
     -- - With browser.
     use({
       'glacambre/firenvim',
@@ -160,7 +219,7 @@ require('packer').startup({
       {
         'neovim/nvim-lspconfig',
         -- Lsp relies on cmp-nvim-lsp during capabilities initialization.
-        after = 'cmp-nvim-lsp',
+        after = { 'cmp-nvim-lsp', 'which-key.nvim' },
         config = [[ require('config.lsp') ]],
       },
     })
@@ -368,10 +427,11 @@ require('packer').startup({
       config = [[ require('config.telescope') ]],
     })
 
-    -- - We recommend updating the parsers on update
+    -- ! Doesn't support lazy loading! Normal vim groups are not mapped to TS
+    --   groups.
     use({
       'nvim-treesitter/nvim-treesitter',
-      event = 'BufEnter',
+      -- - We recommend updating the parsers on update.
       run = ':TSUpdate',
       config = [[ require('config.treesitter') ]],
     })
@@ -379,7 +439,7 @@ require('packer').startup({
     use({
       'nvim-treesitter/playground',
 
-      cmd = 'TSPlaygroundToggle',
+      cmd = {'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle'},
       requires = 'nvim-treesitter/nvim-treesitter',
     })
 
@@ -399,7 +459,7 @@ require('packer').startup({
             run = function() -- Make sure that you have the latest binary.
               vim.fn['fzf#install']()
             end,
-          }
+          },
         },
         {
           'nvim-treesitter/nvim-treesitter',
@@ -456,10 +516,19 @@ require('packer').startup({
       config = [[ require ('config.twilight') ]],
     })
 
+    local Workspace = require('ds_omega.layers.Workspace')
+    use_plugin(
+      Workspace.plugins['JABS.nvim'],
+      Workspace.configs['JABS.nvim']
+    )
+
     -- * Status line.
     -- Move status line to the tmux.
     use({
       'vimpostor/vim-tpipeline',
+      -- Broke after this commit.
+      lock = true,
+      branch = 'af7fe78523c7c860d00b79383908322fcb5e6133',
 
       config = [[ require('config.tpipeline') ]],
     })
@@ -492,7 +561,12 @@ require('packer').startup({
       'abecodes/tabout.nvim',
       config = [[ require('config.tabout') ]],
       -- Should be after mappings to overwrite the trigger key ('tab').
-      after = { 'which-key.nvim', 'tinykeymap_vim' },
+      after = {
+        'which-key.nvim',
+        'tinykeymap_vim',
+
+        'nvim-treesitter', -- Needs utils from treesitter.
+      },
     })
 
     -- * Theme.
@@ -521,8 +595,8 @@ require('packer').startup({
     use({ 'yamatsum/nvim-cursorline' })
     -- - Brackets.
     use({
-      'p00f/nvim-ts-rainbow',
-      event = 'BufEnter',
+      '~/Projects/nvim-ts-rainbow'
+      -- 'DeadlySquad13/nvim-ts-rainbow',
     })
 
     -- - Indents.
@@ -551,14 +625,6 @@ require('packer').startup({
       -- Uncomment next line if you want to follow only stable versions.
       -- tag = "*",
     })
-    --use({
-    --"danymat/neogen",
-    ---- "~/Developer/neogen/",
-    --config = function()
-    ---- require("neogen").setup({ snippet_engine = "luasnip" })
-    --end,
-    --requires = "nvim-treesitter/nvim-treesitter",
-    --});
 
     -- Python indent (follows the PEP8 style)
     --use({ 'Vimjas/vim-python-pep8-indent', ft = { 'python' } })
@@ -567,15 +633,6 @@ require('packer').startup({
     --use({ 'jeetsukumaran/vim-pythonsense', ft = { 'python' } })
 
     --use({'machakann/vim-swap', event = 'VimEnter'})
-
-    -- Super fast buffer jump
-    --use {
-    --'phaazon/hop.nvim',
-    --event = 'VimEnter',
-    --config = function()
-    --vim.defer_fn(function() require('config.nvim_hop') end, 2000)
-    --end
-    --}
 
     -- Clear highlight search automatically for you
     -- use({'romainl/vim-cool', event = 'VimEnter'})
@@ -602,36 +659,13 @@ require('packer').startup({
     -- A grepping tool
     -- use {'mhinz/vim-grepper', cmd = {'Grepper', '<plug>(GrepperOperator)'}}
 
-    -- A list of colorscheme plugin you may want to try. Find what suits you.
-    --use({'lifepillar/vim-gruvbox8', opt = true})
-    --use({'navarasu/onedark.nvim', opt = true})
-    --use({'sainnhe/edge', opt = true})
-    --use({'sainnhe/sonokai', opt = true})
-    --use({'sainnhe/gruvbox-material', opt = true})
-    --use({'shaunsingh/nord.nvim', opt = true})
-    --use({'NTBBloodbath/doom-one.nvim', opt = true})
-    --use({'sainnhe/everforest', opt = true})
-    --use({'EdenEast/nightfox.nvim', opt = true})
-    --use({'rebelot/kanagawa.nvim', opt = true})
-
     -- Show git change (change, delete, add) signs in vim sign column
     --use({'mhinz/vim-signify', event = 'BufEnter'})
     -- Another similar plugin
     -- use 'airblade/vim-gitgutter'
 
-    --use {'kyazdani42/nvim-web-devicons', event = 'VimEnter'}
-
     -- Highlight URLs inside vim
     --use({'itchyny/vim-highlighturl', event = 'VimEnter'})
-
-    -- notification plugin
-    --use({
-    --'rcarriga/nvim-notify',
-    --event = 'BufEnter',
-    --config = function()
-    --vim.defer_fn(function() require('config.nvim-notify') end, 2000)
-    --end
-    --})
 
     -- For Windows and Mac, we can open an URL in the browser. For Linux, it may
     -- not be possible since we maybe in a server which disables GUI.
@@ -737,10 +771,7 @@ require('packer').startup({
     -- snapshot = util.join_paths(ENV.NVIM_CONFIG, "packer-lock.json"),
     snapshot_path = ENV.NVIM_CONFIG,
 
-    compile_path = util.join_paths(
-      ENV.NVIM_LUA_CONFIG,
-      'packer_compiled.lua'
-    ),
+    compile_path = util.join_paths(ENV.NVIM_LUA, 'packer_compiled.lua'),
     git = {
       default_url_format = plug_url_format,
     },

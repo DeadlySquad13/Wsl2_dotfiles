@@ -12,7 +12,7 @@ persisted.setup({
   --   newer.
   --save_dir = ENV.NVIM_DATA .. '/sessions/', -- directory where session files are saved
   save_dir = vim.fn.expand(ENV.NVIM_DATA .. '/sessions/'), -- directory where session files are saved
-  --dir = vim.fn.expand(ENV.NVIM_DATA .. "/sessions/"),
+  dir = vim.fn.expand(ENV.NVIM_DATA .. "/sessions/"),
   --command = 'VimLeavePre', -- the autocommand for which the session is saved
   --use_git_branch = true, -- create session files based on the branch of the git enabled repository
   --autosave = true, -- automatically save session files when exiting Neovim

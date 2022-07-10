@@ -110,14 +110,16 @@ ssh() {
   fi
 }
 
-#export GOTO_CONFIG_PATH="$HOME/.config/goto";
-#goto() {
-  #local parameters="$@";
-  #config $GOTO_CONFIG_PATH $parameters;
-  #if [ $? -eq 1 ]; then
-    #command goto $parameters;
-  #fi
-#}
+# Breks autocomplete. Can't make it goto as `command` is not working with goto,
+#   it can't find it as executable. Probably have to reinstall it.
+export GOTO_CONFIG_PATH="$HOME/.config/goto";
+Goto() {
+  local parameters="$@";
+  config $GOTO_CONFIG_PATH $parameters;
+  if [ $? -eq 1 ]; then
+    goto $parameters;
+  fi
+}
 
 export LAZYGIT_CONFIG_PATH="$HOME/.config/lazygit/config.yml";
 lazygit() {

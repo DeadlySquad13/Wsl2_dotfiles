@@ -145,10 +145,13 @@ return {
   ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
   ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
 
-  ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+  ['<C-x><C-o>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
 
-  ['<C-e>'] = cmp.mapping({
-    i = cmp.mapping.close(),
-    c = cmp.mapping.close(),
-  }),
+  ['<C-e>'] = cmp.mapping(function()
+    if cmp.visible() then
+      return cmp.close()
+    end
+
+    return cmp.complete()
+  end, { 'i', 'c' }),
 }

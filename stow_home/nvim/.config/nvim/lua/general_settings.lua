@@ -149,7 +149,7 @@ local function load_options()
     --startofline    = false,
     --whichwrap      = "h,l,<,>,[,],~",
     --splitbelow     = true,
-    splitright     = true, -- Split window to right.
+    splitright = true, -- Split window to right.
     --switchbuf      = "useopen",
     --backspace      = "indent,eol,start",
     --diffopt        = "filler,iwhite,internal,algorithm:patience",
@@ -161,7 +161,6 @@ local function load_options()
     --sidescrolloff  = 5,
     --foldlevelstart = 99,
     --ruler          = false,
-    --list           = true,
     --showtabline    = 2,
     --winwidth       = 30,
     --winminwidth    = 10,
@@ -174,8 +173,10 @@ local function load_options()
     laststatus = 0, -- Better to use 0 with tpipeline.
     fillchars = 'fold: ',
     --display        = "lastline",
-    --showbreak      = "↳  ",
-    --listchars      = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",
+    showbreak = '↳  ', -- ARROW POINTING DOWNWARDS THEN CURVING RIGHTWARDS (U+2937, UTF-8: E2 A4 B7)
+    -- (tab: simple dash + Electric Arrow (U+2301))
+    list = true, -- Show special characters.
+    listchars = 'eol:↴,nbsp:⦸,space:⋅,tab:-⌁,trail:-,extends:→,precedes:←',
     pumheight = 20,
     pumblend = 10, -- Transparency of the popup menu (for autocompletion).
     --winblend       = 10,
@@ -184,7 +185,7 @@ local function load_options()
     keywordprg = ':help',
 
     -- Program that will be used when issuing `:!`.
-    shell = '/bin/sh', -- Unfortunately, I have two errors (`job` and `ioctl`) when running with bash.
+    shell = '/bin/bash', -- Unfortunately, I have two errors (`job` and `ioctl`) when running with bash.
   }
 
   local bw_local = {
@@ -220,5 +221,3 @@ local function load_options()
 end
 
 load_options()
-
-require('config.commands')

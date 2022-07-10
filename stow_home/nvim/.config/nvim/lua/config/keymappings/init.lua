@@ -388,6 +388,9 @@ local x_mappings = {
 local i_mappings = {
   name = 'Main',
 
+  -- Unfortunately, have default <c-t> mapped in 
+  ['<c-m>'] = { '<c-t>', 'Indent once' },
+
   ['<c-_>'] = {
     -- '<esc>:lua require("Comment.api").toggle_current_linewise()<CR>`ti',
     '<cmd>lua require("Comment.api").toggle_current_linewise()<CR>',
