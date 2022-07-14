@@ -12,8 +12,6 @@ esac
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
 
-# append to the history file, don't overwrite it
-shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
@@ -159,7 +157,7 @@ export NPM_CONFIG_PREFIX=~/.npm-global
 WIN_PATH_BACKUP="/mnt/e/soft/ConEmu/ConEmu/Scripts:/mnt/e/soft/ConEmu:/mnt/e/soft/ConEmu/ConEmu:/mnt/c/Users/Александр/AppData/Local/Programs/Python/Python38/Scripts/:/mnt/c/Users/Александр/AppData/Local/Programs/Python/Python38/:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/ffmpeg/bin:/mnt/c/ProgramData/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma SDK/bin:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/e/TORRENT/Minecraft/WorldPainter:/mnt/e/Lessons/Informatics/Python:/mnt/e/Lessons/Informatics/Python Projects:/mnt/c/ProgramData/chocolatey/bin:/mnt/e/soft/php:/mnt/e/soft/Calibre (Editing Epub files/:/mnt/c/Program Files/MySQL/MySQL Utilities 1.6/:/mnt/c/Program Files/Microsoft/Web Platform Installer/:/mnt/c/Program Files (x86)/Microsoft ASP.NET/ASP.NET Web Pages/v1.0/:/mnt/c/Program Files/Microsoft SQL Server/110/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/120/Tools/Binn/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/e/soft/Node.js/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files (x86)/IncrediBuild:/mnt/e/soft/Graphics Editors/QuickTime/QTSystem/:/mnt/e/soft/Git for Windows/Git/cmd:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/150/DTS/Binn/:/mnt/c/Program Files/Azure Data Studio/bin:/mnt/c/Program Files (x86)/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/150/DTS/Binn/:/mnt/c/Users/Александр/.windows-build-tools/python27/:/mnt/e/soft/JetBrains/JetBrains PyCharm Professional/JetBrains PyCharm Professional 2019.2.4/bin:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/VC/Tools/MSVC/14.25.28610/bin/HostX86/x86:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/Common7/IDE/VC/VCPackages:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/Common7/IDE/CommonExtensions/Microsoft/TestWindow:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/MSBuild/Current/bin/Roslyn:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/Team Tools/Performance Tools:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Shared/Common/VSPerfCollectionTools/vs2019/:/mnt/c/Program Files (x86)/Windows Kits/10/bin/10.0.18362.0/x86:/mnt/c/Program Files (x86)/Windows Kits/10/bin/x86:/mnt/e/soft/Visual Studio Code/VIsual Studio Code 2019/MSBuild/Current/Bin:/mnt/c/Windows/Microsoft.NET/Framework/v4.0.30319:/mnt/e/soft/Visual St:/mnt/c/Users/Александр/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/Azure Data Studio/bin:/mnt/e/Scripts/Batch/Lessons:/mnt/c/Users/Александр/AppData/Local/atom-nightly/bin:/mnt/c/Users/Александр/.npm-global/bin"
 # For clipping and pasting.
 WIN_PATH="/mnt/c/ProgramData/WslProgramData";
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.npm-global/bin:$HOME/.local/bin:$HOME/go/bin:/usr/local/go/bin:/mnt/c/ProgramData/Microsoft/Windows/Start Menu/Programs:/mnt/c/Program Files (x86)/XYplorer:$WIN_PATH";
+export PATH="/usr/local/opt/node@16/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.npm-global/bin:$HOME/.local/bin:$HOME/go/bin:/usr/local/go/bin:/mnt/c/ProgramData/Microsoft/Windows/Start Menu/Programs:/mnt/c/Program Files (x86)/XYplorer:$WIN_PATH";
 
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
@@ -207,7 +205,7 @@ fi
 
 # * History.
 # - Directory where all history files are stored.
-export HISTPATH='/var/log/BashHistory';
+export HISTPATH='/Users/aspakalo/log/BashHistory';
 # - Saving history to file
 export PROMPT_COMMAND='\
   if [ "$(id -u)" -ne 0 ]; then\
@@ -312,4 +310,5 @@ fi
     #sudo pacman -Syy $(pacman -Ssq | fzf -m --preview="pacman -Si {}" --preview-window=:hidden --bind=space:toggle-preview)
 #}
 function gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}
-. "$HOME/.cargo/env"
+
+source "$HOME/.cargo/env"

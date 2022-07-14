@@ -60,6 +60,8 @@ local function load_options()
     -- Number of lines visible before edge of viewport.
     scrolloff = 5,
     sidescrolloff = 3,
+    -- Scroll number of lines when hitting border.
+    scrolljump = 8,
 
     -- To much hassle with ing nice wrapping, too much inconsistencies across
     --   different environments. Just format text yourself and make people on
@@ -170,7 +172,7 @@ local function load_options()
     --cmdheight      = 2,
     --cmdwinheight   = 5,
     --equalalways    = false,
-    laststatus = 0, -- Better to use 0 with tpipeline.
+    laststatus = 3, -- Better to use 0 with tpipeline.
     fillchars = 'fold: ',
     --display        = "lastline",
     showbreak = '↳  ', -- ARROW POINTING DOWNWARDS THEN CURVING RIGHTWARDS (U+2937, UTF-8: E2 A4 B7)
@@ -206,7 +208,7 @@ local function load_options()
     foldenable = true,
     signcolumn = 'yes',
     conceallevel = 2,
-    concealcursor = 'niv',
+    concealcursor = 'v', -- Sets the modes in which text in the cursor line is concealed.
   }
 
   --vim.g.python_host_prog = '/usr/bin/python'

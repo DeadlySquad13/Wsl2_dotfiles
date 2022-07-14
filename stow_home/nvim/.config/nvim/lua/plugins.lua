@@ -32,17 +32,14 @@ local packer = require('packer')
 
 local layer_utils = {}
 layer_utils.use_plugin = function(plugin_settings, plugin_config)
-  local configuration = vim.tbl_extend(
-    'error',
-    plugin_settings,
-    { config = plugin_config }
-  )
+  local configuration =
+  vim.tbl_extend('error', plugin_settings, { config = plugin_config })
   packer.use(configuration)
 end
 
 --- Allows to use custom functions inside (removed custom override).
----@param specification 
----@return 
+---@param specification
+---@return
 local function startup(specification)
   local plugins_callback = specification[1]
   local plugins_config = specification.config
@@ -113,6 +110,12 @@ startup({
       'folke/which-key.nvim',
       event = 'BufWinEnter',
       config = [[ require('config.which_key') ]],
+    })
+    -- - Better UI for lsp handlers.
+    use({
+      'glepnir/lspsaga.nvim',
+      branch = 'main',
+      config = [[ require('config.lsp.lspsaga') ]],
     })
     -- - Better UI for Lsp rename.
     use({
@@ -439,7 +442,7 @@ startup({
     use({
       'nvim-treesitter/playground',
 
-      cmd = {'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle'},
+      cmd = { 'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle' },
       requires = 'nvim-treesitter/nvim-treesitter',
     })
 
@@ -517,21 +520,18 @@ startup({
     })
 
     local Workspace = require('ds_omega.layers.Workspace')
-    use_plugin(
-      Workspace.plugins['JABS.nvim'],
-      Workspace.configs['JABS.nvim']
-    )
+    use_plugin(Workspace.plugins['JABS.nvim'], Workspace.configs['JABS.nvim'])
 
     -- * Status line.
     -- Move status line to the tmux.
-    use({
-      'vimpostor/vim-tpipeline',
-      -- Broke after this commit.
-      lock = true,
-      branch = 'af7fe78523c7c860d00b79383908322fcb5e6133',
+    -- use({
+    --   'vimpostor/vim-tpipeline',
+    --   -- Broke after this commit.
+    --   lock = true,
+    --   branch = 'af7fe78523c7c860d00b79383908322fcb5e6133',
 
-      config = [[ require('config.tpipeline') ]],
-    })
+    --   config = [[ require('config.tpipeline') ]],
+    -- })
 
     use({
       'nvim-lualine/lualine.nvim',
@@ -578,7 +578,8 @@ startup({
     use({ 'vim-airline/vim-airline-themes' })
 
     use({
-      '~/nvim/CustomThemes/deadly-gruv.nvim',
+      --'~/nvim/CustomThemes/deadly-gruv.nvim',
+      'DeadlySquad13/deadly-gruv.nvim',
     })
     --use({
     --'DeadlySquad13/deadly-gruv.nvim',
@@ -595,8 +596,8 @@ startup({
     use({ 'yamatsum/nvim-cursorline' })
     -- - Brackets.
     use({
-      '~/Projects/nvim-ts-rainbow'
-      -- 'DeadlySquad13/nvim-ts-rainbow',
+      --'~/Projects/nvim-ts-rainbow'
+      'DeadlySquad13/nvim-ts-rainbow',
     })
 
     -- - Indents.

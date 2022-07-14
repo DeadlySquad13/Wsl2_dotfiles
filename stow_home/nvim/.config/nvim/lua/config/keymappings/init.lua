@@ -146,44 +146,38 @@ local toggle_mappings = {
   },
 }
 
+local builtin = require('telescope.builtin')
+
 -- # Navigation. Helps find things, used as lookup table (navigation panel).
 local navigation_mappings = {
   name = 'Navigation',
   -- * Telescope.
   f = {
-    function()
-      builtin.find_files()
-    end,
+    builtin.find_files,
     'Find in current directory',
   },
-  s = {
-    function()
-      require('session-lens').search_session()
-    end,
-    'Session search',
+  F = {
+    ':RnvimrToggle<cr>',
+    'Files via Rnvimr'
   },
+  -- s = {
+  --   require('session-lens').search_session()
+  --   'Session search',
+  -- },
   g = {
-    function()
-      builtin.live_grep()
-    end,
+    builtin.live_grep,
     'Live grep',
   },
   b = {
-    function()
-      builtin.buffers()
-    end,
+    builtin.buffers,
     'Buffers',
   },
   h = {
-    function()
-      builtin.help_tags()
-    end,
+    builtin.help_tags,
     'Help tags',
   },
   t = {
-    function()
-      builtin.treesitter()
-    end,
+    builtin.treesitter,
     'Treesitter',
   },
 }
