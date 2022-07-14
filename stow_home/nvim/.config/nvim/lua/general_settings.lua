@@ -54,10 +54,11 @@ local global_local = {
   -- Gutter.
   relativenumber = true,
 
-  -- Number of lines visible before edge of viewport.
-  scrolloff = 5,
-  sidescrolloff = 3,
-  scrolljump = 8,
+    -- Number of lines visible before edge of viewport.
+    scrolloff = 5,
+    sidescrolloff = 3,
+    -- Scroll number of lines when hitting border.
+    scrolljump = 8,
 
   --filetype plugin indent on
 
