@@ -305,7 +305,15 @@ local mappings = {
   -- Swap mark jumps.
   ["'"] = { '`' },
   ['`'] = { "'" },
+  ["''"] = { '``' },
+  ["``"] = { "''" },
 }
+
+-- Unfortunately, bindings above don't work.
+vim.cmd("nnoremap '' ``")
+vim.cmd("nnoremap `` ''")
+
+P(mappings)
 
 local x_mappings = {
   name = 'Main',
