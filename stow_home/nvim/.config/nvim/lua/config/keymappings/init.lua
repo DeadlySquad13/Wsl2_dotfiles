@@ -302,6 +302,9 @@ local mappings = {
   -- z = z_mappings,
 
   ['<c-w>'] = window_mappings,
+  -- Swap mark jumps.
+  ["'"] = { '`' },
+  ['`'] = { "'" },
 }
 
 local x_mappings = {
@@ -388,7 +391,7 @@ local x_mappings = {
 local i_mappings = {
   name = 'Main',
 
-  -- Unfortunately, have default <c-t> mapped in 
+  -- Unfortunately, have default <c-t> mapped in
   ['<c-m>'] = { '<c-t>', 'Indent once' },
 
   ['<c-_>'] = {

@@ -139,17 +139,28 @@ local function compose(...)
   end
 end
 
+--- Pop element from table by key.
+---@param table (table)
+---@param key (string)
+---@return (any) element
+local function tbl_remove_key(table, key)
+  local element = table[key]
+  table[key] = nil
+  return element
+end
+
 local M = {
+  -- # Core
   prequire = prequire,
+
+
+  -- # Printing and loggin.
   log = log,
 
+
+  -- # Vim api.
   create_augroup = vim.api.nvim_create_augroup,
   create_autocmd = vim.api.nvim_create_autocmd,
-
-  fp = fancyparams,
-
-  convert_to_runtimepath = convert_to_runtimepath,
-  edit_file = edit_file,
 
   apply = {
     variables = {
@@ -157,11 +168,25 @@ local M = {
     },
   },
 
+
   is_loaded = is_loaded,
 
-  compose = compose,
 
+  -- # File system.
+  convert_to_runtimepath = convert_to_runtimepath,
+  edit_file = edit_file,
+
+
+  -- # Functional programming.
+  compose = compose,
+  fp = fancyparams,
+
+
+  -- # Collections.
   IndexedSet = IndexedSet,
+
+  -- * Collection utils.
+  tbl_remove_key = tbl_remove_key,
 };
 
 

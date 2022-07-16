@@ -60,6 +60,7 @@ local function load_options()
     -- Number of lines visible before edge of viewport.
     scrolloff = 5,
     sidescrolloff = 3,
+    scrolljump = 8,
 
     -- To much hassle with ing nice wrapping, too much inconsistencies across
     --   different environments. Just format text yourself and make people on
