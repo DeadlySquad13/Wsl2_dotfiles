@@ -48,6 +48,18 @@ local layers_to_load = {
     -- * Remove Distraction.
     'true_zen', -- Clear screen space from the ui clutter.
     'twilight', -- Dim everything except current block.
+  },
+
+  ['Navigation'] = {
+    -- * Inside  file.
+    'marks', -- Marks and bookmarks.
+
+    -- * Across files.
+    'rnvimr', -- Ranger filemanager.
+    'neo_tree', -- Browse file tree.
+
+    -- * Telescope.
+    'telescope',
   }
 }
 local startup = require('utils.core').startup
@@ -376,27 +388,7 @@ startup({
     })
 
     -- # Navigation.
-    -- * Inside  file.
-    -- - Marks.
-    use({
-      'chentoast/marks.nvim',
-
-      config = [[ require('config.marks') ]],
-    })
-    -- * Across files.
     -- - Harpoon?
-    -- - Ranger filemanager.
-    use({ 'kevinhwang91/rnvimr' })
-    -- - NERDTree.
-    use({ 'preservim/nerdtree' })
-
-    -- * Telescope deps.
-    use({
-      'nvim-telescope/telescope.nvim',
-      requires = { { 'nvim-lua/plenary.nvim' } },
-
-      config = [[ require('config.telescope') ]],
-    })
 
     -- ! Doesn't support lazy loading! Normal vim groups are not mapped to TS
     --   groups.
@@ -498,10 +490,7 @@ startup({
     use({ 'vim-airline/vim-airline-themes' })
 
     use({
-      '~/nvim/CustomThemes/deadly-gruv.nvim',
-      config = function()
-        require('config.theme')
-      end,
+      '~/nvim/CustomThemes/deadly-gruv.nvim'
     })
     --use({
     --'DeadlySquad13/deadly-gruv.nvim',
@@ -515,7 +504,7 @@ startup({
       config = [[ require('config.colorizer') ]],
     })
     -- - Hide cursorline during moving, highlight words under cursor.
-    use({ 'yamatsum/nvim-cursorline' })
+    -- use({ 'yamatsum/nvim-cursorline' })
     -- - Brackets.
     use({
       '~/Projects/nvim-ts-rainbow'
