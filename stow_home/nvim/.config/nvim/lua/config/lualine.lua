@@ -36,14 +36,12 @@ return {
     }},
     --lualine_c = {},
     lualine_x = {
-      'encoding',
-      'fileformat',
       'filetype',
     },
-    lualine_y = {'progress'},
+    lualine_y = { 'fileformat' },
 
     lualine_z = {{
-      'location',
+      'encoding',
 
       separator = { right = ''}
     }},
