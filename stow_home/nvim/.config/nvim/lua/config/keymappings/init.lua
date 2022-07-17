@@ -274,6 +274,13 @@ local mappings = {
     [','] = settings_mappings,
   },
 
+  -- Alternate mappings (functions simillar to `g`).
+  [';'] = {
+    name = 'Alternate',
+    s = { '<Plug>Lightspeed_gs', 'Down/right (successors in the window tree)' },
+    S = { '<Plug>Lightspeed_gS', 'Up/left (predecessors in the window tree)' }
+  },
+
   -- a = a_mappings,
   -- b = b_mappings,
   -- c = c_mappings,
@@ -303,17 +310,18 @@ local mappings = {
 
   ['<c-w>'] = window_mappings,
   -- Swap mark jumps.
-  ["'"] = { '`' },
-  ['`'] = { "'" },
-  ["''"] = { '``' },
-  ["``"] = { "''" },
+  -- ["'"] = { '`' },
+  -- ['`'] = { "'" },
+  -- ["''"] = { '``' },
+  -- ["``"] = { "''" },
 }
 
 -- Unfortunately, bindings above don't work.
+-- Swap mark jumps.
+vim.cmd("nnoremap ' `")
+vim.cmd("nnoremap ` '")
 vim.cmd("nnoremap '' ``")
 vim.cmd("nnoremap `` ''")
-
-P(mappings)
 
 local x_mappings = {
   name = 'Main',
@@ -360,6 +368,13 @@ local x_mappings = {
       '<esc><cmd>lua ___uncomment_semantically(vim.fn.visualmode())<cr>',
       'Uncomment semantically',
     },
+  },
+
+  -- Alternate mappings (functions simillar to `g`).
+  [';'] = {
+    name = 'Alternate',
+    s = { '<Plug>Lightspeed_gs', 'Down/right (successors in the window tree)' },
+    S = { '<Plug>Lightspeed_gS', 'Up/left (predecessors in the window tree)' }
   },
 
   -- a = a_mappings,
