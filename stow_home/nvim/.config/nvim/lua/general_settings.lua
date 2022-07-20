@@ -27,6 +27,7 @@ local buffer_local_settings = {
 }
 
 local global_local = {
+  syntax = 'on',
   -- * Search.
   -- - Making search case insensitive. Add \c to the command to make it sensitive.
   ignorecase = true,
@@ -210,13 +211,9 @@ local bw_local = {
   cursorline = IS_ENVIRONMENT_FAST,
 }
 
-local function set_options(options)
-  for name, value in pairs(options) do
-    set[name] = value
-  end
-end
+local set_settings = require('utils.setters').set_settings
 
-set_options(
+set_settings(
   vim.tbl_extend(
     'error',
     buffer_local_settings,
