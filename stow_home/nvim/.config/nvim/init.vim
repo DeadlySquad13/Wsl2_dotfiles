@@ -206,11 +206,11 @@ augroup Folding
    "autocmd BufWinEnter * silent normal! zO
 augroup END
 
-augroup LspFix
-  autocmd!
-  autocmd BufWinEnter * :LspStart
-  autocmd BufWinEnter * :Copilot enable
-augroup END
+" augroup LspFix
+"   autocmd!
+"   autocmd BufWinEnter * :LspStart
+"   autocmd BufWinEnter * :Copilot enable
+" augroup END
 
 augroup Markdown
   " Clear all autocommands that were set before that.
@@ -310,7 +310,7 @@ augroup END
 " * Highlight on yank.
 augroup HighlightYankedText
     autocmd!
-    autocmd TextYankPost *  silent! lua require'vim.highlight'.on_yank()
+    autocmd TextYankPost *  silent! lua require'vim.highlight'.on_yank({ higroup = 'ColorColumn'})
 augroup END
 
 " * Preserve last cursor position after revisiting a file.
