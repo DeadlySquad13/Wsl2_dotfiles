@@ -2,6 +2,18 @@
 local Navigation = {}
 
 Navigation.plugins = {
+  ['quick_scope'] = {
+    'unblevable/quick-scope',
+  },
+
+  ['lightspeed'] = {
+    'ggandor/lightspeed.nvim',
+
+    setup = function ()
+      require('autocommands.lightspeed')
+    end
+  },
+
   ['marks'] = {
     'chentoast/marks.nvim',
   },
@@ -27,6 +39,14 @@ Navigation.plugins = {
 }
 
 Navigation.configs = {
+  ['quick_scope'] = function()
+    require('ds_omega.layers.Navigation.quick_scope')
+  end,
+
+  ['lightspeed'] = function ()
+    require('ds_omega.layers.Navigation.lightspeed')
+  end,
+
   ['marks'] = function()
     require('ds_omega.layers.Navigation.marks')
   end,
