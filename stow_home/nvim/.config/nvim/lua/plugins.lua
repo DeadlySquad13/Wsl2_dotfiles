@@ -28,40 +28,6 @@ vim.cmd('packadd packer.nvim')
 
 local util = require('packer.util')
 
-local layers_to_load = {
-  ['Integrations'] = {
-    'toggleterm', -- Terminal integration.
-  },
-
-  ['Workspace'] = {
-    -- * Status line.
-    'tpipeline', -- Move status line to the tmux.
-    'lualine', -- Pretty status line in lua.
-
-    -- * Buffers.
-    'bufferline', -- Buffer line.
-    'jabs', -- Buffer management popup.
-
-    -- * Winbar: statusline at the top of the window.
-    'incline',
-
-    -- * Remove Distraction.
-    'true_zen', -- Clear screen space from the ui clutter.
-    'twilight', -- Dim everything except current block.
-  },
-
-  ['Navigation'] = {
-    -- * Inside  file.
-    'marks', -- Marks and bookmarks.
-
-    -- * Across files.
-    'rnvimr', -- Ranger filemanager.
-    'neo_tree', -- Browse file tree.
-
-    -- * Telescope.
-    'telescope',
-  }
-}
 local startup = require('utils.core').startup
 
 startup({
@@ -343,7 +309,6 @@ startup({
 
     -- * Motion.
     use({ 'tjdevries/train.nvim' })
-    use({ 'ggandor/lightspeed.nvim' })
 
     -- # Targets.
     use({
@@ -386,9 +351,6 @@ startup({
       event = 'VimEnter',
       after = 'vim-textobj-user',
     })
-
-    -- # Navigation.
-    -- - Harpoon?
 
     -- ! Doesn't support lazy loading! Normal vim groups are not mapped to TS
     --   groups.
@@ -692,7 +654,7 @@ startup({
       open_fn = require('packer.util').float,
     },
   },
-  layers = layers_to_load
+  layers = require('layers_specification')
 })
 
 local status, _ = pcall(require, 'packer_compiled')
