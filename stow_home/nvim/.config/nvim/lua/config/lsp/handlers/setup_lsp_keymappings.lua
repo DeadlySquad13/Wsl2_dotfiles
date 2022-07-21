@@ -64,7 +64,6 @@ local setup_lsp_keymappings = function(bufnr)
     name = 'LSP',
 
     ['gd'] = { lsp_buf.definition, 'Jump to definition' },
-    ['gr'] = { lsp_buf.references, 'List References' },
     ['<c-]>'] = { lsp_buf.definition, 'Jump to definition' },
     ['K'] = { lsp_buf.hover, 'Hover' },
     ['<c-k>'] = { lsp_buf.signature_help, 'Signature help' },
@@ -106,9 +105,12 @@ local setup_lsp_keymappings = function(bufnr)
       'Go to next error',
     },
 
-    ['<space>id'] = {
-      lsp_diagnostic.show_line_diagnostics,
-      'Investigate line diagnostics',
+    ['<space>i'] = {
+      d = {
+        lsp_diagnostic.show_line_diagnostics,
+      ' Investigate line diagnostics',
+      },
+      r = { lsp_buf.references, 'List References' },
     },
   }
 
