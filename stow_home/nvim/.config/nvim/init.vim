@@ -7,9 +7,6 @@ filetype plugin on
 set synmaxcol=256
 syntax sync minlines=256
 
-" Follow directory according to current buffer. Helps creating files relatively.
-set autochdir
-
 " Lua config.
 lua << EOF
   require('init');
