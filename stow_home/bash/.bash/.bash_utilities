@@ -131,6 +131,15 @@ lazygit() {
   fi
 }
 
+export KITTY_CONFIG_PATH="$HOME/.config/kitty/kitty.conf";
+kitty() {
+  local parameters="$@";
+  config $KITTY_CONFIG_PATH $parameters;
+  if [ $? -eq 1 ]; then
+    command kitty $parameters;
+  fi
+}
+
 printColors() {
   for i in {0..255}; do
     printf "\x1b[38;5;${i}mcolor%-5i\x1b[0m" $i;
