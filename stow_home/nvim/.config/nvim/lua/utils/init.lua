@@ -158,6 +158,23 @@ local function tbl_remove_key(table, key)
   return element
 end
 
+
+--- Extend list.
+--Doesn't modify the initial list and accepts variable number of parameters.
+---@param initial_list (any[]) List to extend.
+---@vararg (any[]) Lists to extend with.
+---@return (any[]) extended_list Extended list.
+local function list_deep_extend(initial_list, ...)
+  local args = { ... }
+  local result = vim.deepcopy(initial_list)
+
+  for _, values in ipairs(args) do
+    vim.list_extend(result, values)
+  end
+
+  return result
+end
+
 local M = {
   -- # Core
   prequire = prequire,
@@ -191,6 +208,7 @@ local M = {
 
   -- * Collection utils.
   tbl_remove_key = tbl_remove_key,
+  list_deep_extend = list_deep_extend,
 }
 
 --- Convert list to the table that you can use for fast find.

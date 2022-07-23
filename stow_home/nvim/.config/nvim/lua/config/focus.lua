@@ -6,6 +6,8 @@ if not focus_is_available then
   return;
 end
 
+local ft = require('constants').filetypes
+
 local is_focus_bugged = true
 
 focus.setup({
@@ -55,13 +57,7 @@ focus.setup({
   -- Prevents focus automatically resizing windows based on configured file
   -- trees. Query filetypes using `:lua print(vim.bo.ft)`.
   -- Default: { 'nvimtree', 'nerdtree', 'chadtree', 'fern' }.
-  compatible_filetrees = {
-    'neo-tree',
-    'nvimtree',
-    'nerdtree',
-    'chadtree',
-    'fern',
-  },
+  compatible_filetrees = ft.filetrees,
 
   -- Displays a cursorline in the focused window only.
   -- Not displayed in unfocused windows.
