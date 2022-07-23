@@ -52,7 +52,7 @@ end
 
 setup_lsp_servers()
 
---local ENV = require('global');
+--local ENV = require('constants.env')
 -- Setup lspconfig.
 --require('nvim-lsp-installer').setup {}
 --local lspconfig = require('lspconfig')

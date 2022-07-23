@@ -1,4 +1,4 @@
-local ENV = require('global')
+local ENV = require('constants.env')
 local set = vim.opt
 
 ---@see [Managing vim options section in "Getting started using Lua in

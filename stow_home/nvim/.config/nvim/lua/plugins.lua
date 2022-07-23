@@ -1,4 +1,4 @@
-local ENV = require('global')
+local ENV = require('constants.env')
 local fn = vim.fn
 vim.g.package_home = fn.stdpath('data') .. '/site/pack/packer/'
 local packer_install_dir = vim.g.package_home .. '/opt/packer.nvim'
@@ -364,7 +364,7 @@ startup({
     use({
       'nvim-treesitter/playground',
 
-      cmd = {'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle'},
+      cmd = { 'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle' },
       requires = 'nvim-treesitter/nvim-treesitter',
     })
 
@@ -452,7 +452,7 @@ startup({
     use({ 'vim-airline/vim-airline-themes' })
 
     use({
-      '~/nvim/CustomThemes/deadly-gruv.nvim'
+      '~/nvim/CustomThemes/deadly-gruv.nvim',
     })
     --use({
     --'DeadlySquad13/deadly-gruv.nvim',
@@ -469,7 +469,7 @@ startup({
     -- use({ 'yamatsum/nvim-cursorline' })
     -- - Brackets.
     use({
-      '~/Projects/nvim-ts-rainbow'
+      '~/Projects/nvim-ts-rainbow',
       -- 'DeadlySquad13/nvim-ts-rainbow',
     })
 
@@ -654,7 +654,7 @@ startup({
       open_fn = require('packer.util').float,
     },
   },
-  layers = require('layers_specification')
+  layers = require('layers_specification'),
 })
 
 local status, _ = pcall(require, 'packer_compiled')

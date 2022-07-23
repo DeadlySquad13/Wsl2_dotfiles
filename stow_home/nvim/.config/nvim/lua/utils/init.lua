@@ -1,7 +1,7 @@
 ------------------------------------------------------------------
 -- General purpose utils (mostly used for writing pretty code). --
 ------------------------------------------------------------------
-local env = require('global')
+local env = require('constants.env')
 
 --- Prints prettily the data and returns it without any changes. Used for
 -- testing.

@@ -1,4 +1,4 @@
-local env = require('global')
+local env = require('constants.env')
 local convert_to_runtimepath = require('utils').convert_to_runtimepath
 local edit_file = require('utils').edit_file
 
