@@ -40,6 +40,8 @@ return {
     'rnvimr', -- Ranger filemanager.
     'neo_tree', -- Browse file tree.
 
+    'rel', -- Jumping to file under cursor.
+
     -- * Telescope.
     'telescope',
   },

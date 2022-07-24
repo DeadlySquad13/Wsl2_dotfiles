@@ -304,8 +304,6 @@ startup({
       requires = 'nvim-treesitter/nvim-treesitter',
     })
 
-    -- - Jumping to file under cursor.
-    use({ 'aklt/rel.vim' })
 
     -- * Quickfix list.
     use({
