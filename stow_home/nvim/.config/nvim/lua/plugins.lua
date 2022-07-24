@@ -166,6 +166,10 @@ startup({
 
       config = [[ require('config.lsp.null-ls') ]],
     })
+    -- - Align by symbol or regex pattern.
+    use({ 'junegunn/vim-easy-align' })
+    -- - Change object from inline to multi-line and vice versa.
+    use({ 'AndrewRadev/splitjoin.vim' })
 
     -- # Snippets.
     --use({
@@ -235,54 +239,12 @@ startup({
     -- - Python formatter.
     use({ 'tell-k/vim-autopep8', ft = { 'python' } })
 
-    -- Coding.
-    -- * Brackets.
-    use({
-      'windwp/nvim-autopairs',
-      config = [[ require('config.nvim_autopairs') ]],
-    })
-    -- * Comments.
-    --use({ 'preservim/nerdcommenter', event = 'VimEnter' })
-    use({
-      'JoosepAlviste/nvim-ts-context-commentstring',
-      event = 'VimEnter',
-
-      -- Configuration is in treesitter.
-      require = 'nvim-treesitter/nvim-treesitter',
-    })
-
-    use({
-      'numToStr/Comment.nvim',
-      event = 'VimEnter',
-      require = 'JoosepAlviste/nvim-ts-context-commentstring',
-
-      config = [[ require('config.comment') ]],
-    })
-
-    -- * Surround.
-    use({ 'tpope/vim-surround' })
-
-    -- * Find.
-    use({ 'gennaro-tedesco/nvim-peekup' })
+    -- Editing.
+    -- * See current registers.
+    -- use({ 'gennaro-tedesco/nvim-peekup' })
 
     -- * Batching.
-    use({ 'terryma/vim-expand-region' })
-    use({
-      'mg979/vim-visual-multi',
-      branch = 'master',
-    })
-
-    -- * Permutations.
-    use({ 'tpope/vim-abolish' })
-
-    -- * Formatting.
-    -- - Align by symbol or regex pattern.
-    use({ 'junegunn/vim-easy-align' })
-    -- - Change object from inline to multi-line and vice versa.
-    use({ 'AndrewRadev/splitjoin.vim' })
-
-    -- * Motion.
-    use({ 'tjdevries/train.nvim' })
+    -- use({ 'terryma/vim-expand-region' })
 
     -- # Targets.
     use({

@@ -42,5 +42,12 @@ return {
 
     -- * Telescope.
     'telescope',
+  },
+
+  ['Editing'] = {
+    'autopairs', -- Automatically insert brackets.
+    'comments', -- Keybindings for commenting.
+    'surround', -- Manipulate surrounding elements such as commas and tags.
+    'multi_cursors',
   }
 }
