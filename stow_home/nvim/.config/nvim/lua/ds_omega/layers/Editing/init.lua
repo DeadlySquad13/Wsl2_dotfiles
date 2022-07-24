@@ -29,7 +29,19 @@ Editing.plugins = {
 
   ['abolish'] = {
     'tpope/vim-abolish',
-  }
+  },
+
+  ['tabout'] = {
+    'abecodes/tabout.nvim',
+
+    -- Should be after mappings to overwrite the trigger key ('tab').
+    after = {
+      'which-key.nvim',
+      'tinykeymap_vim',
+
+      'nvim-treesitter', -- Needs utils from treesitter.
+    },
+  },
 }
 
 Editing.configs = {
@@ -51,6 +63,10 @@ Editing.configs = {
 
   ['abolish'] = function()
     require('ds_omega.layers.Editing.abolish')
+  end,
+
+  ['tabout'] = function()
+    require('ds_omega.layers.Editing.tabout')
   end,
 }
 

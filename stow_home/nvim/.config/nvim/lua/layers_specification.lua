@@ -51,5 +51,7 @@ return {
     'comments', -- Keybindings for commenting.
     'surround', -- Manipulate surrounding elements such as commas and tags.
     'multi_cursors',
+    'abolish', -- Case permutations (from snake_case to camelCase and so on).
+    'tabout', -- Quick jump out of parentheses.
   }
 }

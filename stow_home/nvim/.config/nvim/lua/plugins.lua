@@ -304,7 +304,6 @@ startup({
       requires = 'nvim-treesitter/nvim-treesitter',
     })
 
-
     -- * Quickfix list.
     use({
       'kevinhwang91/nvim-bqf',
@@ -361,20 +360,6 @@ startup({
     use({
       'winston0410/range-highlight.nvim',
       config = [[ require('config.range_highlight') ]],
-    })
-
-    -- Coding.
-    -- Should be loaded after all plugins that use trigger key ('tab').
-    use({
-      'abecodes/tabout.nvim',
-      config = [[ require('config.tabout') ]],
-      -- Should be after mappings to overwrite the trigger key ('tab').
-      after = {
-        'which-key.nvim',
-        'tinykeymap_vim',
-
-        'nvim-treesitter', -- Needs utils from treesitter.
-      },
     })
 
     -- * Theme.
