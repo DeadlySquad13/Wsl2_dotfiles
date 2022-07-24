@@ -65,6 +65,10 @@ Workspace.configs = {
     require('ds_omega.layers.Workspace.jabs')
   end,
 
+  ['incline'] = function ()
+    require('ds_omega.layers.Workspace.incline')
+  end,
+
   ['true_zen'] = function()
     require('ds_omega.layers.Workspace.true_zen')
   end,

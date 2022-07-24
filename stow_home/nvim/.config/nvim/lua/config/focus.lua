@@ -1,16 +1,8 @@
-local prequire = require('utils').prequire;
-
-local focus_is_available, focus = prequire('focus');
-
-if not focus_is_available then
-  return;
-end
-
 local ft = require('constants').filetypes
 
 local is_focus_bugged = true
 
-focus.setup({
+return {
   -- The focused window will no longer automatically resize. Other focus
   --   features are still available.
   autoresize = not is_focus_bugged,
@@ -110,5 +102,5 @@ focus.setup({
   -- To change them, you can link them to a different highlight group, see `:h hi-default` for more info.
   --vim.cmd('hi link UnfocusedWindow CursorLine')
   --vim.cmd('hi link FocusedWindow VisualNOS')
-});
+};
 

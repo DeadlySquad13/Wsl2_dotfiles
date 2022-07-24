@@ -133,32 +133,6 @@ startup({
       config = [[ require('config.persisted') ]],
     })
 
-    -- * Window management.
-    -- - Keep window layout after closing the buffer.
-    use({
-      'famiu/bufdelete.nvim',
-    })
-    -- - Focus on window: keep it dynamically larger, remove numbers, cursor
-    --   and signcolumn on inactive windows.
-    -- To enable lazy load @see{github plugin page @link{https://github.com/beauwilliams/focus.nvim}}
-    use({
-      'beauwilliams/focus.nvim',
-
-      config = [[ require('config.focus') ]],
-    })
-    -- Jump to specified window.
-    use({
-      'https://gitlab.com/yorickpeterse/nvim-window.git',
-
-      config = [[ require('config.nvim-window') ]],
-    })
-    -- Move windows without changing layout.
-    use({
-      'sindrets/winshift.nvim',
-
-      config = [[ require('config.winshift') ]],
-    })
-
     -- * Russian layout.
     use({ 'powerman/vim-plugin-ruscmd' })
 

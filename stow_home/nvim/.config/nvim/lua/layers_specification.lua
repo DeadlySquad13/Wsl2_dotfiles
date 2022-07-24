@@ -20,6 +20,15 @@ return {
     'twilight', -- Dim everything except current block.
   },
 
+  ['WindowManagement'] = {
+    'bufdelete', -- Keep window layout after closing the buffer.
+    -- Focus on window: keep it dynamically larger, remove numbers, cursor
+    --   and signcolumn on inactive windows.
+    'focus',
+    'window', -- Jump to specified window.
+    'winshift', -- Move windows without changing layout.
+  },
+
   ['Navigation'] = {
     -- * Inside  file.
     'quick_scope', -- More efficient jumping inside a line.
