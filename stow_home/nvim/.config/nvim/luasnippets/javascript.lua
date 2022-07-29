@@ -15,4 +15,34 @@ return {
       { i(1) }
     )
   ),
+  s(
+    {
+      trig = 'logo',
+      dscr = 'Log object into console',
+    },
+    fmt(
+      "console.log({{ {} }})",
+      { i(1) }
+    )
+  ),
+  s(
+    {
+      trig = 'logc1',
+      dscr = 'Log colored info into console (variant 1)',
+    },
+    fmt(
+      "console.log('%c{}', 'color: #bada55')",
+      { i(1) }
+    )
+  ),
+  s(
+    {
+      trig = 'logc2',
+      dscr = 'Log colored info into console (variant 2)',
+    },
+    fmt(
+      "console.log('%c{}', 'color: #00aabb')",
+      { i(1) }
+    )
+  ),
 }, {}
