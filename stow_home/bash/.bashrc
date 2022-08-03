@@ -236,9 +236,15 @@ if [ -f `which powerline-daemon` ]; then
     POWERLINE_BASH_CONTINUATION=1
     POWERLINE_BASH_SELECT=1
 fi
+# How to make it more generic?
+# - WSL.
 if [ -f /home/dubuntus/.local/lib/python3.8/site-packages/powerline/bindings/bash/powerline.sh ]; then
     source /home/dubuntus/.local/lib/python3.8/site-packages/powerline/bindings/bash/powerline.sh
     #source /usr/local/lib/python3.8/dist-packages/powerline/bindings/bash/powerline.sh
+fi
+# - MacOs.
+if [ -f /usr/local/lib/python3.9/site-packages/powerline/bindings/bash/powerline.sh ]; then
+    source /usr/local/lib/python3.9/site-packages/powerline/bindings/bash/powerline.sh
 fi
 
 
