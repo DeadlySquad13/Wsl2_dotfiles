@@ -3,8 +3,8 @@
 [core]
 	autocrlf = input
 [user]
-	name = DeadlySquad13
-	email = 46250621+DeadlySquad13@users.noreply.github.com
+	name = Пакало Александр Сергеевич
+	email = aspakalo@rm1387.local
 [alias]
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
   c = clone
