@@ -6,6 +6,7 @@ Lsp.plugins = {
     'glepnir/lspsaga.nvim',
     branch = 'main',
   },
+
   ['lsp'] = {
     'williamboman/nvim-lsp-installer',
     {
@@ -17,7 +18,19 @@ Lsp.plugins = {
         require('ds_omega.layers.Lsp.lsp')
       end
     },
+  },
+
+  ['copilot'] = {
+    'github/copilot.vim',
+  },
+
+  ['typescript'] = {
+    'jose-elias-alvarez/nvim-lsp-ts-utils',
+    -- See config in `lsp.server_configurations`.
+
+    requires = 'neovim/nvim-lspconfig',
   }
+
 }
 
 Lsp.configs = {

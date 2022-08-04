@@ -162,20 +162,6 @@ startup({
     -- * Russian layout.
     use({ 'powerman/vim-plugin-ruscmd' })
 
-    -- Lsp.
-    -- # Ai assitance.
-    use({
-      'github/copilot.vim',
-    })
-
-    -- * Lsp Utilities.
-    use({
-      'jose-elias-alvarez/nvim-lsp-ts-utils',
-      -- See config in `lsp.server_configurations`.
-
-      requires = 'neovim/nvim-lspconfig',
-    })
-
     -- # Formatting.
     use({
       'jose-elias-alvarez/null-ls.nvim',

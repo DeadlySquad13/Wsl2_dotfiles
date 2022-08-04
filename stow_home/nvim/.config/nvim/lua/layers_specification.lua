@@ -38,6 +38,9 @@ return {
   ['Lsp'] = {
     'lsp',
     -- - Better UI for lsp handlers.
-    'lspsaga'
+    'lspsaga',
+    -- # Ai assitance.
+    'copilot',
+    'typescript'
   },
 }

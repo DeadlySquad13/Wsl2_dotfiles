@@ -1,6 +1,5 @@
 local prequire = require('utils').prequire
 
-vim.notify('LSP')
 local lspconfig_is_available, lspconfig = prequire('lspconfig')
 if not lspconfig_is_available then
   return
