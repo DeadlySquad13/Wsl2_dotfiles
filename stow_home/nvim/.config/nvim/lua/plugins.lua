@@ -162,14 +162,6 @@ startup({
     -- * Russian layout.
     use({ 'powerman/vim-plugin-ruscmd' })
 
-    -- # Formatting.
-    use({
-      'jose-elias-alvarez/null-ls.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
-
-      config = [[ require('config.lsp.null-ls') ]],
-    })
-
     -- # Snippets.
     --use({
     --'SirVer/ultisnips',

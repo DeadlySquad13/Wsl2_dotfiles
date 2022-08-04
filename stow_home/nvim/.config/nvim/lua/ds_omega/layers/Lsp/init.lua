@@ -2,11 +2,6 @@
 local Lsp = {}
 
 Lsp.plugins = {
-  ['lspsaga'] = {
-    'glepnir/lspsaga.nvim',
-    branch = 'main',
-  },
-
   ['lsp'] = {
     'williamboman/nvim-lsp-installer',
     {
@@ -20,6 +15,11 @@ Lsp.plugins = {
     },
   },
 
+  ['null_ls'] = {
+      'jose-elias-alvarez/null-ls.nvim',
+      requires = { 'nvim-lua/plenary.nvim' },
+  },
+
   ['copilot'] = {
     'github/copilot.vim',
   },
@@ -29,20 +29,27 @@ Lsp.plugins = {
     -- See config in `lsp.server_configurations`.
 
     requires = 'neovim/nvim-lspconfig',
-  }
+  },
 
+  ['lspsaga'] = {
+    'glepnir/lspsaga.nvim',
+    branch = 'main',
+  },
 }
 
 Lsp.configs = {
-  ['lspsaga'] = function()
-    require('ds_omega.layers.Lsp.lspsaga')
-  end,
-
   -- ['lsp'] = function()
   --   vim.notify('Load LSP')
   --   require('ds_omega.layers.Lsp.lsp')
   -- end,
 
+  ['null_ls'] = function()
+    require('ds_omega.layers.Lsp.null_ls')
+  end,
+
+  ['lspsaga'] = function()
+    require('ds_omega.layers.Lsp.lspsaga')
+  end,
 }
 
 return Lsp

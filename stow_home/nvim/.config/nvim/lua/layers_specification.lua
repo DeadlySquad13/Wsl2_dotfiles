@@ -37,10 +37,13 @@ return {
 
   ['Lsp'] = {
     'lsp',
-    -- - Better UI for lsp handlers.
-    'lspsaga',
+    'null_ls', -- Linting, formatting and  additional code actions.
+    'lspsaga', -- Better UI for lsp handlers.
     -- # Ai assitance.
     'copilot',
     'typescript'
   },
 }
+
+-- In the future you will need pass at least one language to
+-- enable them.
