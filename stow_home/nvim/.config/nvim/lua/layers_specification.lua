@@ -33,5 +33,11 @@ return {
 
     -- * Telescope.
     'telescope',
-  }
+  },
+
+  ['Lsp'] = {
+    'lsp',
+    -- - Better UI for lsp handlers.
+    'lspsaga'
+  },
 }

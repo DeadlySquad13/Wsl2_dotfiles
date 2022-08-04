@@ -64,20 +64,14 @@ startup({
       event = 'BufWinEnter',
       config = [[ require('config.which_key') ]],
     })
-    -- - Better UI for lsp handlers.
-    use({
-      'glepnir/lspsaga.nvim',
-      branch = 'main',
-      config = [[ require('config.lsp.lspsaga') ]],
-    })
     -- - Better UI for Lsp rename.
-    use({
-      'filipdutescu/renamer.nvim',
-      branch = 'master',
-      requires = { { 'nvim-lua/plenary.nvim' } },
+    -- use({
+    --   'filipdutescu/renamer.nvim',
+    --   branch = 'master',
+    --   requires = { { 'nvim-lua/plenary.nvim' } },
 
-      config = [[ require('config.renamer') ]],
-    })
+    --   config = [[ require('config.renamer') ]],
+    -- })
 
     -- - Xonsh syntax file.
     use({ 'abhishekmukherg/xonsh-vim' })
@@ -169,15 +163,6 @@ startup({
     use({ 'powerman/vim-plugin-ruscmd' })
 
     -- Lsp.
-    use({
-      'williamboman/nvim-lsp-installer',
-      {
-        'neovim/nvim-lspconfig',
-        -- Lsp relies on cmp-nvim-lsp during capabilities initialization.
-        after = { 'cmp-nvim-lsp', 'which-key.nvim' },
-        config = [[ require('config.lsp') ]],
-      },
-    })
     -- # Ai assitance.
     use({
       'github/copilot.vim',
