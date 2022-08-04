@@ -166,7 +166,12 @@ startup({
     })
 
     -- * Russian layout.
-    use({ 'powerman/vim-plugin-ruscmd' })
+    -- use({ 'powerman/vim-plugin-ruscmd' })
+    use({
+      'lyokha/vim-xkbswitch',
+
+      config = [[ require('config.xkbswitch') ]],
+    })
 
     -- Lsp.
     use({
