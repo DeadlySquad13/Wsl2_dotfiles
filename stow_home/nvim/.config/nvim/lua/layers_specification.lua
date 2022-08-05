@@ -54,4 +54,15 @@ return {
     'abolish', -- Case permutations (from snake_case to camelCase and so on).
     'tabout', -- Quick jump out of parentheses.
   }
+  ['Lsp'] = {
+    'lsp',
+    'null_ls', -- Linting, formatting and  additional code actions.
+    'lspsaga', -- Better UI for lsp handlers.
+    -- # Ai assitance.
+    'copilot',
+    'typescript'
+  },
 }
+
+-- In the future you will need pass at least one language to
+-- enable them.

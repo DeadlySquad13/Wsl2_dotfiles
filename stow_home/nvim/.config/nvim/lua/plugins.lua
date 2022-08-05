@@ -65,13 +65,13 @@ startup({
       config = [[ require('config.which_key') ]],
     })
     -- - Better UI for Lsp rename.
-    use({
-      'filipdutescu/renamer.nvim',
-      branch = 'master',
-      requires = { { 'nvim-lua/plenary.nvim' } },
+    -- use({
+    --   'filipdutescu/renamer.nvim',
+    --   branch = 'master',
+    --   requires = { { 'nvim-lua/plenary.nvim' } },
 
-      config = [[ require('config.renamer') ]],
-    })
+    --   config = [[ require('config.renamer') ]],
+    -- })
 
     -- - Xonsh syntax file.
     use({ 'abhishekmukherg/xonsh-vim' })
@@ -135,41 +135,6 @@ startup({
 
     -- * Russian layout.
     use({ 'powerman/vim-plugin-ruscmd' })
-
-    -- Lsp.
-    use({
-      'williamboman/nvim-lsp-installer',
-      {
-        'neovim/nvim-lspconfig',
-        -- Lsp relies on cmp-nvim-lsp during capabilities initialization.
-        after = { 'cmp-nvim-lsp', 'which-key.nvim' },
-        config = [[ require('config.lsp') ]],
-      },
-    })
-    -- # Ai assitance.
-    use({
-      'github/copilot.vim',
-    })
-
-    -- * Lsp Utilities.
-    use({
-      'jose-elias-alvarez/nvim-lsp-ts-utils',
-      -- See config in `lsp.server_configurations`.
-
-      requires = 'neovim/nvim-lspconfig',
-    })
-
-    -- # Formatting.
-    use({
-      'jose-elias-alvarez/null-ls.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
-
-      config = [[ require('config.lsp.null-ls') ]],
-    })
-    -- - Align by symbol or regex pattern.
-    use({ 'junegunn/vim-easy-align' })
-    -- - Change object from inline to multi-line and vice versa.
-    use({ 'AndrewRadev/splitjoin.vim' })
 
     -- # Snippets.
     --use({

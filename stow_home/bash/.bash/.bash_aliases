@@ -40,12 +40,13 @@ alias b='buku --suggest';
 
 # Python.
 alias py='python';
+#alias pip='pip3';
 # * Venv.
 alias venv='python -m venv';
 # - Install from requirements (not actually venv functionality but highly
 #   related (similar to npm i)).
 # TODO: checks for running env.
-alias venv_i='pip install -r requirements.txt';
+alias venv_i='pip3 install -r requirements.txt';
 # TODO: optional venv location.
 alias venv_create='python -m venv ./.venv';
 # TODO: optional venv location.
@@ -53,8 +54,8 @@ alias venv_activate='source ./.venv/bin/activate';
 alias venv_deactivate='deactivate';
 # TODO: venv_init (create, activate, i), venv_run (create if no .venv, activate)
 
-alias pipi='pip install -U';
-alias piprm='pip uninstall';
+alias pipi='pip3 install -U';
+alias piprm='pip3 uninstall';
 # Data science kit.
 # TODO: Wrap pip into it's own function.
 alias pipi_ds='pipi numpy pandas seaborn matplotlib';

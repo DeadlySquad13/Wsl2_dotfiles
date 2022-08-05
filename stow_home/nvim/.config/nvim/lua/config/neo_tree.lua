@@ -1,5 +1,5 @@
 return {
-  use_default_mappings = false,
+  use_default_mappings = true,
   -- If a user has a sources list it will replace this one.
   -- Only sources listed here will be loaded.
   -- You can also add an external source by adding it's name to this list.

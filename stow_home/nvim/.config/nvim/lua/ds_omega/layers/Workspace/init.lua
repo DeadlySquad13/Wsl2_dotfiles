@@ -16,7 +16,6 @@ Workspace.plugins = {
   },
 
   ['bufferline'] = {
-
     'akinsho/bufferline.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true },
     event = 'VimEnter',
@@ -41,7 +40,6 @@ Workspace.plugins = {
     -- Uses treesitter to automatically expand the visible text.
     after = 'nvim-treesitter',
   },
-
 }
 
 Workspace.configs = {

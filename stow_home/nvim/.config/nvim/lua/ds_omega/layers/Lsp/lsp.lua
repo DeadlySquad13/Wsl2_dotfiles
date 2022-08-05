@@ -5,7 +5,7 @@ if not lspconfig_is_available then
   return
 end
 
-require('config.lsp.lsp-installer')
+require('ds_omega.layers.Lsp.lsp_installer')
 local server_configurations = require('config.lsp.server_configurations')
 local default_server_configuration = require(
   'config.lsp.server_configurations.default'
@@ -54,9 +54,9 @@ setup_lsp_servers()
 
 --local ENV = require('constants.env')
 -- Setup lspconfig.
---require('nvim-lsp-installer').setup {}
+--require('nvim-lsp_installer').setup {}
 --local lspconfig = require('lspconfig')
---local capabilities, on_attach = require('config.lsp.handlers')
+--local capabilities, on_attach = require('ds_omega.layers.Lsp.handlers')
 --lspconfig.sumneko_lua.setup {}
 --lspconfig.pylsp.setup {}
 --local configs = require('lspconfig.configs')
