@@ -118,7 +118,6 @@ startup({
     -- * Starting page.
     use({
       'glepnir/dashboard-nvim',
-      lock = true, -- Author made breaking changes during refactor.
       cond = function()
         return not vim.g.started_by_firenvim
       end,

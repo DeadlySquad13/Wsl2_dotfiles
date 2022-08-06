@@ -11,6 +11,7 @@ local nvim_config = vim.fn.stdpath('config')
 local nvim_lua = nvim_config .. '/lua'
 local nvim_general_settings = nvim_lua .. '/general_settings.lua'
 local nvim_plugins = nvim_lua .. '/plugins.lua'
+local nvim_layers_specification = nvim_lua .. '/layers_specification.lua'
 local nvim_autocommands = nvim_lua .. '/autocommands'
 local nvim_lua_config = nvim_lua .. '/config'
 local nvim_keymappings = nvim_lua_config .. '/keymappings'
@@ -34,6 +35,7 @@ return {
   NVIM_GENERAL_SETTINGS = nvim_general_settings,
   NVIM_LUA = nvim_lua,
   NVIM_PLUGINS = nvim_plugins,
+  NVIM_LAYERS_SPECIFICATION = nvim_layers_specification,
   NVIM_AUTOCOMMANDS = nvim_autocommands,
   NVIM_LUA_CONFIG = nvim_lua_config,
   NVIM_KEYMAPPINGS = nvim_keymappings,
