@@ -206,7 +206,7 @@ fi
 
 # * History.
 # - Directory where all history files are stored.
-export HISTPATH='/Users/aspakalo/log/BashHistory';
+export HISTPATH="$HOME/.log/BashHistory";
 # - Saving history to file
 export PROMPT_COMMAND='\
   if [ "$(id -u)" -ne 0 ]; then\
