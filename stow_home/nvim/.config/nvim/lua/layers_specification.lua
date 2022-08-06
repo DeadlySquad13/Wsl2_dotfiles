@@ -57,11 +57,15 @@ return {
 
   ['Lsp'] = {
     'lsp',
-    'null_ls', -- Linting, formatting and  additional code actions.
     'lspsaga', -- Better UI for lsp handlers.
-    -- # Ai assitance.
+    'typescript',
+    -- # Ai language assitance.
     'copilot',
-    'typescript'
+  },
+
+   -- Linting, formatting and additional code actions.
+  ['Assistance'] = {
+    'null_ls',
   },
 }
 
