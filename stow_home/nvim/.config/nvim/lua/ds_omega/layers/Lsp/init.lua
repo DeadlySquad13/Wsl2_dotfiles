@@ -15,11 +15,6 @@ Lsp.plugins = {
     },
   },
 
-  ['null_ls'] = {
-      'jose-elias-alvarez/null-ls.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
-  },
-
   ['copilot'] = {
     'github/copilot.vim',
   },
@@ -42,10 +37,6 @@ Lsp.configs = {
   --   vim.notify('Load LSP')
   --   require('ds_omega.layers.Lsp.lsp')
   -- end,
-
-  ['null_ls'] = function()
-    require('ds_omega.layers.Lsp.null_ls')
-  end,
 
   ['lspsaga'] = function()
     require('ds_omega.layers.Lsp.lspsaga')
