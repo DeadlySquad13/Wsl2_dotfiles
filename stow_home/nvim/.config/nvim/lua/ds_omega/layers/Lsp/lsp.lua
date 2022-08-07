@@ -61,6 +61,10 @@ local lsp_server_name_to_filetypes = {
 
 local enabled_filetypes = get_module_enabled_filetypes()
 local function is_lsp_server_enabled(lsp_server_name)
+  if not enabled_filetypes then
+    return true
+  end
+
   local lsp_server_filetypes = lsp_server_name_to_filetypes[lsp_server_name]
 
   local is_enabled = false
