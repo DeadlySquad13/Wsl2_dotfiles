@@ -56,15 +56,15 @@ return {
   },
 
   ['Lsp'] = {
-    'lsp',
+    { 'lsp', ft = { 'css' }},
     'lspsaga', -- Better UI for lsp handlers.
     'typescript',
     -- # Ai language assitance.
     'copilot',
 
     ft = {
-      -- 'css',
-      -- 'html',
+      'css',
+      'html',
 
       -- 'webdevelopment'
     }, 

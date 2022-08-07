@@ -51,7 +51,14 @@ local function startup(specification)
     local Layer = require('ds_omega.layers.' .. layer_name)
 
     -- ipairs will iterate only over numeric indices (plugins).
-    for _, plugin_name in ipairs(layers_specification) do
+    for _, plugin in ipairs(layers_specification) do
+      local plugin_name
+      if type(plugin) == 'table' then
+        plugin_name = plugin[1]
+      else
+        plugin_name = plugin
+      end
+
       layer_utils.use_plugin(
         Layer.plugins[plugin_name],
         Layer.configs[plugin_name],
