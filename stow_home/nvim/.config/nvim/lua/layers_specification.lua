@@ -61,6 +61,13 @@ return {
     'typescript',
     -- # Ai language assitance.
     'copilot',
+
+    ft = {
+      -- 'css',
+      -- 'html',
+
+      -- 'webdevelopment'
+    }, 
   },
 
    -- Linting, formatting and additional code actions.

@@ -158,7 +158,6 @@ local function tbl_remove_key(table, key)
   return element
 end
 
-
 --- Extend list.
 --Doesn't modify the initial list and accepts variable number of parameters.
 ---@param initial_list (any[]) List to extend.
@@ -214,12 +213,29 @@ local M = {
 --- Convert list to the table that you can use for fast find.
 ---@param list (table) list of items { 'a', 'b', 'c' }.
 ---@return (table) table #table of items { 'a' = true, 'b' = true, 'c' = true }.
+---@ref see [luadoc arithmetic metamethods](https://www.lua.org/pil/13.1.html)
+--for further set implementation.
 M.Set = function(list)
   local set = {}
   for _, item in ipairs(list) do
     set[item] = true
   end
   return set
+end
+
+M.SetIntersection = function(a, b)
+  local res = {}
+  if not a then
+    return nil
+  end
+  if not b then
+    return a
+  end
+
+  for k in pairs(a) do
+    res[k] = b[k]
+  end
+  return res
 end
 
 return M

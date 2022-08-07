@@ -7,16 +7,6 @@ case $- in
   *i*) ;;
     *) return;;
 esac
-
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -213,8 +203,10 @@ export PROMPT_COMMAND='\
     echo "$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) $(history 1)" >>\
     ${HISTPATH}/BashHistory{$(date "+%Y-%m-%d")}.log;\
   fi';
-# - Max size (?).
-export HISTSIZE=100000
+# - For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=100000
+HISTFILESIZE=200000
+
 # - History file contents format.
 export HISTTIMEFORMAT="%d/%m/%y %T  "
 # - Avoid duplicates
