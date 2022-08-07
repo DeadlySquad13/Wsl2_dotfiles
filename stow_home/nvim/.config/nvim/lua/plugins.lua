@@ -31,7 +31,7 @@ local util = require('packer.util')
 local startup = require('utils.core').startup
 
 startup({
-  function(use, use_plugin, _)
+  function(use, use_plugin, use_rocks)
     -- - It is recommened to put impatient.nvim before any other plugins.
     use({ 'lewis6991/impatient.nvim' })
     -- - Packer itself can be managed.
@@ -39,6 +39,7 @@ startup({
 
     -- General.
     use({ 'nvim-lua/plenary.nvim' })
+    -- use_rocks({ 'functional' })
     -- * UI Utilities.
     -- - Prettier wrappers for vim.ui.select. Can use telescope layouts.
     use({
@@ -211,9 +212,16 @@ startup({
     -- use({ 'terryma/vim-expand-region' })
 
     -- # Targets.
+    -- use({
+    --   'wellle/targets.vim',
+    --   event = 'VimEnter',
+    -- })
     use({
-      'wellle/targets.vim',
-      event = 'VimEnter',
+      'echasnovski/mini.nvim',
+      config = function()
+        require('config.mini.ai')
+      end,
+      -- branch = 'stable'
     })
     -- Textobj-user extensions.
     use({
@@ -357,13 +365,13 @@ startup({
     })
 
     -- - Indents.
-    use({
-      'lukas-reineke/indent-blankline.nvim',
-      event = 'VimEnter',
-      -- Uses treesitter to calculate indentation when possible.
-      after = 'nvim-treesitter',
-      config = [[ require('config.indent_blankline') ]],
-    })
+    -- use({
+    --   'lukas-reineke/indent-blankline.nvim',
+    --   event = 'VimEnter',
+    --   -- Uses treesitter to calculate indentation when possible.
+    --   after = 'nvim-treesitter',
+    --   config = [[ require('config.indent_blankline') ]],
+    -- })
     -- * Icons. (!) Should be loaded last (after nerd-tree, airline, etc...).
     --   Nerd patched fonts required.
     use({ 'ryanoasis/vim-devicons' })

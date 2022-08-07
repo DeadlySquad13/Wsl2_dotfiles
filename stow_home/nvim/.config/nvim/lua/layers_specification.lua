@@ -31,7 +31,8 @@ return {
 
   ['Navigation'] = {
     -- * Inside  file.
-    'quick_scope', -- More efficient jumping inside a line.
+    -- Was lagging :(
+    -- 'quick_scope', -- More efficient jumping inside a line.
     'lightspeed',
     'marks', -- Marks and bookmarks.
 
@@ -56,18 +57,19 @@ return {
   },
 
   ['Lsp'] = {
-    { 'lsp', ft = { 'css' }},
+    'lsp',
     'lspsaga', -- Better UI for lsp handlers.
     'typescript',
     -- # Ai language assitance.
-    'copilot',
+    -- It was laggy :(
+    -- 'copilot',
 
-    ft = {
-      'css',
-      'html',
+    -- ft = {
+    --   'css',
+    --   'html',
 
-      -- 'webdevelopment'
-    }, 
+    --   -- 'webdevelopment'
+    -- }, 
   },
 
    -- Linting, formatting and additional code actions.
