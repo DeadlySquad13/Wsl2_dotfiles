@@ -347,13 +347,13 @@ startup({
     use({ 'sainnhe/gruvbox-material' })
     use({ 'vim-airline/vim-airline-themes' })
 
+    -- use({
+    --   '~/nvim/CustomThemes/deadly-gruv.nvim',
+    -- })
     use({
-      '~/nvim/CustomThemes/deadly-gruv.nvim',
-    })
-    --use({
-    --'DeadlySquad13/deadly-gruv.nvim',
-    --config = [[ require('config.theme') ]],
-    --});
+    'DeadlySquad13/deadly-gruv.nvim',
+    config = [[ require('config.theme') ]],
+    });
 
     -- * Highlighting.
     -- - Colors.
@@ -365,8 +365,8 @@ startup({
     -- use({ 'yamatsum/nvim-cursorline' })
     -- - Brackets.
     use({
-      '~/Projects/nvim-ts-rainbow',
-      -- 'DeadlySquad13/nvim-ts-rainbow',
+      -- '~/Projects/nvim-ts-rainbow',
+      'DeadlySquad13/nvim-ts-rainbow',
     })
 
     -- - Indents.

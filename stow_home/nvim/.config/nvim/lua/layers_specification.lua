@@ -54,6 +54,8 @@ return {
     'multi_cursors',
     'abolish', -- Case permutations (from snake_case to camelCase and so on).
     'tabout', -- Quick jump out of parentheses.
+    'easy_align', -- Align by symbol or regex pattern.
+    'splitjoin' -- Change object from inline to multi-line and vice versa.
   },
 
   ['Lsp'] = {

@@ -42,6 +42,14 @@ Editing.plugins = {
       'nvim-treesitter', -- Needs utils from treesitter.
     },
   },
+
+  ['easy_align'] = {
+    'junegunn/vim-easy-align'
+  },
+
+  ['splitjoin'] = {
+    'AndrewRadev/splitjoin.vim'
+  },
 }
 
 Editing.configs = {
@@ -67,6 +75,14 @@ Editing.configs = {
 
   ['tabout'] = function()
     require('ds_omega.layers.Editing.tabout')
+  end,
+
+  ['easy_align'] = function()
+    require('ds_omega.layers.Editing.easy_align')
+  end,
+
+  ['splitjoin'] = function()
+    require('ds_omega.layers.Editing.splitjoin')
   end,
 }
 
