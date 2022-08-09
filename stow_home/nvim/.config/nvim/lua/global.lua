@@ -18,9 +18,6 @@ local nvim_keymappings = nvim_lua_config .. '/keymappings'
 local nvim_layers = nvim_lua .. '/' .. namespace .. '/layers'
 local nvim_queries = nvim_lua_config .. '/queries'
 
-local npm_global_modules = home .. '/.npm-global/lib/node_modules'
-local npm_global_bin = home .. '/.npm-global/bin'
-
 return {
   HOME = home,
 
@@ -40,7 +37,4 @@ return {
 
   NVIM_LAYERS = nvim_layers,
   NVIM_QUERIES = nvim_queries,
-
-  NPM_GLOBAL_MODULES = npm_global_modules,
-  NPM_GLOBAL_BIN = npm_global_bin,
 }
