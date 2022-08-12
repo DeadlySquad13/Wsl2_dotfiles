@@ -40,39 +40,6 @@ startup({
     -- General.
     use({ 'nvim-lua/plenary.nvim' })
     -- use_rocks({ 'functional' })
-    -- * UI Utilities.
-    -- - Prettier wrappers for vim.ui.select. Can use telescope layouts.
-    use({
-      'stevearc/dressing.nvim',
-
-      config = [[ require('config.dressing') ]],
-    })
-    -- - Add nice looking ui for notifications.
-    use({
-      'rcarriga/nvim-notify',
-
-      config = [[ require('config.nvim-notify') ]],
-    })
-    -- - Progress handler.
-    use({
-      'j-hui/fidget.nvim',
-
-      config = [[ require('config.fidget') ]],
-    })
-
-    use({
-      'folke/which-key.nvim',
-      event = 'BufWinEnter',
-      config = [[ require('config.which_key') ]],
-    })
-    -- - Better UI for Lsp rename.
-    -- use({
-    --   'filipdutescu/renamer.nvim',
-    --   branch = 'master',
-    --   requires = { { 'nvim-lua/plenary.nvim' } },
-
-    --   config = [[ require('config.renamer') ]],
-    -- })
 
     -- - Xonsh syntax file.
     use({ 'abhishekmukherg/xonsh-vim' })
@@ -135,6 +102,12 @@ startup({
 
     -- * Russian layout.
     -- use({ 'powerman/vim-plugin-ruscmd' })
+    use ({
+      '~/Projects/im-select.nvim',
+      disabled = true,
+
+      config = [[ require('config.im_select') ]],
+    })
     use({
       'lyokha/vim-xkbswitch',
 

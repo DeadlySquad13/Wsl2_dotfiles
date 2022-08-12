@@ -78,6 +78,17 @@ return {
   ['Assistance'] = {
     'null_ls',
   },
+
+  ['ProjectManagement'] = {
+    'auto_session'
+  },
+
+  ['Ui'] = {
+    'dressing', -- Prettier wrappers for vim.ui.select. Can use telescope layouts.
+    'notify', -- Add nice looking ui for notifications.
+    'fidget', -- Progress handler.
+    'which_key', -- Mappings visualization.
+  }
 }
 
 -- In the future you will need pass at least one language to
