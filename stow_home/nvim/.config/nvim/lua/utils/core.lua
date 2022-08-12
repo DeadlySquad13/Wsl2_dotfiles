@@ -3,8 +3,8 @@ local SetIntersection = require('utils').SetIntersection
 
 local layer_utils = {}
 --- 
----@param plugin_settings 
----@param plugin_config 
+---@param plugin_settings (table)
+---@param plugin_config (table | nil)
 ---@param layer_ft (table | nil)
 ---@param module_ft (table | nil)
 layer_utils.use_plugin = function(plugin_settings, plugin_config, layer_ft, module_ft)
@@ -61,7 +61,7 @@ local function startup(specification)
 
       layer_utils.use_plugin(
         Layer.plugins[plugin_name],
-        Layer.configs[plugin_name],
+        Layer.configs and Layer.configs[plugin_name] or nil,
         layers_specification.ft
       )
     end

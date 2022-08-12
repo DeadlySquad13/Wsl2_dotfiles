@@ -58,6 +58,15 @@ return {
     'splitjoin' -- Change object from inline to multi-line and vice versa.
   },
 
+  ['TextObjects'] = {
+    'textobjects', -- Core for this layer.
+    'word_column', -- Columns.
+    'indented_paragraph', -- Indented paragraph.
+    'indent', -- Indents.
+    'hydrogen', -- Hydrogen (jupyter notebook cells).
+    'word', -- Case delimited and _ delimited words.
+  },
+
   ['Lsp'] = {
     'lsp',
     'lspsaga', -- Better UI for lsp handlers.
