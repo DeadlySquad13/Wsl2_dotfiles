@@ -140,6 +140,15 @@ kitty() {
   fi
 }
 
+export ALACRITTY_CONFIG_PATH="$HOME/.config/alacritty/alacritty.yml";
+alacritty() {
+  local parameters="$@";
+  config $ALACRITTY_CONFIG_PATH $parameters;
+  if [ $? -eq 1 ]; then
+    command alacritty $parameters;
+  fi
+}
+
 printColors() {
   for i in {0..255}; do
     printf "\x1b[38;5;${i}mcolor%-5i\x1b[0m" $i;
@@ -264,3 +273,4 @@ gengi() {
 goToKbd() {
   cd $(find . -maxdepth 1 -type l | rg 'KnowledgeBase__') && ll
 }
+
