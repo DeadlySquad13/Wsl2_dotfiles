@@ -165,7 +165,7 @@ local global_local = {
   -- (tab: simple dash + Electric Arrow (U+2301))
   list = true, -- Show special characters.
   listchars = {
-    eol = '↴',
+    eol = '┐',-- ^Vu2510 --[[ '↴' -- Look too big with Iosevka ]]
     nbsp = '⦸',
     space = '⋅',
     tab = '-⌁',

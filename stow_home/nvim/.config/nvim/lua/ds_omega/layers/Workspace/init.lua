@@ -40,6 +40,10 @@ Workspace.plugins = {
     -- Uses treesitter to automatically expand the visible text.
     after = 'nvim-treesitter',
   },
+
+  ['neoscroll'] = {
+    'karb94/neoscroll.nvim'
+  }
 }
 
 Workspace.configs = {
@@ -69,6 +73,10 @@ Workspace.configs = {
 
   ['true_zen'] = function()
     require('ds_omega.layers.Workspace.true_zen')
+  end,
+
+  ['neoscroll'] = function()
+    require('ds_omega.layers.Workspace.neoscroll')
   end,
 }
 

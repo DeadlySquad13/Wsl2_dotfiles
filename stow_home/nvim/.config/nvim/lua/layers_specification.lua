@@ -6,7 +6,7 @@ return {
   ['Workspace'] = {
     -- * Status line.
     -- 'tpipeline', -- Move status line to the tmux.
-    'lualine', -- Pretty status line in lua.
+    -- 'lualine', -- Pretty status line in lua.
 
     -- * Buffers.
     'bufferline', -- Buffer line.
@@ -18,6 +18,8 @@ return {
     -- * Remove Distraction.
     'true_zen', -- Clear screen space from the ui clutter.
     'twilight', -- Dim everything except current block.
+
+    'neoscroll' -- Smooth scroll.
   },
 
   ['WindowManagement'] = {
@@ -102,3 +104,21 @@ return {
 
 -- In the future you will need pass at least one language to
 -- enable them.
+
+-- Make dependencies:
+-- * Plugin -> Layer (Autocomplete.lsp -> LSP).
+-- * Layer -> Layer (Python -> LSP, Editing...).
+-- By making a new field in a Layer:
+--   dependencies (or requires) = {
+--     ['LayerNameToFullyRequire'],
+--
+--     ['LayerName'] = {
+--        'specificPluginsToRequire', -- Configuration will be get from existing layer.
+--
+--        'pluginWithSpecificConfigurations' = {
+--           event = ...
+--           ...
+--           config = ...
+--        },
+--     },
+--   }

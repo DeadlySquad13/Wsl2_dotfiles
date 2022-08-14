@@ -48,21 +48,8 @@ startup({
 
     -- * Integration.
     -- - With system.
-    use({ 'majkinetor/vim-omnipresence' })
+    -- use({ 'majkinetor/vim-omnipresence' })
 
-    -- local Toggleterm = require('ds_omega.layers.Integrations.toggleterm')
-    -- use_plugin(
-    --   Toggleterm.plugins['toggleterm.nvim'],
-    --   Toggleterm.configs['toggleterm.nvim']
-    -- )
-
-    -- use(
-    --   vim.tbl_extend(
-    --     'error',
-    --     Toggleterm.plugins['toggleterm.nvim'],
-    --     { config = Toggleterm.configs['toggleterm.nvim'] }
-    --   )
-    -- )
     -- - With browser.
     use({
       'glacambre/firenvim',
