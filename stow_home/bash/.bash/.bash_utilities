@@ -24,16 +24,16 @@ config() {
 
   case $command in
     "-e" | "--edit")
-      $EDITOR $configPath;
+      $EDITOR "$configPath";
       ;;
 
     "-s" | "--source")
-      source $configPath;
+      source "$configPath";
       echo "$configPath was sourced!";
       ;;
 
     "-d" | "--dir" | "--directory")
-      local configDirectoryPath="$(dirname ${configPath})";
+      local configDirectoryPath="$(dirname "$configPath")";
       cd "$configDirectoryPath";
       ;;
 
@@ -146,6 +146,16 @@ alacritty() {
   config $ALACRITTY_CONFIG_PATH $parameters;
   if [ $? -eq 1 ]; then
     command alacritty $parameters;
+  fi
+}
+
+# export WEZTERM_CONFIG_PATH="$WIN_HOME/.config/wezterm/wezterm.lua";
+export WEZTERM_CONFIG_PATH="/mnt/e/soft/Applied/Programming/Console Stuff/WezTerm/wezterm.lua";
+wezterm() {
+  local parameters="$@";
+  config "$WEZTERM_CONFIG_PATH" $parameters;
+  if [ $? -eq 1 ]; then
+    command wezterm $parameters;
   fi
 }
 
