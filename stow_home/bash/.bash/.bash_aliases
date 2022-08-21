@@ -106,3 +106,5 @@ fi
 
 # Only the newer Ubuntus get the unified names (datediff, dateadd...).
 alias datediff='dateutils.ddiff';
+# alias wget='curl -O';
+

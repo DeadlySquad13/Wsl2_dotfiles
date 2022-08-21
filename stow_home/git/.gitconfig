@@ -24,6 +24,6 @@
 [credential]
   helper = /mnt/e/soft/GitForWindows/Git/mingw64/libexec/git-core/git-credential-manager-core.exe
 [init]
-	templateDir = /home/dubuntus/.git-template
+	templateDir = ~/.git-template
 [safe]
 	directory = /var/local/Backup/_dotfiles
