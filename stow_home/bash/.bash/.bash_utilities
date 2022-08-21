@@ -17,6 +17,17 @@ fail() {
   exit 1;
 }
 
+# * Detect environment.
+checkIsMacOs=[[ $OSTYPE == 'darwin'* ]]
+testMacOs() {
+  if [[ checkIsMacOs ]]; then
+    echo 'MacOs!'
+  else
+    echo 'No'
+  fi
+}
+  
+
 # * Config.
 config() {
   local configPath="$1";
@@ -110,7 +121,7 @@ ssh() {
   fi
 }
 
-# Breks autocomplete. Can't make it goto as `command` is not working with goto,
+# Breaks autocomplete. Can't make it goto as `command` is not working with goto,
 #   it can't find it as executable. Probably have to reinstall it.
 export GOTO_CONFIG_PATH="$HOME/.config/goto";
 Goto() {
@@ -151,6 +162,7 @@ alacritty() {
 
 # export WEZTERM_CONFIG_PATH="$WIN_HOME/.config/wezterm/wezterm.lua";
 export WEZTERM_CONFIG_PATH="/mnt/e/soft/Applied/Programming/Console Stuff/WezTerm/wezterm.lua";
+
 wezterm() {
   local parameters="$@";
   config "$WEZTERM_CONFIG_PATH" $parameters;
