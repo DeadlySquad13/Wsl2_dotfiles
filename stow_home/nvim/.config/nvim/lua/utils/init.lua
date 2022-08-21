@@ -29,25 +29,25 @@ _G.notify = function(message, level, opts)
   notify(message, level, opts)
 end
 
-local function prequire(plugin_name)
-  local plugin_loading_error_handler = function(error)
+local function prequire(module_name)
+  local module_loading_error_handler = function(error)
     notify(
-      'Error in loading plugin ' .. plugin_name .. '!',
+      'Error in loading module ' .. module_name .. '!',
       vim.log.levels.ERROR
     )
   end
 
-  local status_ok, plugin = xpcall(
+  local status_ok, module = xpcall(
     require,
-    plugin_loading_error_handler,
-    plugin_name
+    module_loading_error_handler,
+    module_name
   )
 
   if not status_ok then
     return status_ok
   end
 
-  return status_ok, plugin
+  return status_ok, module
 end
 
 -- Shortcut for printing variables in a meaningless way: showing contents of a

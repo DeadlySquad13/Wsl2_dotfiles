@@ -19,5 +19,8 @@ return {
   ---@see [misspell](https://github.com/client9/misspell).
   -- diagnostics.misspell,
   formatting.prettierd,
+  formatting.stylelint,
+
+  diagnostics.stylelint,
 }
 
