@@ -27,3 +27,5 @@
 	templateDir = /home/dubuntus/.git-template
 [safe]
 	directory = /var/local/Backup/_dotfiles
+[pull]
+	rebase = false
