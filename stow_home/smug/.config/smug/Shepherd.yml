@@ -1,0 +1,27 @@
+session: Shepherd
+
+root: ~/Projects/monorepo/packages/shepherd
+
+windows:
+  - name: dev
+    manual: false
+    layout: main-vertical
+    commands:
+      - ranger
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    commands:
+      - yarn start:shepherd
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+
+  - name: kbd
+    layout: main-vertical
+    commands:
+      - cd kbd
+      - ranger
+

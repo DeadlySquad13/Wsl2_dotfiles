@@ -17,6 +17,17 @@ fail() {
   exit 1;
 }
 
+# * Detect environment.
+checkIsMacOs=[[ $OSTYPE == 'darwin'* ]]
+testMacOs() {
+  if [[ checkIsMacOs ]]; then
+    echo 'MacOs!'
+  else
+    echo 'No'
+  fi
+}
+  
+
 # * Config.
 config() {
   local configPath="$1";
@@ -24,16 +35,16 @@ config() {
 
   case $command in
     "-e" | "--edit")
-      $EDITOR $configPath;
+      $EDITOR "$configPath";
       ;;
 
     "-s" | "--source")
-      source $configPath;
+      source "$configPath";
       echo "$configPath was sourced!";
       ;;
 
     "-d" | "--dir" | "--directory")
-      local configDirectoryPath="$(dirname ${configPath})";
+      local configDirectoryPath="$(dirname "$configPath")";
       cd "$configDirectoryPath";
       ;;
 
@@ -110,7 +121,7 @@ ssh() {
   fi
 }
 
-# Breks autocomplete. Can't make it goto as `command` is not working with goto,
+# Breaks autocomplete. Can't make it goto as `command` is not working with goto,
 #   it can't find it as executable. Probably have to reinstall it.
 export GOTO_CONFIG_PATH="$HOME/.config/goto";
 Goto() {
@@ -137,6 +148,26 @@ kitty() {
   config $KITTY_CONFIG_PATH $parameters;
   if [ $? -eq 1 ]; then
     command kitty $parameters;
+  fi
+}
+
+export ALACRITTY_CONFIG_PATH="$HOME/.config/alacritty/alacritty.yml";
+alacritty() {
+  local parameters="$@";
+  config $ALACRITTY_CONFIG_PATH $parameters;
+  if [ $? -eq 1 ]; then
+    command alacritty $parameters;
+  fi
+}
+
+# export WEZTERM_CONFIG_PATH="$WIN_HOME/.config/wezterm/wezterm.lua";
+export WEZTERM_CONFIG_PATH="/mnt/e/soft/Applied/Programming/Console Stuff/WezTerm/wezterm.lua";
+
+wezterm() {
+  local parameters="$@";
+  config "$WEZTERM_CONFIG_PATH" $parameters;
+  if [ $? -eq 1 ]; then
+    command wezterm $parameters;
   fi
 }
 
@@ -264,3 +295,4 @@ gengi() {
 goToKbd() {
   cd $(find . -maxdepth 1 -type l | rg 'KnowledgeBase__') && ll
 }
+

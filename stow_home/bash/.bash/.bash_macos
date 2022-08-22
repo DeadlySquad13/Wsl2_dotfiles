@@ -1,0 +1,18 @@
+# Kill process for supplied port.
+# -9 kills the process immediately, and gives it no chance of cleaning up after itself. This may cause problems.
+#   Consider using -15 (TERM) or -3 (QUIT) for a softer termination which allows the process to clean up after itself.
+# @usage
+#  killPort <signal> <port>
+# @example
+#  killPort -15 3000
+# @ref [FindAndKillPortOnMacos_forum](https://stackoverflow.com/questions/3855127/find-and-kill-process-locking-port-3000-on-mac)
+killPort() {
+  local port=$(lsof -n -i4TCP:$2 | grep LISTEN | awk '{ print $2 }')
+  kill $1 $port
+}
+
+alias termPort="killPort -15"
+
+alias wget="curl -O"
+
+# vim:filetype=sh

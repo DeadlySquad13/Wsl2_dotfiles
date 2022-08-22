@@ -1,3 +1,6 @@
 [submodule "stow_home/nvim/CustomThemes/deadly-gruv.nvim"]
 	path = stow_home/nvim/CustomThemes/deadly-gruv.nvim
 	url = https://github.com/DeadlySquad13/deadly-gruv.nvim.git
+[submodule "stow_home/nvim/.config/nvim"]
+	path = stow_home/nvim/.config/nvim
+	url = https://github.com/DeadlySquad13/NeoVim_dotfiles.git
