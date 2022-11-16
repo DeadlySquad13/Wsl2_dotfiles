@@ -17,16 +17,38 @@ fail() {
   exit 1;
 }
 
-# * Detect environment.
-checkIsMacOs=[[ $OSTYPE == 'darwin'* ]]
-testMacOs() {
-  if [[ checkIsMacOs ]]; then
-    echo 'MacOs!'
-  else
-    echo 'No'
-  fi
+# Check the name of the current Operating System.
+# 
+# @example Detect MacOs environment:
+# testMacOs() {
+#   if osis Darwin; then
+#     echo 'MacOs!'
+#   else
+#     echo 'No'
+#   fi
+# }
+# @example Detect not Linux:
+# testNotLinux() {
+#   if osis -n Linux; then
+#     echo 'Not Linux!'
+#   else
+#     echo 'Linux...'
+#   fi
+# }
+#
+# @see [List of possible os names](https://en.wikipedia.org/wiki/Uname#Examples).
+# @ref [StackOverflow answer about detecting OS](https://stackoverflow.com/a/28493970).
+osis()
+{
+    local n=0
+    if [[ "$1" = "-n" ]]; then n=1;shift; fi
+
+    # echo $OS|grep $1 -i >/dev/null
+    uname -s |grep -i "$1" >/dev/null
+
+    return $(( $n ^ $? ))
 }
-  
+
 
 # * Config.
 config() {
@@ -160,8 +182,11 @@ alacritty() {
   fi
 }
 
-# export WEZTERM_CONFIG_PATH="$WIN_HOME/.config/wezterm/wezterm.lua";
-export WEZTERM_CONFIG_PATH="/mnt/e/soft/Applied/Programming/Console Stuff/WezTerm/wezterm.lua";
+if osis Darwin; then
+  export WEZTERM_CONFIG_PATH="$HOME/.config/wezterm/wezterm.lua";
+else
+  export WEZTERM_CONFIG_PATH="/mnt/e/soft/Applied/Programming/Console Stuff/WezTerm/wezterm.lua";
+fi
 
 wezterm() {
   local parameters="$@";

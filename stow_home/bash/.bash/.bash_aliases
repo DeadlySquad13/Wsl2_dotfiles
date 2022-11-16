@@ -108,3 +108,6 @@ fi
 alias datediff='dateutils.ddiff';
 # alias wget='curl -O';
 
+# Temporary workarounds caused by stubborn monorepo structure.
+alias lint_shepherd="yarn --cwd ../ run lint:es --scope @monorepo/shepherd --"
+alias test_shepherd="yarn --cwd ../ run test --scope @monorepo/shepherd --"
