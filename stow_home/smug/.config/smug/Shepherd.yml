@@ -23,5 +23,6 @@ windows:
     layout: main-vertical
     commands:
       - cd kbd
+      - cd ./Projects/--professional/SberAutoTech/Shepherd__
       - ranger
 
