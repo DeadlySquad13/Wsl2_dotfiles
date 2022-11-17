@@ -25,36 +25,11 @@ data.location=~/.task
 #include /usr/share/taskwarrior/dark-yellow-green.theme
 #include /usr/share/taskwarrior/dark-gray-256.theme
 #include /usr/share/taskwarrior/dark-gray-blue-256.theme
-include /usr/share/taskwarrior/solarized-dark-256.theme
+#include /usr/share/taskwarrior/solarized-dark-256.theme
 #include /usr/share/taskwarrior/solarized-light-256.theme
 #include /usr/share/taskwarrior/no-color.theme
 
-# Color overrides for solarized-dark-256.
-# foregroundColor on backgroundColor
-# Reference: https://taskwarrior.org/docs/clog/color.html
-color.alternate=on gray22
-color.active=rgb555 on rgb134
-color.blocked=gray14 on black
-color.blocking=rgb553 on yellow
-
-# Due.
-color.due=black on color9
-color.due.today=black on rgb300
-color.overdue=rgb444 on color5
-
-# Tag.
-color.tag.none=gray11
-color.tag.next=inverse
-color.tag.LATEST=inverse
-
-color.project.Lessons=
-
-# Priority.
-#color.uda.priority.H=bold color11
-#color.uda.priority.M=bold color11
-#color.uda.priority.L=rgb300
-
-#color.tag.none=inverse
+include ./deadly-solarized-light.theme
 
 # Contexts.
 context.side=+side

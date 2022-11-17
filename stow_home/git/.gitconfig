@@ -2,6 +2,7 @@
 ;   and -, and must start with an alphabetic character.
 [core]
 	autocrlf = input
+	excludesfile = ~/.config/git/.global_gitignore
 [user]
 	name = DeadlySquad13
 	email = 46250621+DeadlySquad13@users.noreply.github.com
