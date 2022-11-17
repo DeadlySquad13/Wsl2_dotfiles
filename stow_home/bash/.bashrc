@@ -295,24 +295,44 @@ do
 done;
 
 # Searching.
-# * fzf.
-# - Prefer rg over  find.
-if type rg &> /dev/null; then
-    export FZF_DEFAULT_COMMAND='rg --files --hidden'
+# Fzf.
+if type fzf &> /dev/null; then
+  # * Setting autocompletion and default keybindings.
+  if [ -f ~/.fzf.bash ]; then
+    source ~/.fzf.bash
+  fi
+
+  # # Prefer rg over find.
+  if type rg &> /dev/null; then
+      export FZF_DEFAULT_COMMAND='rg --files --hidden'
+  fi
+
+  # # Options.
+  # * Keybindings.
+  # -- Vim like scroll keybindings for preview.
+  FZF_DEFAULT_OPTS='--bind=ctrl-f:preview-half-page-down,ctrl-b:preview-half-page-up '
+
+  # * Bat preview.
+  if [ -f /usr/local/bin/bat ]; then
+    FZF_DEFAULT_OPTS+="-ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}' "
+  fi
+
+  export FZF_DEFAULT_OPTS
+
+  #open_with_fzf() {
+      #fd -t f -H -I | fzf -m --preview="xdg-mime query default {}" | xargs -ro -d "\n" xdg-open 2>&-
+  #}
+
+  #cd_with_fzf() {
+      #cd $HOME && cd "$(fd -t d | fzf --preview="tree -L 1 {}" --bind="space:toggle-preview" --preview-window=:hidden)"
+  #}
+
+  #pacs() {
+      #sudo pacman -Syy $(pacman -Ssq | fzf -m --preview="pacman -Si {}" --preview-window=:hidden --bind=space:toggle-preview)
+  #}
 fi
 
-# 
-#open_with_fzf() {
-    #fd -t f -H -I | fzf -m --preview="xdg-mime query default {}" | xargs -ro -d "\n" xdg-open 2>&-
-#}
-
-#cd_with_fzf() {
-    #cd $HOME && cd "$(fd -t d | fzf --preview="tree -L 1 {}" --bind="space:toggle-preview" --preview-window=:hidden)"
-#}
-
-#pacs() {
-    #sudo pacman -Syy $(pacman -Ssq | fzf -m --preview="pacman -Si {}" --preview-window=:hidden --bind=space:toggle-preview)
-#}
+# Download git ignore.
 function gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}
 
 source "$HOME/.cargo/env"
