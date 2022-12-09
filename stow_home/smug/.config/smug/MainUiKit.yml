@@ -1,0 +1,17 @@
+session: MainUiKit
+
+root: ~/Projects/main-ui-kit
+
+windows:
+  - name: dev
+
+  - name: git
+    commands:
+      - lazygit
+
+  - name: kbd
+    commands:
+      - cd kbd
+      - cd ./Projects/--professional/SberAutoTech/MainUiKit__
+      - ranger
+
