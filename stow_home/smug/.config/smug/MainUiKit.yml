@@ -5,9 +5,15 @@ root: ~/Projects/main-ui-kit
 windows:
   - name: dev
 
-  - name: git
+  - name: server&git
+    manual: false
+    layout: main-vertical
     commands:
-      - lazygit
+      - yarn storybook --no-open
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
 
   - name: kbd
     commands:
