@@ -3,6 +3,7 @@
 [core]
 	autocrlf = input
 	excludesfile = ~/.config/git/.global_gitignore
+    ignorecase = false
 [user]
 	name = DeadlySquad13
 	email = 46250621+DeadlySquad13@users.noreply.github.com
@@ -22,10 +23,9 @@
   psh = push -u origin HEAD
   unstage = restore --staged
   unstage-all = reset HEAD -- ; Performs mixed reset.
-[credential]
-  helper = /mnt/e/soft/GitForWindows/Git/mingw64/libexec/git-core/git-credential-manager-core.exe
 [init]
 	templateDir = ~/.git-template
+	defaultBranch = main
 [safe]
 	directory = /var/local/Backup/_dotfiles
 [pull]
