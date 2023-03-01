@@ -336,3 +336,21 @@ fi
 function gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}
 
 source "$HOME/.cargo/env"
+
+# asdf version manager.
+# When new node version comes out and you’ll update to it by running brew
+# upgrade, the link will be removed and the most recent node version will be
+# linked instead. To fix that place node before $PATH.
+
+
+# Set CLICOLOR if you want Ansi Colors in iTerm2 
+# export CLICOLOR=1
+
+# Set colors to match iTerm2 Terminal Colors
+# export TERM=xterm-256color
+
+. "/usr/local/opt/asdf/libexec/asdf.sh"
+
+. "/usr/local/opt/asdf/libexec/asdf.sh"
+
+export NODE_OPTIONS=--openssl-legacy-provider
