@@ -28,5 +28,6 @@
 	defaultBranch = main
 [safe]
 	directory = /var/local/Backup/_dotfiles
+	directory = /var/local/Backup/_dotfiles/stow_home/nvim/.config/nvim
 [pull]
 	rebase = false
