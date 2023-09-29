@@ -250,6 +250,19 @@ if [ -f ~/.bash/.bash_macos ]; then
   . ~/.bash/.bash_macos
 fi
 
+# Authorize ssh (https://stackoverflow.com/a/10032655).
+eval $(ssh-agent)
+
+# Depends on system [chech current system in bash](https://stackoverflow.com/a/17072017).
+unameOut="$(uname -s)"
+if [ "${unameOut}" == "Darwin" ]; then
+    # May need on first start.
+    ssh-add --apple-use-keychain
+    ssh-add --apple-load-keychain
+elif [ "$(expr substr ${unameOut} 1 5)" == "Linux" ]; then
+    ssh-add ~/.ssh/DeadlySquad13_gitHub_rsa
+fi
+
 # Templates.
 export TEMPLATE_PATH="/mnt/e/Projects/--personal/ModuleT/src";
 createModuleThmoon() {
@@ -354,3 +367,5 @@ source "$HOME/.cargo/env"
 . "/usr/local/opt/asdf/libexec/asdf.sh"
 
 export NODE_OPTIONS=--openssl-legacy-provider
+
+source /Users/aspakalo/.config/broot/launcher/bash/br
