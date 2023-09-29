@@ -1,6 +1,6 @@
 session: Shepherd
 
-root: ~/Projects/shepherd
+root: ~/Projects/monorepo/packages/shepherd
 
 windows:
   - name: dev
@@ -13,7 +13,7 @@ windows:
     manual: false
     layout: main-vertical
     commands:
-      - yarn start
+      - yarn start:shepherd
     panes:
       - type: horizontal
         commands:
