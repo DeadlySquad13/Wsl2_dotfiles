@@ -15,4 +15,7 @@ alias termPort="killPort -15"
 
 alias wget="curl -O"
 
+# Remove mouse acceleration.
+defaults write .GlobalPreferences com.apple.mouse.scaling -1
+
 # vim:filetype=sh
