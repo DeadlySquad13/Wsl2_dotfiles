@@ -1,10 +1,13 @@
 # Directories.
 alias ..='cd ..';
-alias ...='cd ../../../';
-alias ....='cd ../../../../';
-alias .....='cd ../../../../';
+alias ...='cd ../../';
+alias ....='cd ../../../';
+alias .3='cd ../../../';
 alias .4='cd ../../../../';
-alias .5='cd ../../../../..';
+alias .5='cd ../../../../../';
+
+alias .b='cd ./build'
+alias .s='cd ./src'
 
 # * Shells
 # - Bash.
@@ -16,13 +19,12 @@ alias psh='powershell.exe';
 alias vi='nvim';
 
 # Open (for wsl).
-alias open='cmd.exe /C start';
+# alias open='cmd.exe /C start';
 
 # Taskwarrior.
 alias t='task';
 
 # Goto.
-alias g='goto';
 # automatically pushes directory to stack.
 alias gp='goto -p';
 
@@ -35,11 +37,9 @@ alias rn='batchProcess --map '"'"'rename "$1" "$2"'"'"'';
 # Lazygit.
 alias lg='lazygit';
 
-# Buku.
-alias b='buku --suggest';
-
 # Python.
-alias py='python';
+alias py='python3.10';
+alias python='python3.10';
 #alias pip='pip3';
 # * Venv.
 alias venv='python -m venv';
@@ -108,6 +108,11 @@ fi
 alias datediff='dateutils.ddiff';
 # alias wget='curl -O';
 
-# Temporary workarounds caused by stubborn monorepo structure.
-alias lint_shepherd="yarn --cwd ../ run lint:es --scope @monorepo/shepherd --"
-alias test_shepherd="yarn --cwd ../ run test --scope @monorepo/shepherd --"
+# Searching.
+#   Search filenames with ripgrep (alternative to find that respects ripgrep ignore
+# files, for example, it doesn't search in node_modules).
+#   Reference: https://github.com/BurntSushi/ripgrep/issues/193#issuecomment-513201558
+alias rgf='rg --files | rg'
+rgvi() {
+    rg --vimgrep "$1" | nvim -c ':cbuffer'
+}
