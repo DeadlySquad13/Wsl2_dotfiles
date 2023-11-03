@@ -1,3 +1,6 @@
+#   Files that are sourced when bash is loaded in non-interactive environment
+# For example, from vim ex-mode.
+export BASH_ENV="$HOME/.bash/nonInteractive.sh"
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -331,7 +334,7 @@ if type fzf &> /dev/null; then
 
   # * Bat preview.
   if [ -f /usr/local/bin/bat ]; then
-    FZF_DEFAULT_OPTS+="-ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}' "
+    FZF_DEFAULT_OPTS+="--preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}' "
   fi
 
   export FZF_DEFAULT_OPTS
