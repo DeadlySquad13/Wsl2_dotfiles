@@ -4,3 +4,6 @@
 [submodule "stow_home/nvim/.config/nvim"]
 	path = stow_home/nvim/.config/nvim
 	url = https://github.com/DeadlySquad13/NeoVim_dotfiles.git
+[submodule "stow_home/bash/.bash"]
+	path = stow_home/bash/.bash
+	url = git@github.com:DeadlySquad13/Bash_config.git
