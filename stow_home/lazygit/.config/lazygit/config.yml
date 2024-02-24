@@ -22,3 +22,6 @@ keybinding:
     scrollDownMain-alt1: '<c-j>'
   files:
     commitChanges: 'C'
+
+# To exit immediately if run outside of the Git repository
+notARepository: 'quit'
