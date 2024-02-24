@@ -1,0 +1,28 @@
+session: LogisticPlatform
+
+root: ~/Projects/logistic-platform
+
+windows:
+  - name: dev
+    manual: false
+    layout: main-vertical
+    commands:
+      - ranger
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    commands:
+      - yarn dev
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+
+  - name: kbd
+    layout: main-vertical
+    commands:
+      - cd kbd
+      - cd ./Projects/--professional/SberAutoTech/LogisticPlatform__
+      - ranger
+

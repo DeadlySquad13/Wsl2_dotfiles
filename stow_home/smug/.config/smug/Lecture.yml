@@ -1,0 +1,12 @@
+session: LogisticPlatform
+
+root: ~/.bookmarks/kbd
+
+windows:
+  - name: kbd
+    layout: main-vertical
+    commands:
+      # - cd kbd
+      - cd ./Projects/--educational/__Bmstu
+      - ranger
+
