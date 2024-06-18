@@ -1,6 +1,6 @@
-session: MainUiKit#2
+session: MainUiKit#old
 
-root: ~/Projects/main-ui-kit2
+root: ~/Projects/main-ui-kit-old
 
 windows:
   - name: dev

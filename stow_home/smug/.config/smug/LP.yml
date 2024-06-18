@@ -13,7 +13,7 @@ windows:
     manual: false
     layout: main-vertical
     commands:
-      - yarn dev
+      - yarn start
     panes:
       - type: horizontal
         commands:
