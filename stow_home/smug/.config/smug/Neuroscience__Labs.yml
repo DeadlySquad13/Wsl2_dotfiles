@@ -1,0 +1,23 @@
+session: Neuroscience__Labs
+
+root: ~/Projects/--educational/t5-2-/Neuroscience__/Labs
+
+windows:
+  - name: dev
+    commands:
+      - venv_activate
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+
+  - name: kbd
+    commands:
+      - cd kbd
+      - cd ./Projects/--educational/Bmstu__/Neuroscience__
+      - ranger
+

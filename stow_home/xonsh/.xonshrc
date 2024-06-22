@@ -1,0 +1,43 @@
+# XONSH WEBCONFIG START
+$XONSH_COLOR_STYLE = 'gruvbox-light'
+# XONSH WEBCONFIG END
+
+$VI_MODE = True
+
+
+aliases['ll'] = 'ls -la'
+aliases['vi'] = 'nvim'
+
+# define the prompts using the format style and you are good to go
+$PL_PROMPT = ''.join([
+    'cwd'
+])
+
+$PL_COLORS = {
+    'cwd': ('BOLD_#fff', '#999'),
+    'git_root': ('BOLD_#999', ''),
+    'git_sub_dir': ('BOLD_#444', ''),
+}
+# for no toolbar
+$PL_RPROMPT = '!'
+$PL_TOOLBAR = '!'
+#$PROMPT = ''.join(
+#    [
+#        '╭─'
+#        '{vte_new_tab_cwd}',
+#        '{cwd:  {} }',
+#        '{ret_code}',
+#        '{background_jobs}',
+#        os.linesep,
+#        '{full_env_name: 🐍{}}',
+#        '╰─ ',
+#    ]
+#)
+#$RIGHT_PROMPT = ''.join(
+#    (
+#        '{gitstatus:{}}',
+#        '{long_cmd_duration: ⌛{}}',
+#    )
+#)
+xontrib load powerline2
+

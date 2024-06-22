@@ -7,6 +7,6 @@ windows:
     layout: main-vertical
     commands:
       # - cd kbd
-      - cd ./Projects/--educational/__Bmstu
+      - cd ./Projects/--educational/Bmstu__
       - ranger
 

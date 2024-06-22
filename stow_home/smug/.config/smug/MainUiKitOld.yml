@@ -1,0 +1,23 @@
+session: MainUiKit#old
+
+root: ~/Projects/main-ui-kit-old
+
+windows:
+  - name: dev
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    commands:
+      - yarn storybook --no-open
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+
+  - name: kbd
+    commands:
+      - cd kbd
+      - cd ./Projects/--professional/SberAutoTech/MainUiKit__
+      - ranger
+

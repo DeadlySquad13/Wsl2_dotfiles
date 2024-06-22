@@ -1,0 +1,23 @@
+session: MachineLearningMethods__Course
+
+root: ~/Projects/--educational/t5-2-/MachineLearningMethods__Course/
+
+windows:
+  - name: dev
+    commands:
+      - venv_activate
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+
+  - name: kbd
+    commands:
+      - cd kbd
+      - cd ./Projects/--educational/Bmstu__/MachineLearningMethods__
+      - ranger
+
