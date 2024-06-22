@@ -1,33 +1,34 @@
 ; The variable names (and alises too) are case-insensitive, allow only alphanumeric characters
 ;   and -, and must start with an alphabetic character.
 [core]
-	autocrlf = input
-	excludesfile = ~/.config/git/.global_gitignore
-    ignorecase = false
+  autocrlf = input
+  excludesfile = ~/.config/git/.global_gitignore
+  ignorecase = false
 [user]
-	name = DeadlySquad13
-	email = 46250621+DeadlySquad13@users.noreply.github.com
+  name = DeadlySquad13
+  email = 46250621+DeadlySquad13@users.noreply.github.com
 [alias]
-	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
   c = clone
-  ; - Add all.
+    ; - Add all.
   aa = add -A
-	co = checkout
+  co = checkout
   sw = switch
   br = branch
   st = status
   cm = commit -m
   pl = pull
   ps = push
-  ; - Push head.
+    ; - Push head.
   psh = push -u origin HEAD
   unstage = restore --staged
   unstage-all = reset HEAD -- ; Performs mixed reset.
+  ; Show config option scope (local, global...), origin (file) and current value.
+  show-option-origin = config --show-origin --show-scope --get-all
 [init]
-	templateDir = ~/.git-template
-	defaultBranch = main
+  templateDir = ~/.git-template
+  defaultBranch = main
 [safe]
-	directory = /var/local/Backup/_dotfiles
-	directory = /var/local/Backup/_dotfiles/stow_home/nvim/.config/nvim
+  directory = *
 [pull]
-	rebase = false
+  rebase = false
