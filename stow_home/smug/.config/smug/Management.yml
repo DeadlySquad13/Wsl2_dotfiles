@@ -1,0 +1,28 @@
+session: Management
+
+root: ~
+
+env:
+  MANAGEMENT_PIDS_FILE: /tmp/management.pid
+
+# To not overlap with different uair instances
+# --socket /run/user/1000/uair-management.sock
+# Will need to add this socket to the uairctl too.
+
+# TODO: Somehow didn't work. Test again.
+# before_start:
+
+# FIX: Doesn't execute on session destroy. Works only on `smug stop
+# Management`. 
+# FIX: Moreover, doesn't see env when stopped not from Management
+# session.
+stop:
+  - ~/.bookmarks/home-scripts/Uair__/stop-management.sh
+
+windows:
+  - name: task
+    layout: main-vertical
+    commands:
+      - ~/.bookmarks/home-scripts/Uair__/management.sh
+      - task
+
