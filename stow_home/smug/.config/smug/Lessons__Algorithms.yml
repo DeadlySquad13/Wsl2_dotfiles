@@ -1,0 +1,11 @@
+session: Lessons__Algorithms
+
+root: ~/.bookmarks/kbd
+
+windows:
+  - name: kbd
+    layout: main-vertical
+    commands:
+      - cd ./Resources/Algorithms__
+      - vi Algorithms.md
+
