@@ -1,0 +1,17 @@
+session: InfoField
+
+root: ~/.bookmarks/kbn
+
+windows:
+  - name: kbn
+    layout: main-vertical
+    commands:
+      - i create-note
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+  - name: references
+    layout: main-vertical
+    commands:
+      - zotero &

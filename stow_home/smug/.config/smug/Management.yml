@@ -1,28 +1,76 @@
 session: Management
 
-root: ~
+root: ~/.bookmarks/kbn
 
-env:
-  MANAGEMENT_PIDS_FILE: /tmp/management.pid
+# Wasn't working in scripts
+# env:
+#   MANAGEMENT_PIDS_FILE: /tmp/management.pid
 
 # To not overlap with different uair instances
 # --socket /run/user/1000/uair-management.sock
 # Will need to add this socket to the uairctl too.
 
-# TODO: Somehow didn't work. Test again.
-# before_start:
-
-# FIX: Doesn't execute on session destroy. Works only on `smug stop
+# FIX: Doesn't execute on session destroy.Works only on `smug stop
 # Management`. 
+# TODO: Seems by design. If I want to make it work from anywhere,
+# I may need to add `stop` command in tmux kill command. Also
+# see next issue because it's related.
 # FIX: Moreover, doesn't see env when stopped not from Management
 # session.
+# TODO: It doesn't see env because it's encapsulated into this shell
+# (session). To fix it, we can make a separate file with envs and source it
+# directly in start and stop script.
 stop:
-  - ~/.bookmarks/home-scripts/Uair__/stop-management.sh
+  - $HOME/.bookmarks/home-scripts/Uair__/stop-management.sh
 
 windows:
-  - name: task
+  - name: tasks
     layout: main-vertical
     commands:
-      - ~/.bookmarks/home-scripts/Uair__/management.sh
+      - $HOME/.bookmarks/home-scripts/Uair__/management.sh
+      - "uairctl listen | yad --progress --no-buttons --css='* { font-size: 80px; }' &"
       - task
-
+    panes:
+      - type: horizontal
+        root: cd $HOME/.bookmarks/projects/shared-/--personal/InfoField__/TimeManagement__/InfoField__Scheduler_integrations
+        commands:
+          - make run
+          - task +SCHEDULED or +DUE
+  - name: scheduler
+    layout: main-horizontal
+    commands:
+      - gcalcli calm
+    panes:
+      - type: vertical
+        commands:
+          - gcalcli agenda
+      - type: horizontal
+        commands:
+          - gcalcli conflicts
+  - name: journal
+    layout: main-vertical
+    commands:
+      - cd journals
+      - syncthing &
+      - clear
+      - i create-journal-note
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+  - name: reports
+    layout: main-horizontal
+    commands:
+      - task burndown.weekly
+    panes:
+      - type: vertical
+        commands:
+          - task burndown.daily
+      - type: horizontal
+        commands:
+          - task calendar
+          - task summary
+  - name: projects
+    commands:
+      - ferdium &
+      - clear

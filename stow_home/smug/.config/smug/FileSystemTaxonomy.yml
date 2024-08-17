@@ -1,0 +1,28 @@
+session: FileSystemTaxonomy
+
+root: ~/Projects/shared-/--personal/InfoField__FileSystemTaxonomy
+
+windows:
+  - name: dev
+    manual: false
+    layout: main-vertical
+    commands:
+      - br
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    commands:
+      - cd e2e
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+
+  - name: kbd
+    layout: main-vertical
+    commands:
+      - cd kbd
+      - cd ./Projects/--personal
+      - br
+

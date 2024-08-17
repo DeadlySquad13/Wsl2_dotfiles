@@ -1,13 +1,11 @@
 session: Dotfiles
 
-root: ~/.bookmarks/dotfiles
+root: ~/.bookmarks/
 
 windows:
-  - name: dev
-
-  - name: git
+  - name: home
     commands:
-      - lazygit
+      - br --only-folders --cmd "configs|scripts"
 
   - name: kbd
     commands:

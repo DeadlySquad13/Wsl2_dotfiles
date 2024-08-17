@@ -7,5 +7,5 @@ windows:
     layout: main-vertical
     commands:
       - cd ./Resources/Algorithms__
-      - vi Algorithms.md
+      - vi Algorithms__Index.md
 

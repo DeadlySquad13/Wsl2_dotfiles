@@ -1,0 +1,16 @@
+session: Architecturing
+
+root: ~/.bookmarks/shared-projects/--personal/-architecturing/DiagramsCreation__
+
+stop:
+  - make stop
+
+windows:
+  - name: diagrams
+    layout: main-vertical
+    commands:
+      - make up
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
