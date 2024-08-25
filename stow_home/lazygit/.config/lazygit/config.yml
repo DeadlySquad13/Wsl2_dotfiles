@@ -26,6 +26,7 @@ keybinding:
 # To exit immediately if run outside of the Git repository
 notARepository: 'quit'
 
+#   See settings and color variants at
 # https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
 gui:
   branchColors:
@@ -50,7 +51,6 @@ gui:
     "Pakalo Alexander": yellow
     "*": green
 
-  # Didn't find how to disable bold.
   theme:
     selectedLineBgColor:
       - bold
