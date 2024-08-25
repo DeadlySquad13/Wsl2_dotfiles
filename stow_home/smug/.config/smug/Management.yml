@@ -32,7 +32,7 @@ windows:
       - task
     panes:
       - type: horizontal
-        root: cd $HOME/.bookmarks/projects/shared-/--personal/InfoField__/TimeManagement__/InfoField__Scheduler_integrations
+        root: $HOME/.bookmarks/projects/shared-/--personal/InfoField__/TimeManagement__/InfoField__Scheduler_integrations
         commands:
           - make run
           - task +SCHEDULED or +DUE
