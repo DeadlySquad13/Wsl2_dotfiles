@@ -25,3 +25,32 @@ keybinding:
 
 # To exit immediately if run outside of the Git repository
 notARepository: 'quit'
+
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+gui:
+  branchColors:
+    # High contrast.
+    main: magenta
+    hotfix: red
+    # Medium contrast.
+    refactor: blue
+    docs: cyan
+    enh: green
+    bug: yellow
+    bugfix: yellow
+    fix: yellow
+    # Low contrast.
+    feature: white bold
+    # Very low contrast.
+    "test-": white
+
+  authorColors:
+    DeadlySquad13: blue
+    "Пакало Александр": yellow
+    "Pakalo Alexander": yellow
+    "*": green
+
+  # Didn't find how to disable bold.
+  theme:
+    selectedLineBgColor:
+      - underline
