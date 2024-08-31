@@ -3,7 +3,13 @@ session: Dotfiles
 root: ~/.bookmarks/
 
 windows:
-  - name: home
+  - name: Unix_dotfiles
+    root: ~/.bookmarks/shared-configs/Unix_dotfiles
+
+  - name: Unix_dotfiles
+    root: ~/.bookmarks/Programming_dotfiles.bootstrap
+
+  - name: dotfiles
     commands:
       - br --only-folders --cmd "configs|scripts"
 
