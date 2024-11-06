@@ -1,0 +1,27 @@
+session: Snake
+
+root: ~/Projects/--professional/Rutube__/Snake
+
+windows:
+  - name: dev
+    manual: false
+    layout: main-vertical
+    commands:
+      - ranger
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    commands:
+      - npm run dev
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+
+  - name: kbn
+    layout: main-vertical
+    commands:
+      - cd kbn
+      - ranger
+

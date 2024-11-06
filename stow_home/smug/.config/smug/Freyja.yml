@@ -1,0 +1,28 @@
+session: Freyja
+
+root: ~/Projects/--professional/Rutube__/Freyja
+
+windows:
+  - name: dev
+    manual: false
+    layout: main-vertical
+    commands:
+      - ranger
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    commands:
+      - npm run start
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+
+  - name: kbn
+    layout: main-vertical
+    commands:
+      - cd kbn
+      # - cd ./Projects/--professional/SberAutoTech/Shepherd__
+      - ranger
+
