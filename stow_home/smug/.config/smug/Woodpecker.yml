@@ -1,0 +1,31 @@
+session: Woodpecker
+
+root: ~/Projects/--professional/Rutube__/Woodpecker
+
+windows:
+  - name: dev
+    manual: false
+    layout: main-vertical
+    commands:
+      - ranger
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    commands:
+      # - yarn dev-mock
+      # TODO: Move to a parallel process (one more temp. pane?)
+      - brew services restart nginx
+      - yarn dev
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+
+  - name: kbn
+    layout: main-vertical
+    commands:
+      - cd kbn
+      # - cd ./Projects/--professional/SberAutoTech/Shepherd__
+      - ranger
+

@@ -1,2 +1,9 @@
+# # NeoVim.
+# - Local mind.nvim plugin directory with notes.
 .mind
+# - Locally saved session file.
 *.session.vim
+# - gitlab.nvim plugin file that stores gitlab credentials for current tree.
+.gitlab.nvim
+
+# vi:ft=gitignore

@@ -1,5 +1,6 @@
 session: Work
 
+# Deprecated
 root: /mnt/e/Work/THMoon
 
 before_start:
