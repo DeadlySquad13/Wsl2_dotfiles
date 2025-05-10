@@ -290,7 +290,9 @@ handle_mime() {
             exit 1;;
 
         ## Text
-        text/* | */xml)
+        ## - Added javascript
+        ## https://www.reddit.com/r/ranger/comments/16s46s4/no_previews_for_jsjsxtstsx_files_solved_my_own/
+        text/* | */xml | */javascript)
             ## Syntax highlight
             if [[ "$( stat --printf='%s' -- "${FILE_PATH}" )" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
                 exit 2
