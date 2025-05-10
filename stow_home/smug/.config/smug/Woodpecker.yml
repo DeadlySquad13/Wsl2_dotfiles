@@ -3,29 +3,28 @@ session: Woodpecker
 root: ~/Projects/--professional/Rutube__/Woodpecker
 
 windows:
-  - name: dev
+  - name: sessions
     manual: false
     layout: main-vertical
     commands:
-      - ranger
+      - ./_scripts/smug-worktrees.sh
 
   - name: server&git
     manual: false
     layout: main-vertical
     commands:
-      # - yarn dev-mock
       # TODO: Move to a parallel process (one more temp. pane?)
       - brew services restart nginx
-      - yarn dev
+      - ./_scripts/choose-script.sh
     panes:
       - type: horizontal
         commands:
+          - cd Woodpecker.git
           - lazygit
 
   - name: kbn
     layout: main-vertical
     commands:
-      - cd kbn
-      # - cd ./Projects/--professional/SberAutoTech/Shepherd__
+      - cd ~/"kbn/rut Rutube_system/p projects-/r --professional @p/Woodpecker__"
       - ranger
 

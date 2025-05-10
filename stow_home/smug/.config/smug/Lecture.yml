@@ -1,6 +1,7 @@
 session: Lecture
 
-root: ~/.bookmarks/kbd
+# root: ~/.bookmarks/kbd
+root: ~/kbn
 
 windows:
   - name: kbd

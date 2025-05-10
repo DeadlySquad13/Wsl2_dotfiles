@@ -6,7 +6,7 @@ windows:
   - name: Unix_dotfiles
     root: ~/.bookmarks/shared-configs/Unix_dotfiles
 
-  - name: Programming_dotfiles.bootstrap
+  - name: Programming_dotfiles
     root: ~/.bookmarks/Programming_dotfiles.bootstrap
 
   - name: Wsl2_dotfiles

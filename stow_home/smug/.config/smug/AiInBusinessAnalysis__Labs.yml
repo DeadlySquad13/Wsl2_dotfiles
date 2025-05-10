@@ -1,0 +1,20 @@
+session: AiInBusinessAnalysis__Labs
+
+root: ~/Projects/--educational/Bmstu__/t6-2-AiInBusinessAnalysis__Labs
+
+windows:
+  - name: dev
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    panes:
+      - type: horizontal
+        commands:
+          - lazygit
+
+  - name: kbn
+    commands:
+      - cd ~/kbn/per Personal_system/p projects-/--educational/Bmstu__/t6-2-/AiInBusinessAnalysis__
+      - ranger
+
