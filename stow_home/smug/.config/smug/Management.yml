@@ -51,9 +51,8 @@ windows:
     layout: main-vertical
     commands:
       - cd journals
-      - syncthing &
       - clear
-      - i create-journal-note
+      - i note.create-journal
     panes:
       - type: horizontal
         commands:
