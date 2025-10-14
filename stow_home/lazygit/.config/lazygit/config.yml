@@ -1,5 +1,8 @@
+os:
+  shellFunctionsFile: ~/.bash/.bash_aliases
+
 customCommands:
-  - key: '<c-c>'
+  - key: 'W'
     description: 'Commit without verifying files'
     command: 'git commit -m "{{index .PromptResponses 0}}" --no-verify'
     context: 'files'
@@ -8,13 +11,13 @@ customCommands:
         title: 'Commit Message'
         initialValue: ''
     loadingText: 'commiting without verifying files'
-    subprocess: true
+    output: terminal
 
   - key: 'c'
     command: 'git cz'
     context: 'files'
     loadingText: 'opening commitizen commit tool'
-    subprocess: true
+    output: terminal
 
 keybinding:
   universal:
