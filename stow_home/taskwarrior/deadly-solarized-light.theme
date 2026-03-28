@@ -1,3 +1,4 @@
+# --- Original solarized-dark-256. ---
 # Rules from taskwarrior default solarized-dark-256.theme (even though it's
 #   dark, it was the nearest to my light theme)
 rule.precedence.color=deleted,completed,active,keyword.,tag.,project.,overdue,scheduled,due.today,due,blocked,blocking,recurring,tagged,uda.
@@ -72,25 +73,35 @@ color.sync.rejected=color13
 color.undo.after=color2
 color.undo.before=color1
 
-# Color overrides for solarized-dark-256.
+# --- Color overrides for solarized-dark-256. ---
 # foregroundColor on backgroundColor
 # Reference: https://taskwarrior.org/docs/clog/color.html
 color.alternate=on gray22
 color.active=rgb555 on rgb134
-color.blocked=gray14 on black
-color.blocking=rgb553 on yellow
+# Greenish colors. Blocking - white on green (more accented), blocked - light
+# gray on blueish gray.
+color.blocked=color10 on color15
+color.blocking=color255 on color10
 
 # Due.
-color.due=black on color9
-color.due.today=black on rgb300
-color.overdue=rgb444 on color5
+# From most important to least.
+# Yellow color to accent what we can do right now.
+color.due.today=rgb553 on yellow
+# Brown color that looks a little bit less contrasting than today tasks. Still
+# accenting what to do next.
+color.due=rgb553 on color5
+# Just highlight red to show that something bad happened. At the same time it's
+# not as contrasting as two above as overdue task is already "wasted".
+color.overdue=color166
 
 # Tag.
-color.tag.none=gray11
 color.tag.next=inverse
 color.tag.LATEST=inverse
+# We use tags extensively so leave default color and override it for specific
+# ones.
+color.tagged=
 
-color.project.Lessons=
+# color.project.Lessons=
 
 # Priority.
 #color.uda.priority.H=bold color11
