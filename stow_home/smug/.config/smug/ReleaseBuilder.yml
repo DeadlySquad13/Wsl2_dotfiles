@@ -1,0 +1,33 @@
+session: ReleaseBuilder
+
+root: ~/Projects/--professional/Rutube__/ReleaseBuilder
+
+windows:
+  - name: sessions
+    manual: false
+    layout: main-vertical
+    commands:
+      - ./_scripts/smug-worktrees.sh
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    commands:
+      # TODO: Move to a parallel process (one more temp. pane?)
+      - brew services restart nginx
+      - ./_scripts/choose-script.sh
+    panes:
+      - type: horizontal
+        commands:
+          - cd ReleaseBuilder.git
+          - lazygit
+
+  - name: kbn
+    layout: main-vertical
+    commands:
+      - cd ~/.bookmarks/"kbn/rut Rutube_system/p projects-/r --professional @p/ReleaseBuilder__"
+      - ranger
+
+  - name: demo
+    commands:
+      - cd ~/Documents/_demo

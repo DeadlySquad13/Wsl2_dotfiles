@@ -1,0 +1,34 @@
+session: Premium
+
+root: ~/Projects/premium
+
+windows:
+  - name: sessions
+    manual: false
+    layout: main-vertical
+    commands:
+      - ./_scripts/smug-worktrees.sh
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    # It will be left.
+    commands:
+      - cd Premium.git
+      - lazygit
+    panes:
+      # It will be on bottom-left.
+      - type: horizontal
+        commands:
+          - ./_scripts/choose-script.sh
+      # It will be top-right
+      - type: horizontal
+        commands:
+          - brew services restart nginx
+          - ./_scripts/choose-script.sh '"start"'
+
+  - name: kbn
+    layout: main-vertical
+    commands:
+      - cd ~/.bookmarks/"kbn/rut Rutube_system/p projects-/r --professional @p/Premium%CommonSubscription__"
+      - ranger

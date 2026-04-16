@@ -1,0 +1,33 @@
+session: AutoHub
+
+root: ~/Projects/--professional/Rutube__/AutoHub
+
+windows:
+  - name: sessions
+    manual: false
+    layout: main-vertical
+    commands:
+      - ./_scripts/smug-worktrees.sh
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    commands:
+      # TODO: Move to a parallel process (one more temp. pane?)
+      - brew services restart nginx
+      - ./_scripts/choose-script.sh
+    panes:
+      - type: horizontal
+        commands:
+          - cd AutoHub.git
+          - lazygit
+
+  - name: kbn
+    layout: main-vertical
+    commands:
+      - cd ~/.bookmarks/"kbn/rut Rutube_system/p projects-/r --professional @p/AutoHub__"
+      - ranger
+
+  - name: demo
+    commands:
+      - cd ~/Documents/_demo

@@ -1,0 +1,27 @@
+session: Woodpecker
+
+root: ~/Projects/shorts-feed
+
+windows:
+  - name: sessions
+    manual: false
+    layout: main-vertical
+    commands:
+      - ./_scripts/smug-worktrees.sh
+
+  - name: server&git
+    manual: false
+    layout: main-vertical
+    commands:
+      - brew services restart nginx
+    panes:
+      - type: horizontal
+        commands:
+          - cd Woodpecker.git
+          - lazygit
+
+  - name: kbn
+    layout: main-vertical
+    commands:
+      - cd ~/.bookmarks/"kbn/rut Rutube_system/p projects-/r --professional @p/Woodpecker__"
+      - ranger
