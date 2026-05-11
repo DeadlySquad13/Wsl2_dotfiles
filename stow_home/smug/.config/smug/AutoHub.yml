@@ -30,4 +30,14 @@ windows:
 
   - name: demo
     commands:
-      - cd ~/Documents/_demo
+      - cd ~/Documents/_demo/AutoHub
+
+  - name: http
+    layout: main-vertical
+    commands:
+    - cd ./_http
+
+  - name: architecture
+    layout: main-vertical
+    commands:
+    - ~/Projects/--side/rut-KnowledgeBase/AutoHub__Architecture_docs
