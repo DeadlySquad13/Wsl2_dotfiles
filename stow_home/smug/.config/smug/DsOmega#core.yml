@@ -1,0 +1,10 @@
+session: DsOmega#core
+
+root: ~/.bookmarks/
+
+windows:
+  - name: shared-scripts
+    root: ~/.bookmarks/shared-scripts
+
+  - name: Python_lib
+    root: ~/.bookmarks/shared-projects/--personal/dsOmega-/_libs/Python_lib/

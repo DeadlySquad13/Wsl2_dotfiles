@@ -1,0 +1,13 @@
+session: AiAssistance_agents
+
+root: ~/.bookmarks/projects/--personal/AiAssistance_agents
+
+windows:
+  - name: dev
+    layout: main-vertical
+    commands:
+      - br
+  - name: server
+    layout: main-vertical
+    commands:
+      - sct u S docker && make start-llm-container

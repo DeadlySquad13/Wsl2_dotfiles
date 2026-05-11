@@ -1,0 +1,19 @@
+session: RemoteWork
+
+root: ~/Projects/--professional
+
+windows:
+  - name: remote
+    manual: false
+    layout: main-vertical
+    # TODO: Maybe add nomachine and ssh too
+    # TODO: Open work browser profile too.
+    commands:
+      - deskflow &
+
+  - name: kbn
+    layout: main-vertical
+    commands:
+      - cd kbn/rut\ Rutube_system
+      - ranger
+

@@ -1,0 +1,9 @@
+session: AdevntOfCode
+
+root: ~/.bookmarks/shared-projects/--educational/AdventOfCode__/2025
+
+windows:
+  - name: dev
+    layout: main-vertical
+    commands:
+      - br
