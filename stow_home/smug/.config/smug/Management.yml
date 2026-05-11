@@ -29,7 +29,7 @@ windows:
     commands:
       - $HOME/.bookmarks/home-scripts/Uair__/management.sh
       - "uairctl listen | yad --progress --no-buttons --css='* { font-size: 80px; }' &"
-      - task
+      - invoke t.context-for-node
     panes:
       - type: horizontal
         root: $HOME/.bookmarks/projects/shared-/--personal/InfoField__/TimeManagement__/InfoField__Scheduler_integrations

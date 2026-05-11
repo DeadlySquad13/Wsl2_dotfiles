@@ -9,8 +9,11 @@ windows:
   - name: Programming_dotfiles
     root: ~/.bookmarks/Programming_dotfiles.bootstrap
 
-  - name: Wsl2_dotfiles
-    root: ~/.bookmarks/shared-configs/Wsl2_dotfiles
+  - name: NeoVim_config (dev)
+    root: ~/.bookmarks/shared-configs/NeoVim_config
+
+  - name: Wsl2_dotfiles (stage / dev)
+    root: ~/.bookmarks/shared-configs/Unix_dotfiles/modules/home/apps/cli-utility/Wsl2_dotfiles
 
   - name: dotfiles
     commands:
