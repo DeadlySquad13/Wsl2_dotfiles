@@ -4,7 +4,7 @@ root: ~/.bookmarks/
 
 windows:
   - name: Unix_dotfiles
-    root: ~/.bookmarks/shared-configs/Unix_dotfiles
+    root: ~/.bookmarks/Unix_dotfiles
 
   - name: Programming_dotfiles
     root: ~/.bookmarks/Programming_dotfiles.bootstrap
