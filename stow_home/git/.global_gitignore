@@ -10,4 +10,8 @@
 # - gitlab.nvim plugin file that stores gitlab credentials for current tree.
 .gitlab.nvim
 
+# We sometimes link `node_modules` from other locations. In local projects
+# usually only `node_modules/` is ignored thus links stain our git index.
+node_modules
+
 # vi:ft=gitignore
